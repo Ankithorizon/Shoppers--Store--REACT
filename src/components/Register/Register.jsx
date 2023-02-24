@@ -34,7 +34,6 @@ const Registration = () => {
   const getRoles = () => {
     AuthenticationService.getRoles()
       .then((response) => {
-        console.log(response.data);
         setRoles(response.data);
       })
       .catch((e) => {
@@ -117,12 +116,9 @@ const Registration = () => {
         username: form.username,
       };
 
-      console.log(registerModel);
-
       // api call
       AuthenticationService.register(registerModel, form.myRole)
         .then((response) => {
-          console.log(response.data);
           var registerResponse = {
             responseCode: response.data.responseCode,
             responseMessage: response.data.responseMessage,
@@ -138,11 +134,19 @@ const Registration = () => {
           }
         })
         .catch((error) => {
-          console.log(error.response);
           if (error.response.status === 500) {
-            var registerResponse = {
+            let registerResponse = {
               responseCode: error.response.data.responseCode,
               responseMessage: error.response.data.responseMessage,
+            };
+            setRegisterResponse(registerResponse);
+          } else if (error.response.status === 400) {
+            var modelErrors = handleModelState(error);
+            setModelErrors(modelErrors);
+          } else {
+            let registerResponse = {
+              responseCode: 400,
+              responseMessage: "Bad Request!",
             };
             setRegisterResponse(registerResponse);
           }
@@ -188,19 +192,18 @@ const Registration = () => {
           <div className="col-md-8 mx-auto">
             <div className="card">
               <div className="card-header">
-                <h3>
-                  <i className="bi bi-person-circle"></i>
+                <div className="cardHeader">
+                  <i className="bi bi-person-plus-fill"></i>
                   &nbsp; Registration
-                </h3>
-                <p></p>
+                </div>
                 {registerResponse && registerResponse.responseCode !== 200 ? (
-                  <span className="registerError">
+                  <div className="registerError">
                     {registerResponse.responseMessage}
-                  </span>
+                  </div>
                 ) : (
-                  <span className="registerSuccess">
+                  <div className="registerSuccess">
                     {registerResponse.responseMessage}
-                  </span>
+                  </div>
                 )}
                 {modelErrors.length > 0 ? (
                   <div className="modelError">{modelErrorList}</div>
