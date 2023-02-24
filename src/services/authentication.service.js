@@ -1,6 +1,6 @@
 import http from "../axios/authentication-http-common";
 
-export default class AuthenticationService {
+class AuthenticationService {
   login = async (data) => {
     return await http.post(`/login`, data);
   };
@@ -32,4 +32,10 @@ export default class AuthenticationService {
   register = async (data, myRole) => {
     return await http.post(`/register/${myRole}`, data);
   };
+
+    getRoles = async () => {
+    return await http.get("/getRoles");
+  }
 }
+
+export default new AuthenticationService();

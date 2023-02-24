@@ -1,0 +1,29 @@
+.mainContainer {
+    padding: 15px;
+}
+
+.registerSuccess {
+    color: green;
+    font-size: large;
+    font-weight: bold;
+}
+
+.registerError {
+    color: red;
+    font-size: large;
+    font-weight: bold;
+}
+
+.modelError {
+    color: red;
+    font-size: medium;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+.submitBtn{
+    text-align: left;
+}
+.cancelBtn{
+    text-align: right;
+}

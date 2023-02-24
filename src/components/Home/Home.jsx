@@ -20,16 +20,16 @@ const Home = () => {
       <div className="innerContent">
         <Container>
           <Row>
-            <Col className="innerContent">
-              <Card className="cardStyle" style={{ width: "18rem" }}>
+            <Col>
+              <Card >
                 <Card.Body>
                   <Card.Title>Products</Card.Title>
                   <Card.Text>Products</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
-            <Col className="innerContent">
-              <Card className="cardStyle" style={{ width: "18rem" }}>
+            <Col>
+              <Card >
                 <Card.Body>
                   <Card.Title>Shopping</Card.Title>
                   <Card.Text>Shopping</Card.Text>

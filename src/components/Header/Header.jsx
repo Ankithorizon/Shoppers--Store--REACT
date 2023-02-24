@@ -15,11 +15,8 @@ const Header = () => {
   return (
     <>
       <Navbar variant="light" expand="lg" sticky="top" className="navBar">
-        {/*
-        <Container>
-        */}
         <Navbar.Brand href="/home">
-          <span>React-Code-Test</span>
+          <span>Shoppers-Store</span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -27,12 +24,11 @@ const Header = () => {
             <Link to={"/home"} className="nav-link">
               Home
             </Link>
-         
+            <Link to={"/register"} className="nav-link">
+              Register
+            </Link>
           </Nav>
         </Navbar.Collapse>
-        {/*
-        </Container>
-        */}
       </Navbar>
     </>
   );

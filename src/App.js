@@ -5,6 +5,10 @@ import "./App.css";
 
 import Home from "./components/Home/Home";
 import Header from "./components/Header/Header";
+import Register from "./components/Register/Register";
+import UnAuth from "./components/UnAuth/UnAuth";
+import NotFound from "./components/NotFound/NotFound";
+
 
 function App() {
   return (
@@ -15,6 +19,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/un-auth" element={<UnAuth />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
       </div>
