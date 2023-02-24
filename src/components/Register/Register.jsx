@@ -255,6 +255,7 @@ const Registration = () => {
                           {errors.email}
                         </Form.Control.Feedback>
                       </Form.Group>
+                      <p></p>
                     </div>
                     <div className="col-sm-5">
                       <Form.Group controlId="password">
@@ -287,8 +288,8 @@ const Registration = () => {
                   </div>
                   <p></p>
                   <div>
+                    <hr />
                     <div className="row">
-                      <hr />
                       <div className="col-sm-6 submitBtn">
                         <Button
                           className="btn btn-success"
