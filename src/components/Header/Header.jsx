@@ -6,11 +6,33 @@ import { Navbar, Container, NavDropdown, Nav, Dropdown } from "react-bootstrap";
 import "./style.css";
 
 import { useNavigate } from "react-router-dom";
+import AuthenticationService from "../../services/authentication.service";
 
 const Header = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {}, []);
+  const [currentUserName, setCurrentUserName] = useState(null);
+  const [currentUserRole, setCurrentUserRole] = useState(null);
+  const [currentUserToken, setCurrentUserToken] = useState(null);
+
+  useEffect(() => {
+    var currUser = AuthenticationService.getCurrentUser();
+
+    if (currUser !== null) {
+      setCurrentUserName(currUser.userName);
+      setCurrentUserRole(currUser.role);
+      setCurrentUserToken(currUser.token);
+    } else {
+      console.log("not logged in yet!");
+    }
+  }, []);
+
+  const logout = () => {
+    AuthenticationService.logout();
+    setCurrentUserName(null);
+    setCurrentUserRole(null);
+    setCurrentUserToken(null);
+  };
 
   return (
     <>
@@ -20,18 +42,41 @@ const Header = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Link to={"/home"} className="nav-link">
-              <i className="bi bi-house-door-fill"></i>Home
-            </Link>
-            <Link to={"/register"} className="nav-link">
-              <i className="bi bi-person-plus-fill"></i>
-              Register
-            </Link>
-            <Link to={"/login"} className="nav-link">
-              <i className="bi bi-check-circle-fill"></i>Login
-            </Link>
-          </Nav>
+          {currentUserName && currentUserRole === "Admin" ? (
+            <Nav className="me-auto">
+              <Link to={"/home"} className="nav-link">
+                <i className="bi bi-house-door-fill"></i>Home
+              </Link>
+              <Link to={"/product"} className="nav-link">
+                <i className="bi bi-house-door-fill"></i>Product
+              </Link>
+            </Nav>
+          ) : (
+            <span></span>
+          )}
+
+          {currentUserName ? (
+            <Nav>
+              <a href="/login" onClick={() => logout()} className="nav-link">
+                <h6>
+                  <b>
+                    [<span className="userRole">({currentUserRole})</span>{" "}
+                    {currentUserName} ]LogOut{" "}
+                  </b>
+                </h6>
+              </a>
+            </Nav>
+          ) : (
+            <Nav>
+              <Link to={"/register"} className="nav-link">
+                <i className="bi bi-person-plus-fill"></i>
+                Register
+              </Link>
+              <Link to={"/login"} className="nav-link">
+                <i className="bi bi-check-circle-fill"></i>Login
+              </Link>           
+            </Nav>
+          )}
         </Navbar.Collapse>
       </Navbar>
     </>

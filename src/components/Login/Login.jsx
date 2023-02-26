@@ -24,6 +24,7 @@ const Login = () => {
 
   useEffect(() => {
     var currUser = AuthenticationService.getCurrentUser();
+    if (currUser !== null) navigate("/home");
   }, []);
 
   const setField = (field, value) => {
@@ -99,8 +100,29 @@ const Login = () => {
 
           if (response.data.response.responseCode === 200) {
             resetForm();
+
+            var currentUser = {
+              token: response.data.token,
+              userName: response.data.userName,
+              role: response.data.myRole,
+            };
+
+            localStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+            /*
             setTimeout(() => {
               navigate("/home");
+            }, 3000);
+            */
+
+            setTimeout(() => {
+              // this will not complete refresh home page
+              // so also not complete refresh header
+              // navigate("/home");
+
+              // this will complete refresh home page
+              // so also complete refresh header
+              window.location.reload("/home", true);
             }, 3000);
           }
         })

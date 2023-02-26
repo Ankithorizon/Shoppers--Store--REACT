@@ -22,8 +22,8 @@ const Registration = () => {
 
   useEffect(() => {
     var currUser = AuthenticationService.getCurrentUser();
-
-    getRoles();
+    if (currUser !== null) navigate("/home");
+    else getRoles();
   }, []);
 
   // reset form
