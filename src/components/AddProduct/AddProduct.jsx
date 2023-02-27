@@ -3,13 +3,17 @@ import "./style.css";
 
 import AuthenticationService from "../../services/authentication.service";
 import ProductService from "../../services/product.service";
+import authenticationHeader from "../../services/authentication.header";
 
 import { useNavigate } from "react-router-dom";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { Card } from "react-bootstrap";
 
 import { toast } from "react-toastify";
+
+import axios from "axios";
 
 const AddProduct = () => {
   let navigate = useNavigate();
@@ -28,6 +32,12 @@ const AddProduct = () => {
   // reset form
   // form reference
   const formRef = useRef(null);
+
+  // file upload
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [status, setStatus] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [statusFlag, setStatusFlag] = useState(0); // 0 = success, 1 = fail
 
   useEffect(() => {
     var currRole = AuthenticationService.getCurrentUserRole();
@@ -234,6 +244,71 @@ const AddProduct = () => {
         }
       });
   };
+
+  // product-file upload
+  const fileData = () => {
+    if (selectedFile) {
+      return (
+        <Card>
+          <Card.Header>File Details</Card.Header>
+          <Card.Body>
+            <Card.Text>
+              <span>File Name: {selectedFile.name}</span>
+            </Card.Text>
+            <Card.Text>
+              <span>File Type: {selectedFile.type}</span>
+            </Card.Text>
+            <Card.Text>
+              <span>
+                Last Modified: {selectedFile.lastModifiedDate.toDateString()}
+              </span>
+            </Card.Text>
+          </Card.Body>
+        </Card>
+      );
+    } else {
+      return <span></span>;
+    }
+  };
+  const onFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+    event.target.value = null;
+  };
+  const uploadHandler = (event) => {
+    if (selectedFile == null) return;
+
+    const formData1 = new FormData();
+    // formData.append('file', resumeUpload.resumeFile);
+    formData1.append("productFile", selectedFile);
+    formData1.append("productId", newProduct.productId);
+
+    /*
+    const formData = new FormData();
+    formData.append("myFile", selectedFile, selectedFile.name);
+    console.log(selectedFile);
+    */
+
+    axios
+      .post(
+        // "https://localhost:44379/api/Product/productFileUpload",
+        "https://localhost:44379/api/Product/productFileUpload_",
+        // formData,
+        formData1,
+        { headers: authenticationHeader() },
+        {
+          onUploadProgress: (progressEvent) => {
+            setProgress((progressEvent.loaded / progressEvent.total) * 100);
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="mainContainer">
       <div className="container">
@@ -362,6 +437,39 @@ const AddProduct = () => {
               <div>
                 <div>Product # {newProduct.productId}</div>
                 <div>Product Name {newProduct.productName}</div>
+
+                <p></p>
+                <div>
+                  <h3>Upload Product Image</h3>
+                  <input type="file" onChange={onFileChange} />
+
+                  <button
+                    className="btn btn-block btn-info"
+                    onClick={uploadHandler}
+                  >
+                    Upload Image Now!
+                  </button>
+                </div>
+                <p></p>
+                {fileData()}
+                <p></p>
+                {progress > 0 ? (
+                  <div
+                    className={
+                      progress < 100 ? "progressRunning" : "progressComplete"
+                    }
+                  >
+                    <h3>File Upload Status</h3>
+                    <p></p>
+                    {progress}
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+                <p></p>
+                <div className={statusFlag > 0 ? "errorClass" : "successClass"}>
+                  {status}
+                </div>
               </div>
             )}
           </div>
