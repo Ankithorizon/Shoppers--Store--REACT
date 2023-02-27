@@ -1,0 +1,46 @@
+.mainContainer {
+    padding: 15px;
+}
+
+.cardHeader {
+    color: chocolate;
+    font-size: x-large;
+}
+
+.addProductSuccess {
+    color: green;
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.addProductError {
+    color: red;
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.modelError {
+    color: red;
+    font-size: medium;
+    font-weight: bold;
+    margin-top: 5px;
+    text-align: left;
+}
+
+.submitBtn {
+    text-align: left;
+}
+
+.cancelBtn {
+    text-align: right;
+}
+
+.errorDisplay{
+    text-align: left;
+}

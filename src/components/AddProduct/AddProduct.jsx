@@ -1,22 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./style.css";
+
 import AuthenticationService from "../../services/authentication.service";
 import ProductService from "../../services/product.service";
 
 import { useNavigate } from "react-router-dom";
 
-// react-bootstrap-table-2
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
-
+import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+
 import { toast } from "react-toastify";
 
 const AddProduct = () => {
   let navigate = useNavigate();
 
   const [categories, setCategories] = useState([]);
+
+  const [modelErrors, setModelErrors] = useState([]);
+
+  // form
+  const [form, setForm] = useState({});
+  const [errors, setErrors] = useState({});
+
+  // reset form
+  // form reference
+  const formRef = useRef(null);
 
   useEffect(() => {
     var currRole = AuthenticationService.getCurrentUserRole();
@@ -43,15 +51,113 @@ const AddProduct = () => {
     url: "https://localhost:44396/Files",
   };
 
-  const formValid = ({ isError, ...rest }) => {
-    let isValid = true;
-
-    Object.values(isError).forEach((val) => {
-      if (val.length > 0) {
-        isValid = false;
-      }
+  const setField = (field, value) => {
+    setForm({
+      ...form,
+      [field]: value,
     });
-    return isValid;
+
+    if (!!errors[field])
+      setErrors({
+        ...errors,
+        [field]: null,
+      });
+  };
+
+  const findFormErrors = () => {
+    const { category, productName, productDesc, price } = form;
+    const newErrors = {};
+
+    if (!category || category === "")
+      newErrors.category = "Category is Required!";
+
+    if (!productName || productName === "")
+      newErrors.productName = "Product Name is Required!";
+
+    console.log(price);
+    const re = /^\d*\.?\d*$/;
+    if (!price || price === "" || price === undefined)
+      newErrors.price = "Price is Required!";
+    else {
+      if (re.test(price)) {
+        if (price <= 0) {
+          newErrors.price = "Price must be >= 0";
+        }
+      } else {
+        newErrors.price = "Numbers only!";
+      }
+    }
+
+    return newErrors;
+  };
+
+  const handleModelState = (error) => {
+    var errors = [];
+    if (error.response.status === 400) {
+      for (let prop in error.response.data.errors) {
+        if (error.response.data.errors[prop].length > 1) {
+          for (let error_ in error.response.data.errors[prop]) {
+            errors.push(error.response.data.errors[prop][error_]);
+          }
+        } else {
+          errors.push(error.response.data.errors[prop]);
+        }
+      }
+    } else {
+      console.log(error);
+    }
+    return errors;
+  };
+
+  const handleSubmit = (e) => {
+    resetErrors();
+
+    e.preventDefault();
+
+    const newErrors = findFormErrors();
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      var addProductModel = {
+        category: form.category,
+        productName: form.productName,
+        productDesc: form.productDesc,
+        price: form.price,
+      };
+
+      console.log(addProductModel);
+    }
+  };
+
+  const resetForm = (e) => {
+    formRef.current.reset();
+    setErrors({});
+    setForm({});
+  };
+
+  const resetErrors = () => {
+    setModelErrors([]);
+  };
+
+  let modelErrorList =
+    modelErrors.length > 0 &&
+    modelErrors.map((item, i) => {
+      return (
+        <ul key={i} value={item}>
+          <li style={{ marginTop: -20 }}>{item}</li>
+        </ul>
+      );
+    }, this);
+
+  const renderOptionsForCategory = () => {
+    return categories.map((dt, i) => {
+      return (
+        <option value={dt.categoryId} key={i} name={dt.categoryName}>
+          {dt.categoryName}
+        </option>
+      );
+    });
   };
 
   // check for 401
@@ -77,7 +183,124 @@ const AddProduct = () => {
         }
       });
   };
-  return <div>Product page accessed after login</div>;
+  return (
+    <div className="mainContainer">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6 mx-auto">
+            <div className="card">
+              <div className="card-header">
+                <div className="cardHeader">
+                  <i className="bi bi-person-plus-fill"></i>
+                  &nbsp; Add - New Product
+                </div>
+                {modelErrors.length > 0 ? (
+                  <div className="modelError">{modelErrorList}</div>
+                ) : (
+                  <span></span>
+                )}
+              </div>
+              <div className="card-body">
+                <Form ref={formRef}>
+                  <div className="row">
+                    <div className="col-sm-1"></div>
+                    <div className="col-sm-10">
+                      <Form.Group controlId="category">
+                        <Form.Control
+                          as="select"
+                          isInvalid={!!errors.category}
+                          onChange={(e) => {
+                            setField("category", e.target.value);
+                          }}
+                        >
+                          <option value="">Choose Category</option>
+                          {renderOptionsForCategory()}
+                        </Form.Control>
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="errorDisplay"
+                        >
+                          {errors.category}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="productName">
+                        <Form.Control
+                          placeholder="Enter Product Name"
+                          type="text"
+                          isInvalid={!!errors.productName}
+                          onChange={(e) =>
+                            setField("productName", e.target.value)
+                          }
+                        />
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="errorDisplay"
+                        >
+                          {errors.productName}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="productDesc">
+                        <Form.Control
+                          placeholder="Enter Product Description"
+                          type="text"
+                          onChange={(e) =>
+                            setField("productDesc", e.target.value)
+                          }
+                        />
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="price">
+                        <Form.Control
+                          placeholder="Enter Price"
+                          type="text"
+                          isInvalid={!!errors.price}
+                          onChange={(e) => setField("price", e.target.value)}
+                        />
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="errorDisplay"
+                        >
+                          {errors.price}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </div>
+                    <div className="col-sm-1"></div>
+                  </div>
+                  <p></p>
+                  <div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-6 submitBtn">
+                        <Button
+                          className="btn btn-success"
+                          type="button"
+                          onClick={(e) => handleSubmit(e)}
+                        >
+                          Add-New-Product
+                        </Button>
+                      </div>
+                      <div className="col-sm-6 cancelBtn">
+                        <Button
+                          className="btn btn-primary"
+                          type="button"
+                          onClick={(e) => resetForm(e)}
+                        >
+                          Reset
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </Form>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6 mx-auto">Product file upload!</div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default AddProduct;
