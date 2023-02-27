@@ -16,11 +16,14 @@ const AddProduct = () => {
 
   const [categories, setCategories] = useState([]);
 
+  const [addProductResponse, setAddProductResponse] = useState({});
   const [modelErrors, setModelErrors] = useState([]);
+  const [newProduct, setNewProduct] = useState(null);
 
   // form
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
+  const [productFileId, setProductFileId] = useState(0);
 
   // reset form
   // form reference
@@ -74,7 +77,6 @@ const AddProduct = () => {
     if (!productName || productName === "")
       newErrors.productName = "Product Name is Required!";
 
-    console.log(price);
     const re = /^\d*\.?\d*$/;
     if (!price || price === "" || price === undefined)
       newErrors.price = "Price is Required!";
@@ -120,13 +122,59 @@ const AddProduct = () => {
       setErrors(newErrors);
     } else {
       var addProductModel = {
-        category: form.category,
+        categoryId: Number(form.category),
         productName: form.productName,
         productDesc: form.productDesc,
-        price: form.price,
+        price: Number(form.price),
+        productFileId: Number(productFileId),
       };
 
       console.log(addProductModel);
+
+      ProductService.addProduct(addProductModel)
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            var addProductResponse = {
+              responseCode: response.data.responseCode,
+              responseMessage: response.data.responseMessage,
+            };
+            setNewProduct(response.data.newProduct);
+            setAddProductResponse(addProductResponse);
+            toast(response.data.responseMessage, productAddSuccessOptions);
+
+            setTimeout(() => {
+              resetForm();
+            }, 3000);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status === 500) {
+            var addProductResponse = {
+              responseCode: error.response.status,
+              responseMessage: error.response.data.responseMessage,
+            };
+
+            setAddProductResponse(addProductResponse);
+            toast(error.response.data.responseMessage, productAddErrorOptions);
+          }
+          if (error.response.status === 400) {
+            if (error.response.data.errors) {
+              // model errors
+              var modelErrors = handleModelState(error);
+              setModelErrors(modelErrors);
+            } else {
+              var addProductResponse = {
+                responseCode: error.response.status,
+                responseMessage: error.response.statusText,
+              };
+
+              setAddProductResponse(addProductResponse);
+              toast(error.response.statusText, productAddErrorOptions);
+            }
+          }
+        });
     }
   };
 
@@ -134,10 +182,13 @@ const AddProduct = () => {
     formRef.current.reset();
     setErrors({});
     setForm({});
+
+    resetErrors();
   };
 
   const resetErrors = () => {
     setModelErrors([]);
+    setAddProductResponse({});
   };
 
   let modelErrorList =
@@ -194,6 +245,16 @@ const AddProduct = () => {
                   <i className="bi bi-person-plus-fill"></i>
                   &nbsp; Add - New Product
                 </div>
+                {addProductResponse &&
+                addProductResponse.responseCode !== 200 ? (
+                  <div className="addProductError">
+                    {addProductResponse.responseMessage}
+                  </div>
+                ) : (
+                  <div className="addProductSuccess">
+                    {addProductResponse.responseMessage}
+                  </div>
+                )}
                 {modelErrors.length > 0 ? (
                   <div className="modelError">{modelErrorList}</div>
                 ) : (
@@ -296,7 +357,14 @@ const AddProduct = () => {
               </div>
             </div>
           </div>
-          <div className="col-md-6 mx-auto">Product file upload!</div>
+          <div className="col-md-6 mx-auto">
+            {newProduct && (
+              <div>
+                <div>Product # {newProduct.productId}</div>
+                <div>Product Name {newProduct.productName}</div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

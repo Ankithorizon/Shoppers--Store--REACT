@@ -40,3 +40,7 @@
 .cancelBtn {
     text-align: right;
 }
+
+.errorDisplay {
+    text-align: left;
+}

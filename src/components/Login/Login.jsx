@@ -214,7 +214,10 @@ const Login = () => {
                           isInvalid={!!errors.username}
                           onChange={(e) => setField("username", e.target.value)}
                         />
-                        <Form.Control.Feedback type="invalid">
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="errorDisplay"
+                        >
                           {errors.username}
                         </Form.Control.Feedback>
                       </Form.Group>
@@ -226,7 +229,10 @@ const Login = () => {
                           isInvalid={!!errors.password}
                           onChange={(e) => setField("password", e.target.value)}
                         />
-                        <Form.Control.Feedback type="invalid">
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="errorDisplay"
+                        >
                           {errors.password}
                         </Form.Control.Feedback>
                       </Form.Group>
