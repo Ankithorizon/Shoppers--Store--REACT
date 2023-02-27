@@ -47,8 +47,8 @@ const Header = () => {
               <Link to={"/home"} className="nav-link">
                 <i className="bi bi-house-door-fill"></i>Home
               </Link>
-              <Link to={"/product"} className="nav-link">
-                <i className="bi bi-house-door-fill"></i>Product
+              <Link to={"/add-product"} className="nav-link">
+                <i className="bi bi-wallet-fill"></i>[ADD]Product
               </Link>
             </Nav>
           ) : (
@@ -68,13 +68,13 @@ const Header = () => {
             </Nav>
           ) : (
             <Nav>
+              <Link to={"/login"} className="nav-link">
+                <i className="bi bi-check-circle-fill"></i>Login
+              </Link>{" "}
               <Link to={"/register"} className="nav-link">
                 <i className="bi bi-person-plus-fill"></i>
                 Register
               </Link>
-              <Link to={"/login"} className="nav-link">
-                <i className="bi bi-check-circle-fill"></i>Login
-              </Link>           
             </Nav>
           )}
         </Navbar.Collapse>
