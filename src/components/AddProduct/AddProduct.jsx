@@ -13,7 +13,7 @@ import { Card } from "react-bootstrap";
 
 import { toast } from "react-toastify";
 
-import axios from "axios";
+import axios, { toFormData } from "axios";
 
 const AddProduct = () => {
   let navigate = useNavigate();
@@ -34,10 +34,11 @@ const AddProduct = () => {
   const formRef = useRef(null);
 
   // file upload
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [status, setStatus] = useState("");
+  const [selectedFiles, setSelectedFiles] = useState(undefined);
+  const [currentFile, setCurrentFile] = useState(undefined);
   const [progress, setProgress] = useState(0);
-  const [statusFlag, setStatusFlag] = useState(0); // 0 = success, 1 = fail
+  const [message, setMessage] = useState("");
+  const [className, setClassName] = useState("");
 
   useEffect(() => {
     var currRole = AuthenticationService.getCurrentUserRole();
@@ -192,6 +193,8 @@ const AddProduct = () => {
     formRef.current.reset();
     setErrors({});
     setForm({});
+    setMessage("");
+    setClassName("");
 
     resetErrors();
   };
@@ -246,67 +249,53 @@ const AddProduct = () => {
   };
 
   // product-file upload
-  const fileData = () => {
-    if (selectedFile) {
-      return (
-        <Card>
-          <Card.Header>File Details</Card.Header>
-          <Card.Body>
-            <Card.Text>
-              <span>File Name: {selectedFile.name}</span>
-            </Card.Text>
-            <Card.Text>
-              <span>File Type: {selectedFile.type}</span>
-            </Card.Text>
-            <Card.Text>
-              <span>
-                Last Modified: {selectedFile.lastModifiedDate.toDateString()}
-              </span>
-            </Card.Text>
-          </Card.Body>
-        </Card>
-      );
-    } else {
-      return <span></span>;
-    }
-  };
-  const onFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-    event.target.value = null;
+  const selectFile = (event) => {
+    setSelectedFiles(event.target.files);
   };
   const uploadHandler = (event) => {
-    if (selectedFile == null) return;
+    setMessage("");
+    setClassName("");
 
-    const formData1 = new FormData();
-    // formData.append('file', resumeUpload.resumeFile);
-    formData1.append("productFile", selectedFile);
-    formData1.append("productId", newProduct.productId);
+    let currentFile = selectedFiles[0];
+    setProgress(0);
+    setCurrentFile(currentFile);
 
-    /*
+    if (currentFile === null) return;
+
     const formData = new FormData();
-    formData.append("myFile", selectedFile, selectedFile.name);
-    console.log(selectedFile);
-    */
+    formData.append("productFile", currentFile);
+    formData.append("productId", newProduct.productId);
 
     axios
-      .post(
-        // "https://localhost:44379/api/Product/productFileUpload",
-        "https://localhost:44379/api/Product/productFileUpload_",
-        // formData,
-        formData1,
-        { headers: authenticationHeader() },
-        {
-          onUploadProgress: (progressEvent) => {
-            setProgress((progressEvent.loaded / progressEvent.total) * 100);
-          },
-        }
-      )
+      .post("https://localhost:44379/api/Product/productFileUpload", formData, {
+        headers: authenticationHeader(),
+        onUploadProgress: (event) => {
+          setProgress(Math.round((100 * event.loaded) / event.total));
+        },
+      })
       .then((response) => {
         console.log(response);
+        setMessage(response.data.responseMessage);
+        setClassName("uploadSuccess");
+
+        toast(response.data.responseMessage, productAddSuccessOptions);
+
+        setTimeout(() => {
+          resetForm();
+          setNewProduct({});
+        }, 3000);
       })
       .catch((error) => {
         console.log(error);
+        if (error.response.status === 500) {
+          setMessage(error.response.data);
+          setClassName("uploadError");
+          toast(error.response.data, productAddErrorOptions);
+        }
       });
+
+    setSelectedFiles(undefined);
+    setCurrentFile(undefined);
   };
 
   return (
@@ -440,35 +429,45 @@ const AddProduct = () => {
 
                 <p></p>
                 <div>
-                  <h3>Upload Product Image</h3>
-                  <input type="file" onChange={onFileChange} />
-
+                  <label className="btn btn-info">
+                    <input type="file" onChange={selectFile} />
+                  </label>
+                  <p></p>
+                  {currentFile && (
+                    <div className="progress">
+                      <div
+                        className="progress-bar progress-bar-info progress-bar-striped"
+                        role="progressbar"
+                        aria-valuenow={progress}
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        style={{ width: progress + "%" }}
+                      >
+                        {progress}%
+                      </div>
+                    </div>
+                  )}
+                  <p></p>
                   <button
-                    className="btn btn-block btn-info"
+                    className="btn btn-success"
+                    disabled={!selectedFiles}
                     onClick={uploadHandler}
                   >
-                    Upload Image Now!
+                    Upload Product File
                   </button>
-                </div>
-                <p></p>
-                {fileData()}
-                <p></p>
-                {progress > 0 ? (
-                  <div
-                    className={
-                      progress < 100 ? "progressRunning" : "progressComplete"
-                    }
-                  >
-                    <h3>File Upload Status</h3>
-                    <p></p>
-                    {progress}
-                  </div>
-                ) : (
-                  <div></div>
-                )}
-                <p></p>
-                <div className={statusFlag > 0 ? "errorClass" : "successClass"}>
-                  {status}
+
+                  {className === "uploadSuccess" ? (
+                    <div
+                      className="alert alert-light uploadSuccess"
+                      role="alert"
+                    >
+                      {message}
+                    </div>
+                  ) : (
+                    <div className="alert alert-light uploadError" role="alert">
+                      {message}
+                    </div>
+                  )}
                 </div>
               </div>
             )}

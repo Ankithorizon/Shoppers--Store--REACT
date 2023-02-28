@@ -44,3 +44,13 @@
 .errorDisplay{
     text-align: left;
 }
+
+.uploadSuccess {
+    color: green;
+    font-size: large;
+}
+
+.uploadError {
+    color: red;
+    font-size: large;
+}
