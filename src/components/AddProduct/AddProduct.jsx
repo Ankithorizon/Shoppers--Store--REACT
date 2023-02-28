@@ -62,7 +62,7 @@ const AddProduct = () => {
   };
 
   const productImageUploadURL = {
-    url: "https://localhost:44396/Files",
+    url: "https://localhost:44379/Files",
   };
 
   const setField = (field, value) => {
@@ -282,7 +282,7 @@ const AddProduct = () => {
 
         setTimeout(() => {
           resetForm();
-          setNewProduct({});
+          // setNewProduct({});
         }, 3000);
       })
       .catch((error) => {
@@ -291,7 +291,15 @@ const AddProduct = () => {
           setMessage(error.response.data);
           setClassName("uploadError");
           toast(error.response.data, productAddErrorOptions);
+        } else if (error.response.status === 400) {
+          setMessage(error.response.data);
+          setClassName("uploadError");
+          toast(error.response.data, productAddErrorOptions);
         }
+        setTimeout(() => {
+          resetForm();
+          // setNewProduct({});
+        }, 3000);
       });
 
     setSelectedFiles(undefined);
@@ -332,6 +340,7 @@ const AddProduct = () => {
                     <div className="col-sm-10">
                       <Form.Group controlId="category">
                         <Form.Control
+                          disabled={newProduct}
                           as="select"
                           isInvalid={!!errors.category}
                           onChange={(e) => {
@@ -351,6 +360,7 @@ const AddProduct = () => {
                       <p></p>
                       <Form.Group controlId="productName">
                         <Form.Control
+                          disabled={newProduct}
                           placeholder="Enter Product Name"
                           type="text"
                           isInvalid={!!errors.productName}
@@ -368,6 +378,7 @@ const AddProduct = () => {
                       <p></p>
                       <Form.Group controlId="productDesc">
                         <Form.Control
+                          disabled={newProduct}
                           placeholder="Enter Product Description"
                           type="text"
                           onChange={(e) =>
@@ -378,6 +389,7 @@ const AddProduct = () => {
                       <p></p>
                       <Form.Group controlId="price">
                         <Form.Control
+                          disabled={newProduct}
                           placeholder="Enter Price"
                           type="text"
                           isInvalid={!!errors.price}
@@ -399,6 +411,7 @@ const AddProduct = () => {
                     <div className="row">
                       <div className="col-sm-6 submitBtn">
                         <Button
+                          disabled={newProduct}
                           className="btn btn-success"
                           type="button"
                           onClick={(e) => handleSubmit(e)}
@@ -408,6 +421,7 @@ const AddProduct = () => {
                       </div>
                       <div className="col-sm-6 cancelBtn">
                         <Button
+                          disabled={newProduct}
                           className="btn btn-primary"
                           type="button"
                           onClick={(e) => resetForm(e)}
@@ -424,50 +438,76 @@ const AddProduct = () => {
           <div className="col-md-6 mx-auto">
             {newProduct && (
               <div>
-                <div>Product # {newProduct.productId}</div>
-                <div>Product Name {newProduct.productName}</div>
+                <div className="newProductDetails">
+                  <h4>
+                    <u>New Product</u>
+                  </h4>
+                  <div>Product # {newProduct.productId}</div>
+                  <div>
+                    Product : {newProduct.productName}
+                    <span>
+                      {categories && newProduct.categoryId > 0 && (
+                        <span>
+                          &nbsp;[
+                          {ProductService.getCategoryName(
+                            categories,
+                            newProduct.categoryId
+                          )}
+                          ]
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                  <div>Price : ${newProduct.price}</div>
+                  {newProduct.productDesc && (
+                    <div>Desc : {newProduct.productDesc}</div>
+                  )}
 
-                <p></p>
-                <div>
-                  <label className="btn btn-info">
-                    <input type="file" onChange={selectFile} />
-                  </label>
                   <p></p>
-                  {currentFile && (
-                    <div className="progress">
-                      <div
-                        className="progress-bar progress-bar-info progress-bar-striped"
-                        role="progressbar"
-                        aria-valuenow={progress}
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                        style={{ width: progress + "%" }}
-                      >
-                        {progress}%
+                  <div>
+                    <label className="btn btn-info">
+                      <input type="file" onChange={selectFile} />
+                    </label>
+                    <p></p>
+                    {currentFile && (
+                      <div className="progress">
+                        <div
+                          className="progress-bar progress-bar-info progress-bar-striped"
+                          role="progressbar"
+                          aria-valuenow={progress}
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                          style={{ width: progress + "%" }}
+                        >
+                          {progress}%
+                        </div>
                       </div>
-                    </div>
-                  )}
-                  <p></p>
-                  <button
-                    className="btn btn-success"
-                    disabled={!selectedFiles}
-                    onClick={uploadHandler}
-                  >
-                    Upload Product File
-                  </button>
-
-                  {className === "uploadSuccess" ? (
-                    <div
-                      className="alert alert-light uploadSuccess"
-                      role="alert"
+                    )}
+                    <p></p>
+                    <button
+                      className="btn btn-success"
+                      disabled={!selectedFiles}
+                      onClick={uploadHandler}
                     >
-                      {message}
-                    </div>
-                  ) : (
-                    <div className="alert alert-light uploadError" role="alert">
-                      {message}
-                    </div>
-                  )}
+                      Upload Product File
+                    </button>
+
+                    {className === "uploadSuccess" ? (
+                      <div
+                        className="alert alert-light uploadSuccess"
+                        role="alert"
+                      >
+                        {message}
+                      </div>
+                    ) : (
+                      <div
+                        className="alert alert-light uploadError"
+                        role="alert"
+                      >
+                        {message}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}

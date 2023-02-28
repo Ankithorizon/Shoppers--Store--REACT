@@ -13,6 +13,14 @@ class ProductDataService {
       headers: authenticationHeader(),
     });
   }
+
+  getCategoryName = (categories, categoryId) => {
+    let obj = categories.find((x) => x.categoryId === categoryId);
+    console.log(obj);
+
+    if (obj !== null) return obj.categoryName;
+    else return null;
+  };
 }
 
 export default new ProductDataService();

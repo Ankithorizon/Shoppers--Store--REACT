@@ -54,3 +54,13 @@
     color: red;
     font-size: large;
 }
+
+.newProductDetails{
+    border: 2px solid red;
+    border-radius: 20px;
+    text-align: left;
+    color : blue;
+    background-color: lightyellow;
+    font-weight: bold;
+    padding: 20px;
+}
