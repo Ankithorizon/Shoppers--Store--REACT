@@ -64,3 +64,14 @@
     font-weight: bold;
     padding: 20px;
 }
+
+.newProductImage{
+    padding : 20px;
+    border: 5px dotted rgb(204, 40, 62);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.newProductTitle{
+    text-align: center;
+}

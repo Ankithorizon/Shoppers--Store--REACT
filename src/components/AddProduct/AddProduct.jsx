@@ -13,7 +13,7 @@ import { Card } from "react-bootstrap";
 
 import { toast } from "react-toastify";
 
-import axios, { toFormData } from "axios";
+import axios from "axios";
 
 const AddProduct = () => {
   let navigate = useNavigate();
@@ -252,7 +252,7 @@ const AddProduct = () => {
   const selectFile = (event) => {
     setSelectedFiles(event.target.files);
   };
-  const uploadHandler = (event) => {
+  const uploadProductImageHandler = (event) => {
     setMessage("");
     setClassName("");
 
@@ -277,6 +277,12 @@ const AddProduct = () => {
         console.log(response);
         setMessage(response.data.responseMessage);
         setClassName("uploadSuccess");
+
+        setNewProduct({
+          ...newProduct,
+          productImage: response.data.productImage,
+          ProductFileId: response.data.ProductFileId,
+        });
 
         toast(response.data.responseMessage, productAddSuccessOptions);
 
@@ -439,29 +445,44 @@ const AddProduct = () => {
             {newProduct && (
               <div>
                 <div className="newProductDetails">
-                  <h4>
+                  <h4 className="newProductTitle">
                     <u>New Product</u>
                   </h4>
-                  <div>Product # {newProduct.productId}</div>
-                  <div>
-                    Product : {newProduct.productName}
-                    <span>
-                      {categories && newProduct.categoryId > 0 && (
+
+                  <div className="row">
+                    <div className="col-sm-8">
+                      <div>Product # {newProduct.productId}</div>
+                      <div>
+                        Product : {newProduct.productName}
                         <span>
-                          &nbsp;[
-                          {ProductService.getCategoryName(
-                            categories,
-                            newProduct.categoryId
+                          {categories && newProduct.categoryId > 0 && (
+                            <span>
+                              &nbsp;[
+                              {ProductService.getCategoryName(
+                                categories,
+                                newProduct.categoryId
+                              )}
+                              ]
+                            </span>
                           )}
-                          ]
                         </span>
+                      </div>
+                      <div>Price : ${newProduct.price}</div>
+                      {newProduct.productDesc && (
+                        <div>Desc : {newProduct.productDesc}</div>
                       )}
-                    </span>
+                    </div>
+                    {newProduct.productImage && (
+                      <div className="col-sm-4 newProductImage">
+                        <img
+                          height="100"
+                          width="100"
+                          src={`${productImageUploadURL.url}/${newProduct.productImage}`}
+                          alt="Product Image"
+                        />
+                      </div>
+                    )}
                   </div>
-                  <div>Price : ${newProduct.price}</div>
-                  {newProduct.productDesc && (
-                    <div>Desc : {newProduct.productDesc}</div>
-                  )}
 
                   <p></p>
                   <div>
@@ -487,7 +508,7 @@ const AddProduct = () => {
                     <button
                       className="btn btn-success"
                       disabled={!selectedFiles}
-                      onClick={uploadHandler}
+                      onClick={uploadProductImageHandler}
                     >
                       Upload Product File
                     </button>

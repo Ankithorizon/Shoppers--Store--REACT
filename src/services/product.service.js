@@ -2,13 +2,13 @@ import productHttp from "../axios/product-http-common";
 import authenticationHeader from "./authentication.header";
 
 class ProductDataService {
-  addProduct(data) {
+  addProduct = (data) => {
     return productHttp.post("/addProduct", data, {
       headers: authenticationHeader(),
     });
   }
 
-  getCategories() {
+  getCategories = () => {
     return productHttp.get("/getCategories", {
       headers: authenticationHeader(),
     });
