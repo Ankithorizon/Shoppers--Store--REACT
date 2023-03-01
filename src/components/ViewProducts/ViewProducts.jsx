@@ -8,11 +8,13 @@ import { useNavigate } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
 import Product from "./Product/Product";
+import ProductDetails from "./ProductDetails/ProductDetails";
 
 const ViewProducts = () => {
   let navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     var currRole = AuthenticationService.getCurrentUserRole();
@@ -21,12 +23,37 @@ const ViewProducts = () => {
     else allProducts();
   }, []);
 
+  // check for 401
+  const unAuthHandler401 = (error) => {
+    if (error.response.status === 401 || error.response.status === 403) {
+      navigate("/un-auth");
+      // window.location.reload();
+    } else {
+      console.log("Error!");
+    }
+  };
+
   const allProducts = () => {
     ProductService.allProducts()
       .then((response) => {
         setProducts(response.data);
       })
-      .catch((e) => {});
+      .catch((e) => {
+        setProducts(null);
+
+        if (e.response.status === 400) {
+          console.log(e.response.statusText);
+        } else {
+          unAuthHandler401(e);
+        }
+      });
+  };
+
+  // this will update master component when detail component notify
+  // through event
+  const updateMasterComponent_SelectedProductChanged = (selectedProduct) => {
+    console.log("master is called from child", selectedProduct);
+    setSelectedProduct(selectedProduct);
   };
 
   let displayData = () => {
@@ -34,14 +61,13 @@ const ViewProducts = () => {
       <div className="data">
         {products &&
           products.map((d, index) => (
-            <Product
-              productId={d.productId}
-              productName={d.productName}
-              price={d.price}
-              currentPrice={d.currentPrice}
-              productImage={d.productImage}
-              productFileId={d.productFileId}
-            ></Product>
+            <div className="rowStyle" key={index}>
+              <Product
+                product={d}
+                action={updateMasterComponent_SelectedProductChanged}
+              ></Product>
+              <hr />
+            </div>
           ))}
       </div>
     );
@@ -74,7 +100,13 @@ const ViewProducts = () => {
               </div>
             </div>
           </div>
-          <div className="col-md-4 mx-auto">product details</div>
+          <div className="col-md-4 mx-auto">
+            {selectedProduct && (
+              <div className="content">
+                <ProductDetails product={selectedProduct}></ProductDetails>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
