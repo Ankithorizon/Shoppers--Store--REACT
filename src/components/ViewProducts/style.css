@@ -1,0 +1,20 @@
+.mainContainer {
+    padding: 15px;
+}
+.cardHeader {
+    color: chocolate;
+    font-size: x-large;
+}
+
+.tableHeader{
+    color: blue;
+    font-size: x-large;
+    font-weight: bold;
+    font-style: italic;
+    text-align: left;
+}
+.data {
+    font-size: medium;
+    text-align: left;
+}
+

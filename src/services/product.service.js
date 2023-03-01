@@ -6,13 +6,13 @@ class ProductDataService {
     return productHttp.post("/addProduct", data, {
       headers: authenticationHeader(),
     });
-  }
+  };
 
   getCategories = () => {
     return productHttp.get("/getCategories", {
       headers: authenticationHeader(),
     });
-  }
+  };
 
   getCategoryName = (categories, categoryId) => {
     let obj = categories.find((x) => x.categoryId === categoryId);
@@ -20,6 +20,12 @@ class ProductDataService {
 
     if (obj !== null) return obj.categoryName;
     else return null;
+  };
+
+  allProducts = async () => {
+    return await productHttp.get(`/allProducts`, {
+      headers: authenticationHeader(),
+    });
   };
 }
 

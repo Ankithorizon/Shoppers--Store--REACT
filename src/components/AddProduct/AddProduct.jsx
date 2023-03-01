@@ -320,7 +320,7 @@ const AddProduct = () => {
             <div className="card">
               <div className="card-header">
                 <div className="cardHeader">
-                  <i className="bi bi-person-plus-fill"></i>
+                  <i className="bi bi-plus-square-fill"></i>
                   &nbsp; Add - New Product
                 </div>
                 {addProductResponse &&

@@ -48,7 +48,10 @@ const Header = () => {
                 <i className="bi bi-house-door-fill"></i>Home
               </Link>
               <Link to={"/add-product"} className="nav-link">
-                <i className="bi bi-wallet-fill"></i>[ADD]Product
+                <i className="bi bi-plus-square-fill"></i>[ADD]Product
+              </Link>
+              <Link to={"/view-products"} className="nav-link">
+                <i className="bi bi-binoculars-fill"></i>[VIEW]Products
               </Link>
             </Nav>
           ) : (
