@@ -2,3 +2,29 @@
     padding: 15px;
 }
 
+
+.homePageHeader {
+    text-align: center;
+    vertical-align: middle;
+    color: blue;
+    background-color: lightyellow;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border: 2px solid red;
+    border-radius: 20px;
+}
+
+.header{
+    font-weight: bold;
+    font-style: italic;
+    font-size: large;
+}
+.detail{
+    text-align: left;
+}
+
+.techDiv {
+    color: green;
+    font-size: large;
+    font-weight: bold;
+}
