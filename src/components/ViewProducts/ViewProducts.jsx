@@ -16,6 +16,12 @@ const ViewProducts = () => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
+  // paging
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recordsPerPage, setRecordsPerPage] = useState(3);
+  const [totalPages, setTotalPages] = useState(0);
+  const [pageData, setPageData] = useState([]);
+
   useEffect(() => {
     var currRole = AuthenticationService.getCurrentUserRole();
     if (currRole === null || (currRole !== null && currRole !== "Admin"))
@@ -33,10 +39,30 @@ const ViewProducts = () => {
     }
   };
 
+  // paging
+  const getPageData = (myData) => {
+    var pageData_ = [];
+
+    let lastIndex = currentPage * recordsPerPage - 1;
+    let beginIndex = lastIndex - recordsPerPage + 1;
+    for (let r = beginIndex; r <= lastIndex; r++) {
+      if (myData[r] !== undefined) pageData_.push(myData[r]);
+    }
+    setPageData([...pageData_]);
+  };
+
   const allProducts = () => {
     ProductService.allProducts()
       .then((response) => {
         setProducts(response.data);
+
+        // paging
+        if (response.data.length > 0) {
+          setTotalPages(Math.ceil(response.data.length / recordsPerPage));
+          getPageData(response.data);
+        } else {
+          setTotalPages(0);
+        }
       })
       .catch((e) => {
         setProducts(null);
@@ -49,13 +75,15 @@ const ViewProducts = () => {
       });
   };
 
-  // this will update master component when detail component notify
+  // this will update [this] master component when [Product] detail component notify
   // through event
   const updateMasterComponent_SelectedProductChanged = (selectedProduct) => {
     console.log("master is called from child", selectedProduct);
     setSelectedProduct(selectedProduct);
   };
 
+  // no paging
+  // display all data
   let displayData = () => {
     return (
       <div className="data">
@@ -73,6 +101,54 @@ const ViewProducts = () => {
     );
   };
 
+  // paging display data
+  let displayPageData = () => {
+    return (
+      <div className="data">
+        {pageData &&
+          pageData.map((d, index) => (
+            <div className="rowStyle" key={index}>
+              <Product
+                product={d}
+                action={updateMasterComponent_SelectedProductChanged}
+              ></Product>
+              <hr />
+            </div>
+          ))}
+      </div>
+    );
+  };
+  // paging next
+  const nextPage = () => {
+    if (currentPage + 1 > totalPages) return;
+    else {
+      setCurrentPage(currentPage + 1);
+
+      var pageData_ = [];
+      let lastIndex = (currentPage + 1) * recordsPerPage - 1;
+      let beginIndex = lastIndex - recordsPerPage + 1;
+      for (let r = beginIndex; r <= lastIndex; r++) {
+        if (products[r] !== undefined) pageData_.push(products[r]);
+      }
+      setPageData([...pageData_]);
+    }
+  };
+  // paging previous
+  const previousPage = () => {
+    if (currentPage - 1 === 0) return;
+    else {
+      setCurrentPage(currentPage - 1);
+
+      var pageData_ = [];
+      let lastIndex = (currentPage - 1) * recordsPerPage - 1;
+      let beginIndex = lastIndex - recordsPerPage + 1;
+      for (let r = beginIndex; r <= lastIndex; r++) {
+        if (products[r] !== undefined) pageData_.push(products[r]);
+      }
+      setPageData([...pageData_]);
+    }
+  };
+
   return (
     <div className="mainContainer">
       <div className="container">
@@ -86,15 +162,43 @@ const ViewProducts = () => {
                 </div>
               </div>
               <div className="card-body">
+                <div className="row">
+                  <div className="col-sm-4">
+                    <Button
+                      className="btn btn-info"
+                      type="button"
+                      onClick={(e) => previousPage(e)}
+                    >
+                      Previous
+                    </Button>
+                  </div>
+                  <div className="col-sm-4">
+                    <h3>
+                      Page : {currentPage} of {totalPages}
+                    </h3>
+                  </div>
+                  <div className="col-sm-4">
+                    <Button
+                      className="btn btn-info"
+                      type="button"
+                      onClick={(e) => nextPage(e)}
+                    >
+                      Next
+                    </Button>
+                  </div>
+                </div>
+                <hr />
                 {products && (
                   <div>
                     <div className="row tableHeader">
                       <div className="col-sm-1">#</div>
-                      <div className="col-sm-6">Name</div>
+                      <div className="col-sm-3">Name</div>
                       <div className="col-sm-2">Price</div>
                       <div className="col-sm-3">Image</div>
+                      <div className="col-sm-3"></div>
                     </div>
-                    {displayData()}
+                    {/* {displayData()} */}
+                    {displayPageData()}
                   </div>
                 )}
               </div>
