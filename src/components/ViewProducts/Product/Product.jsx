@@ -40,7 +40,7 @@ const Product = ({ product, action }) => {
       </div>
       <div className="col-sm-3">
         <Button
-          className="btn btn-primary"
+          className="btn btn-primary viewBtn"
           type="button"
           onClick={(e) => getProductDetails(product)}
         >

@@ -1,8 +1,9 @@
 import React from "react";
 import "./style.css";
 import Button from "react-bootstrap/Button";
+import ProductService from "../../../services/product.service";
 
-const ProductDetails = ({ product }) => {
+const ProductDetails = ({ product, categories }) => {
     const productFilePath = "https://localhost:44379/Files/";
     
     const editProduct = () => {
@@ -15,7 +16,7 @@ const ProductDetails = ({ product }) => {
       </div>
 
       <div className="card-body">
-        <h5>[# {product.productId}]</h5>
+        <h5>[# {product.productId}] [{ProductService.getCategoryName(categories, product.categoryId)}]</h5>
         <h5>Name : {product.productName}</h5>
         <br />
         <h5>Description : {product.productDesc}</h5>

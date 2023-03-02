@@ -27,6 +27,13 @@ class ProductDataService {
       headers: authenticationHeader(),
     });
   };
+
+  findingProduct = async (pName, categoryId) => {
+    return await productHttp.get(
+      `/allProducts?searchValue=${pName}&categoryId=${categoryId}`,
+      {  headers: authenticationHeader() }
+    );
+  }
 }
 
 export default new ProductDataService();

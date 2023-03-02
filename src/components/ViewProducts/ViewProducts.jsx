@@ -6,7 +6,7 @@ import ProductService from "../../services/product.service";
 
 import { useNavigate } from "react-router-dom";
 
-import Button from "react-bootstrap/Button";
+import { Button, Card } from "react-bootstrap";
 import Product from "./Product/Product";
 import ProductDetails from "./ProductDetails/ProductDetails";
 
@@ -22,12 +22,72 @@ const ViewProducts = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [pageData, setPageData] = useState([]);
 
+  // filter
+  const [categories, setCategories] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(0);
+  const [searchProductName, setSearchProductName] = useState("");
+
   useEffect(() => {
     var currRole = AuthenticationService.getCurrentUserRole();
     if (currRole === null || (currRole !== null && currRole !== "Admin"))
       navigate("/un-auth");
-    else allProducts();
+    else {
+      allProducts();
+      getCategories();
+    }
   }, []);
+
+  // categories
+  // filter
+  const getCategories = () => {
+    ProductService.getCategories()
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((e) => {
+        setCategories(null);
+        if (e.response.status === 400) {
+          console.log(e.response.statusText);
+        } else {
+          unAuthHandler401(e);
+        }
+      });
+  };
+
+  // filter
+  // category
+  const onChangeCategory = (event) => {
+    setCurrentPage(1);
+    setTotalPages("?");
+    setSelectedCategoryId(event.target.value);
+  };
+  // filter
+  // product-name
+  const onChangeProductName = (e) => {
+    setCurrentPage(1);
+    setTotalPages("?");
+    setSearchProductName(e.target.value);
+  };
+  // filter
+  const searchingProduct = () => {
+    setSelectedProduct(null);
+
+    ProductService.findingProduct(searchProductName, selectedCategoryId)
+      .then((response) => {
+        if (response.data.length > 0) {
+          setProducts(response.data);
+
+          setTotalPages(Math.ceil(response.data.length / recordsPerPage));
+          getPageData(response.data);
+        } else {
+          setProducts(null);
+          setTotalPages(0);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   // check for 401
   const unAuthHandler401 = (error) => {
@@ -45,6 +105,7 @@ const ViewProducts = () => {
 
     let lastIndex = currentPage * recordsPerPage - 1;
     let beginIndex = lastIndex - recordsPerPage + 1;
+
     for (let r = beginIndex; r <= lastIndex; r++) {
       if (myData[r] !== undefined) pageData_.push(myData[r]);
     }
@@ -149,6 +210,17 @@ const ViewProducts = () => {
     }
   };
 
+  // categories
+  // filter
+  let categoryList =
+    categories.length > 0 &&
+    categories.map((item, i) => {
+      return (
+        <option key={i} value={item.categoryId}>
+          {item.categoryName}
+        </option>
+      );
+    }, this);
   return (
     <div className="mainContainer">
       <div className="container">
@@ -160,54 +232,118 @@ const ViewProducts = () => {
                   <i className="bi bi-binoculars-fill"></i>
                   &nbsp; Products
                 </div>
-              </div>
-              <div className="card-body">
-                <div className="row">
+                <div className="filter row filterControls">
                   <div className="col-sm-4">
-                    <Button
-                      className="btn btn-info"
-                      type="button"
-                      onClick={(e) => previousPage(e)}
-                    >
-                      Previous
-                    </Button>
+                    <Card.Text>
+                      <select
+                        style={{
+                          width: 200,
+                          height: 40,
+                          borderColor: "chocolate",
+                          borderWidth: 3,
+                          borderRadius: 10,
+                          color: "chocolate",
+                        }}
+                        id="categoryId"
+                        value={selectedCategoryId}
+                        name="selectedCategoryId"
+                        onChange={(e) => onChangeCategory(e, 1)}
+                      >
+                        <option value="">---Search By Category---</option>
+                        {categoryList}
+                      </select>
+                    </Card.Text>
                   </div>
-                  <div className="col-sm-4">
-                    <h3>
-                      Page : {currentPage} of {totalPages}
-                    </h3>
+                  <div className="col-sm-6">
+                    <Card.Text>
+                      <input
+                        style={{
+                          width: 300,
+                          height: 40,
+                          borderColor: "chocolate",
+                          borderWidth: 3,
+                          borderRadius: 10,
+                          color: "chocolate",
+                        }}
+                        type="text"
+                        className="form-control"
+                        placeholder="Search By Product Name/Desc..."
+                        value={searchProductName}
+                        onChange={(e) => onChangeProductName(e)}
+                      />
+                    </Card.Text>
                   </div>
-                  <div className="col-sm-4">
+                  <div className="col-sm-2">
                     <Button
-                      className="btn btn-info"
+                      className="btn btn-primary filterBtn"
                       type="button"
-                      onClick={(e) => nextPage(e)}
+                      onClick={(e) => searchingProduct(e)}
                     >
-                      Next
+                      <i className="bi bi-search"></i>
                     </Button>
                   </div>
                 </div>
-                <hr />
-                {products && (
-                  <div>
-                    <div className="row tableHeader">
-                      <div className="col-sm-1">#</div>
-                      <div className="col-sm-3">Name</div>
-                      <div className="col-sm-2">Price</div>
-                      <div className="col-sm-3">Image</div>
-                      <div className="col-sm-3"></div>
-                    </div>
-                    {/* {displayData()} */}
-                    {displayPageData()}
-                  </div>
-                )}
               </div>
+              {products ? (
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-sm-4">
+                      <Button
+                        disabled={totalPages === "?"}
+                        className="btn btn-info navBtn"
+                        type="button"
+                        onClick={(e) => previousPage(e)}
+                      >
+                        <i className="bi bi-caret-left-square-fill"></i>
+                        &nbsp;Previous&nbsp;
+                        <i className="bi bi-caret-left-square-fill"></i>
+                      </Button>
+                    </div>
+                    <div className="col-sm-4">
+                      <h3>
+                        Page : {currentPage} of {totalPages}
+                      </h3>
+                    </div>
+                    <div className="col-sm-4">
+                      <Button
+                        disabled={totalPages === "?"}
+                        className="btn btn-info navBtn"
+                        type="button"
+                        onClick={(e) => nextPage(e)}
+                      >
+                        <i className="bi bi-caret-right-square-fill"></i>
+                        &nbsp;Next&nbsp;
+                        <i className="bi bi-caret-right-square-fill"></i>
+                      </Button>
+                    </div>
+                  </div>
+                  <hr />
+                  {products && (
+                    <div>
+                      <div className="row tableHeader">
+                        <div className="col-sm-1">#</div>
+                        <div className="col-sm-3">Name</div>
+                        <div className="col-sm-2">Price</div>
+                        <div className="col-sm-3">Image</div>
+                        <div className="col-sm-3"></div>
+                      </div>
+                      {/* {displayData()} */}
+                      {displayPageData()}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="card-body noData">Products Not Found!</div>
+              )}
             </div>
           </div>
           <div className="col-md-4 mx-auto">
             {selectedProduct && (
               <div className="content">
-                <ProductDetails product={selectedProduct}></ProductDetails>
+                <ProductDetails
+                  categories={categories}
+                  product={selectedProduct}
+                ></ProductDetails>
               </div>
             )}
           </div>
