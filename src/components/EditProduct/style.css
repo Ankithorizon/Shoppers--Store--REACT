@@ -1,0 +1,63 @@
+.mainContainer {
+    padding: 15px;
+}
+
+.cardHeader {
+    color: chocolate;
+    font-size: x-large;
+}
+
+.editProductSuccess {
+    color: green;
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.editProductError {
+    color: red;
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.modelError {
+    color: red;
+    font-size: medium;
+    font-weight: bold;
+    padding-top: 25px;
+    text-align: left;
+}
+
+.submitBtn {
+    text-align: left;
+}
+
+.cancelBtn {
+    text-align: right;
+}
+
+.errorDisplay {
+    text-align: left;
+}
+
+.uploadSuccess {
+    color: green;
+    font-size: large;
+}
+
+.uploadError {
+    color: red;
+    font-size: large;
+}
+
+.productImage {
+    padding: 20px;
+    border: 5px dotted rgb(204, 40, 62);
+    border-radius: 10px;
+    text-align: center;
+}
