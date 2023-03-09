@@ -42,7 +42,7 @@ const Header = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          {currentUserName && currentUserRole === "Admin" ? (
+          {currentUserName && currentUserRole === "Admin" && (
             <Nav className="me-auto">
               <Link to={"/home"} className="nav-link">
                 <i className="bi bi-house-door-fill"></i>Home
@@ -54,8 +54,31 @@ const Header = () => {
                 <i className="bi bi-binoculars-fill"></i>[VIEW]Products
               </Link>
             </Nav>
-          ) : (
-            <span></span>
+          )}
+
+          {currentUserName && currentUserRole === "Manager" && (
+            <Nav className="me-auto">
+              <Link to={"/home"} className="nav-link">
+                <i className="bi bi-house-door-fill"></i>Home
+              </Link>
+              <Link to={"/add-product"} className="nav-link">
+                <i className="bi bi-plus-square-fill"></i>[ADD]Product
+              </Link>
+              <Link to={"/view-products"} className="nav-link">
+                <i className="bi bi-binoculars-fill"></i>[VIEW]Products
+              </Link>
+            </Nav>
+          )}
+
+          {currentUserName && currentUserRole === "Shopper" && (
+            <Nav className="me-auto">
+              <Link to={"/home"} className="nav-link">
+                <i className="bi bi-house-door-fill"></i>Home
+              </Link>
+              <Link to={"/view-products"} className="nav-link">
+                <i className="bi bi-binoculars-fill"></i>[VIEW]Products
+              </Link>
+            </Nav>
           )}
 
           {currentUserName ? (
@@ -63,8 +86,31 @@ const Header = () => {
               <a href="/login" onClick={() => logout()} className="nav-link">
                 <h6>
                   <b>
-                    [<span className="userRole">({currentUserRole})</span>{" "}
-                    {currentUserName} ]LogOut{" "}
+                    [
+                    {currentUserRole === "Admin" ? (
+                      <span className="adminRole">({currentUserRole})</span>
+                    ) : (
+                      <span>
+                        {currentUserRole === "Manager" ? (
+                          <span className="managerRole">
+                            ({currentUserRole})
+                          </span>
+                        ) : (
+                          <span>
+                            {currentUserRole === "Shopper" ? (
+                              <span className="shopperRole">
+                                ({currentUserRole})
+                              </span>
+                            ) : (
+                              <span></span>
+                            )}
+                          </span>
+                        )}
+                      </span>
+                    )}
+                    &nbsp;
+                    {currentUserName}
+                    ]LogOut{" "}
                   </b>
                 </h6>
               </a>

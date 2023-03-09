@@ -1,11 +1,17 @@
 .navBar {
-    background-color: lightcyan;
+    background-color: lightgreen;
     color: black;
     font-weight: bold;
     padding-left: 30px;
     padding-right: 20px;
 }
 
-.userRole {
-    color: red;
+.adminRole {
+    color : red;
+}
+.managerRole{
+    color : blue;
+}
+.shopperRole { 
+    color : white;
 }

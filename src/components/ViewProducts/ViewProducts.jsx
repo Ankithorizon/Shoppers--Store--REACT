@@ -238,11 +238,11 @@ const ViewProducts = () => {
                       <select
                         style={{
                           width: 200,
-                          height: 40,
-                          borderColor: "chocolate",
+                          height: 32,
+                          borderColor: "green",
                           borderWidth: 3,
                           borderRadius: 10,
-                          color: "chocolate",
+                          color: "green",
                         }}
                         id="categoryId"
                         value={selectedCategoryId}
@@ -259,11 +259,11 @@ const ViewProducts = () => {
                       <input
                         style={{
                           width: 300,
-                          height: 40,
-                          borderColor: "chocolate",
+                          height: 32,
+                          borderColor: "green",
                           borderWidth: 3,
                           borderRadius: 10,
-                          color: "chocolate",
+                          color: "green",
                         }}
                         type="text"
                         className="form-control"
@@ -300,9 +300,9 @@ const ViewProducts = () => {
                       </Button>
                     </div>
                     <div className="col-sm-4">
-                      <h3>
+                      <h6>
                         Page : {currentPage} of {totalPages}
-                      </h3>
+                      </h6>
                     </div>
                     <div className="col-sm-4">
                       <Button

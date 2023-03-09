@@ -2,13 +2,13 @@
     padding: 15px;
 }
 .cardHeader {
-    color: chocolate;
+    color: green;
     font-size: x-large;
 }
 
 .tableHeader{
-    color: blue;
-    font-size: x-large;
+    color: green;
+    font-size: medium;
     font-weight: bold;
     font-style: italic;
     text-align: left;
@@ -40,8 +40,8 @@
 
 .filterBtn{
     color : white;
-    font-size: medium;
-    background-color: chocolate;
+    font-size: small;
+    background-color: green;
 }
 
 .navBtn{

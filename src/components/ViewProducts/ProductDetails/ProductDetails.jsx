@@ -4,11 +4,9 @@ import Button from "react-bootstrap/Button";
 import ProductService from "../../../services/product.service";
 
 const ProductDetails = ({ product, categories }) => {
-    const productFilePath = "https://localhost:44379/Files/";
-    
-    const editProduct = () => {
+  const productFilePath = "https://localhost:44379/Files/";
 
-    }
+  const editProduct = () => {};
   return (
     <div className="card">
       <div className="card-header">
@@ -16,15 +14,15 @@ const ProductDetails = ({ product, categories }) => {
       </div>
 
       <div className="card-body">
-        <h5>[# {product.productId}] [{ProductService.getCategoryName(categories, product.categoryId)}]</h5>
+        <h5>
+          [# {product.productId}] [
+          {ProductService.getCategoryName(categories, product.categoryId)}]
+        </h5>
         <h5>Name : {product.productName}</h5>
-        <br />
         <h5>Description : {product.productDesc}</h5>
-        <br />
         <h5>
           Price : <span className="price">${product.price}</span>
         </h5>
-        <br />
         <div>
           {product.productImage ? (
             <span>
