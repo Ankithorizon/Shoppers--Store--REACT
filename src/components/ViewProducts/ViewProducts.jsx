@@ -230,7 +230,7 @@ const ViewProducts = () => {
               <div className="card-header">
                 <div className="cardHeader">
                   <i className="bi bi-binoculars-fill"></i>
-                  &nbsp; Products
+                  &nbsp; View - Products
                 </div>
                 <div className="filter row filterControls">
                   <div className="col-sm-4">

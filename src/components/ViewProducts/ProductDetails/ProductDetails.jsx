@@ -2,11 +2,14 @@ import React from "react";
 import "./style.css";
 import Button from "react-bootstrap/Button";
 import ProductService from "../../../services/product.service";
-
+import { useNavigate } from "react-router-dom";
 const ProductDetails = ({ product, categories }) => {
+  let navigate = useNavigate();
   const productFilePath = "https://localhost:44379/Files/";
 
-  const editProduct = () => {};
+  const editProduct = () => {
+    navigate("/edit-product?id=" + product.productId);
+  };
   return (
     <div className="card">
       <div className="card-header">

@@ -15,10 +15,15 @@ import { toast } from "react-toastify";
 
 import axios from "axios";
 
+import { useSearchParams } from "react-router-dom";
+
 const EditProduct = () => {
   let navigate = useNavigate();
 
-  const [editProductId, setEditProductId] = useState(0);
+  const [searchParams] = useSearchParams();
+  const [productId, setProductId] = useState(0);
+  const [product, setProduct] = useState(null);
+  const re = /^\d*\.?\d*$/;
 
   const [categories, setCategories] = useState([]);
 
@@ -41,11 +46,21 @@ const EditProduct = () => {
   const [className, setClassName] = useState("");
 
   useEffect(() => {
-    var currRole = AuthenticationService.getCurrentUserRole();
+    var selectedProductId = searchParams.get("id");
+    if (selectedProductId === null || selectedProductId === undefined)
+      navigate("/view-products");
+    else {
+      if (!re.test(selectedProductId)) {
+        navigate("/view-products");
+      } else {
+        setProductId(searchParams.get("id"));
 
-    if (currRole === null || (currRole !== null && currRole !== "Admin"))
-      navigate("/un-auth");
-    else getCategories();
+        var currRole = AuthenticationService.getCurrentUserRole();
+        if (currRole === null || (currRole !== null && currRole !== "Admin"))
+          navigate("/un-auth");
+        else getCategories();
+      }
+    }
   }, []);
 
   const productEditSuccessOptions = {
@@ -196,7 +211,7 @@ const EditProduct = () => {
 
     const formData = new FormData();
     formData.append("productFile", currentFile);
-    formData.append("productId", editProductId);
+    formData.append("productId", productId);
 
     axios
       .post("https://localhost:44379/api/Product/productFileUpload", formData, {
@@ -236,7 +251,136 @@ const EditProduct = () => {
     setCurrentFile(undefined);
   };
 
-  return <div></div>;
+  const handleSubmit = (e) => {};
+  return (
+    <div className="mainContainer">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6 mx-auto">
+            <div className="card">
+              <div className="card-header">
+                <div className="cardHeader">
+                  <i className="bi bi-pencil-square"></i>
+                  &nbsp; Edit - Product
+                  <div>{}</div>
+                </div>
+                {editProductResponse &&
+                editProductResponse.responseCode !== 200 ? (
+                  <div className="editProductError">
+                    {editProductResponse.responseMessage}
+                  </div>
+                ) : (
+                  <div className="editProductSuccess">
+                    {editProductResponse.responseMessage}
+                  </div>
+                )}
+                {modelErrors.length > 0 ? (
+                  <div className="modelError">{modelErrorList}</div>
+                ) : (
+                  <span></span>
+                )}
+              </div>
+              <div className="card-body">
+                <Form ref={formRef}>
+                  <div className="row">
+                    <div className="col-sm-1"></div>
+                    <div className="col-sm-10">
+                      <Form.Group controlId="category">
+                        <Form.Control
+                          as="select"
+                          isInvalid={!!errors.category}
+                          onChange={(e) => {
+                            setField("category", e.target.value);
+                          }}
+                        >
+                          <option value="">Choose Category</option>
+                          {renderOptionsForCategory()}
+                        </Form.Control>
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="errorDisplay"
+                        >
+                          {errors.category}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="productName">
+                        <Form.Control
+                          placeholder="Enter Product Name"
+                          type="text"
+                          isInvalid={!!errors.productName}
+                          onChange={(e) =>
+                            setField("productName", e.target.value)
+                          }
+                        />
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="errorDisplay"
+                        >
+                          {errors.productName}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="productDesc">
+                        <Form.Control
+                          placeholder="Enter Product Description"
+                          type="text"
+                          onChange={(e) =>
+                            setField("productDesc", e.target.value)
+                          }
+                        />
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="price">
+                        <Form.Control
+                          placeholder="Enter Price"
+                          type="text"
+                          isInvalid={!!errors.price}
+                          onChange={(e) => setField("price", e.target.value)}
+                        />
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="errorDisplay"
+                        >
+                          {errors.price}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </div>
+                    <div className="col-sm-1"></div>
+                  </div>
+                  <p></p>
+                  <div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-6 submitBtn">
+                        <Button
+                          className="btn btn-success"
+                          type="button"
+                          onClick={(e) => handleSubmit(e)}
+                        >
+                          Edit-Product
+                        </Button>
+                      </div>
+                      <div className="col-sm-6 cancelBtn">
+                        <Button
+                          className="btn btn-primary"
+                          type="button"
+                          onClick={(e) => resetForm(e)}
+                        >
+                          Reset
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </Form>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6 mx-auto"></div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default EditProduct;

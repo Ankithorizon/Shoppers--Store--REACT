@@ -45,13 +45,15 @@ const Header = () => {
           {currentUserName && currentUserRole === "Admin" && (
             <Nav className="me-auto">
               <Link to={"/home"} className="nav-link">
-                <i className="bi bi-house-door-fill"></i>Home
+                <i className="bi bi-house-door-fill"></i>&nbsp;Home
               </Link>
               <Link to={"/add-product"} className="nav-link">
-                <i className="bi bi-plus-square-fill"></i>[ADD]Product
+                <i className="bi bi-plus-square-fill"></i>&nbsp;[ADD]Product
               </Link>
               <Link to={"/view-products"} className="nav-link">
-                <i className="bi bi-binoculars-fill"></i>[VIEW]Products
+                <i className="bi bi-binoculars-fill"></i>-
+                <i className="bi bi-pencil-square"></i>
+                &nbsp; [VIEW-EDIT]Products
               </Link>
             </Nav>
           )}
