@@ -35,11 +35,17 @@ class ProductDataService {
     );
   };
 
-  getProduct(selectedProductId) {
+  getProduct = async (selectedProductId) => {
     return productHttp.get(`/getProduct/${selectedProductId}`, {
       headers: authenticationHeader(),
     });
-  }
+  };
+
+  editProduct = async (editingProductId, data) => {
+    return productHttp.post(`/editProduct/${editingProductId}`, data, {
+      headers: authenticationHeader(),
+    });
+  };
 }
 
 export default new ProductDataService();

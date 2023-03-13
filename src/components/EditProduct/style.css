@@ -7,6 +7,7 @@
     font-size: x-large;
 }
 
+
 .editProductSuccess {
     color: green;
     font-size: large;
@@ -66,4 +67,9 @@
     font-size: large;
     font-weight: bold;
     padding-top: 10px;
+}
+.colTitle{
+    font-weight: bold;
+    padding-left: 2px;
+    text-align: left;
 }

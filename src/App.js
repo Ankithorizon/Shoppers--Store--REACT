@@ -22,7 +22,7 @@ function App() {
     <div className="App">
       <div className="main-wrapper">
         <Router>
-          <ToastContainer />
+          <ToastContainer style={{ width: "500px" }} />
 
           <Header />
           <Routes>

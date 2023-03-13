@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { Card } from "react-bootstrap";
 
 import { toast } from "react-toastify";
 
@@ -22,7 +21,6 @@ const EditProduct = () => {
 
   const [searchParams] = useSearchParams();
   const [productId, setProductId] = useState(0);
-  const [product, setProduct] = useState(undefined);
   const re = /^\d*\.?\d*$/;
 
   const [categories, setCategories] = useState([]);
@@ -31,7 +29,7 @@ const EditProduct = () => {
   const [modelErrors, setModelErrors] = useState([]);
 
   // form
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState(undefined);
   const [errors, setErrors] = useState({});
 
   // reset form
@@ -68,13 +66,28 @@ const EditProduct = () => {
 
   // get product
   const getProduct = (id) => {
+    resetErrors();
     ProductService.getProduct(id)
       .then((response) => {
-        console.log(response.data);
-        setProduct(response.data);
+        setForm({
+          ...response.data,
+        });
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        var editProductResponse = {};
+        if (error.response.status === 400) {
+          editProductResponse = {
+            responseCode: 400,
+            responseMessage: error.response.data,
+          };
+          setEditProductResponse(editProductResponse);
+        } else if (error.response.status === 500) {
+          editProductResponse = {
+            responseCode: error.response.data.responseCode,
+            responseMessage: error.response.data.responseMessage,
+          };
+          setEditProductResponse(editProductResponse);
+        }
       });
   };
 
@@ -108,11 +121,11 @@ const EditProduct = () => {
   };
 
   const findFormErrors = () => {
-    const { category, productName, productDesc, price } = form;
+    const { categoryId, productName, productDesc, price } = form;
     const newErrors = {};
 
-    if (!category || category === "")
-      newErrors.category = "Category is Required!";
+    if (!categoryId || categoryId === "")
+      newErrors.categoryId = "Category is Required!";
 
     if (!productName || productName === "")
       newErrors.productName = "Product Name is Required!";
@@ -151,10 +164,14 @@ const EditProduct = () => {
     return errors;
   };
 
+  const goBack = () => {
+    resetForm();
+    navigate("/view-products");
+  };
   const resetForm = (e) => {
-    formRef.current.reset();
+    // formRef.current.reset();
     setErrors({});
-    setForm({});
+    // setForm({});
     setMessage("");
     setClassName("");
 
@@ -266,7 +283,67 @@ const EditProduct = () => {
     setCurrentFile(undefined);
   };
 
-  const handleSubmit = (e) => {};
+  const handleSubmit = (e) => {
+    resetErrors();
+
+    e.preventDefault();
+
+    const newErrors = findFormErrors();
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      var editingProduct = {
+        categoryId: Number(form.categoryId),
+        productName: form.productName,
+        productDesc: form.productDesc,
+        price: Number(form.price),
+        productId: Number(form.productId),
+      };
+
+      var editProductResponse = {};
+      ProductService.editProduct(form.productId, editingProduct)
+        .then((response) => {
+          console.log(response);
+          // success
+          // 200
+          if (response.status === 200) {
+            editProductResponse = {
+              responseCode: response.data.responseCode,
+              responseMessage: response.data.responseMessage,
+            };
+            setEditProductResponse(editProductResponse);
+            toast(response.data.responseMessage, productEditSuccessOptions);
+
+            setTimeout(() => {
+              resetForm();
+            }, 3000);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status === 400) {
+            // model errors
+            if (error.response.data.errors) {
+              var modelErrors = handleModelState(error);
+              setModelErrors(modelErrors);
+            }
+            // 400 error
+            else {
+              editProductResponse = {
+                responseCode: error.response.data.responseCode,
+                responseMessage: error.response.data.responseMessage,
+              };
+              setEditProductResponse(editProductResponse);
+              toast(
+                error.response.data.responseMessage,
+                productEditErrorOptions
+              );
+            }
+          }
+        });
+    }
+  };
   return (
     <div className="mainContainer">
       <div className="container">
@@ -277,9 +354,9 @@ const EditProduct = () => {
                 <div className="cardHeader">
                   <i className="bi bi-pencil-square"></i>
                   &nbsp; Edit - Product
-                  {product && (
+                  {form && (
                     <div className="editProductId">
-                      Product ID # {product.productId}
+                      Product ID # {form.productId}
                     </div>
                   )}
                 </div>
@@ -299,74 +376,98 @@ const EditProduct = () => {
                   <span></span>
                 )}
               </div>
-              {product && (
+              {form && (
                 <div className="card-body">
                   <Form ref={formRef}>
                     <div className="row">
                       <div className="col-sm-1"></div>
                       <div className="col-sm-10">
-                        <Form.Group controlId="category">
-                          <Form.Control
-                            as="select"
-                            value={product.categoryId}
-                            isInvalid={!!errors.category}
-                            onChange={(e) => {
-                              setField("category", e.target.value);
-                            }}
-                          >
-                            <option value="">Choose Category</option>
-                            {renderOptionsForCategory()}
-                          </Form.Control>
-                          <Form.Control.Feedback
-                            type="invalid"
-                            className="errorDisplay"
-                          >
-                            {errors.category}
-                          </Form.Control.Feedback>
-                        </Form.Group>
+                        <div className="row">
+                          <div className="col-sm-3 colTitle">Category : </div>
+                          <div className="col-sm-9">
+                            <Form.Group controlId="categoryId">
+                              <Form.Control
+                                as="select"
+                                value={form.categoryId}
+                                isInvalid={!!errors.categoryId}
+                                onChange={(e) => {
+                                  setField("categoryId", e.target.value);
+                                }}
+                              >
+                                <option value="">Choose Category</option>
+                                {renderOptionsForCategory()}
+                              </Form.Control>
+                              <Form.Control.Feedback
+                                type="invalid"
+                                className="errorDisplay"
+                              >
+                                {errors.categoryId}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                          </div>
+                        </div>
 
                         <p></p>
-                        <Form.Group controlId="productName">
-                          <Form.Control
-                            value={product.productName}
-                            type="text"
-                            isInvalid={!!errors.productName}
-                            onChange={(e) =>
-                              setField("productName", e.target.value)
-                            }
-                          />
-                          <Form.Control.Feedback
-                            type="invalid"
-                            className="errorDisplay"
-                          >
-                            {errors.productName}
-                          </Form.Control.Feedback>
-                        </Form.Group>
+                        <div className="row">
+                          <div className="col-sm-3 colTitle">Name : </div>
+                          <div className="col-sm-9">
+                            <Form.Group controlId="productName">
+                              <Form.Control
+                                value={form.productName}
+                                type="text"
+                                isInvalid={!!errors.productName}
+                                onChange={(e) =>
+                                  setField("productName", e.target.value)
+                                }
+                              />
+                              <Form.Control.Feedback
+                                type="invalid"
+                                className="errorDisplay"
+                              >
+                                {errors.productName}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                          </div>
+                        </div>
                         <p></p>
-                        <Form.Group controlId="productDesc">
-                          <Form.Control
-                            value={product.productDesc}
-                            type="text"
-                            onChange={(e) =>
-                              setField("productDesc", e.target.value)
-                            }
-                          />
-                        </Form.Group>
+                        <div className="row">
+                          <div className="col-sm-3 colTitle">
+                            Description :{" "}
+                          </div>
+                          <div className="col-sm-9">
+                            <Form.Group controlId="productDesc">
+                              <Form.Control
+                                value={form.productDesc}
+                                type="text"
+                                onChange={(e) =>
+                                  setField("productDesc", e.target.value)
+                                }
+                              />
+                            </Form.Group>
+                          </div>
+                        </div>
                         <p></p>
-                        <Form.Group controlId="price">
-                          <Form.Control
-                            value={product.price}
-                            type="text"
-                            isInvalid={!!errors.price}
-                            onChange={(e) => setField("price", e.target.value)}
-                          />
-                          <Form.Control.Feedback
-                            type="invalid"
-                            className="errorDisplay"
-                          >
-                            {errors.price}
-                          </Form.Control.Feedback>
-                        </Form.Group>
+                        <div className="row">
+                          <div className="col-sm-3 colTitle">Price : </div>
+                          <div className="col-sm-9">
+                            <Form.Group controlId="price">
+                              <Form.Control
+                                value={form.price}
+                                type="text"
+                                isInvalid={!!errors.price}
+                                onChange={(e) =>
+                                  setField("price", e.target.value)
+                                }
+                              />
+                              <Form.Control.Feedback
+                                type="invalid"
+                                className="errorDisplay"
+                              >
+                                {errors.price}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                          </div>
+                        </div>
                       </div>
                       <div className="col-sm-1"></div>
                     </div>
@@ -387,9 +488,9 @@ const EditProduct = () => {
                           <Button
                             className="btn btn-primary"
                             type="button"
-                            onClick={(e) => resetForm(e)}
+                            onClick={(e) => goBack(e)}
                           >
-                            Reset
+                            Back
                           </Button>
                         </div>
                       </div>
