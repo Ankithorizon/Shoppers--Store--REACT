@@ -61,3 +61,9 @@
     border-radius: 10px;
     text-align: center;
 }
+
+.editProductId { 
+    font-size: large;
+    font-weight: bold;
+    padding-top: 10px;
+}

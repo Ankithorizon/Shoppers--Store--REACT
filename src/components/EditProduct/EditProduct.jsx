@@ -22,7 +22,7 @@ const EditProduct = () => {
 
   const [searchParams] = useSearchParams();
   const [productId, setProductId] = useState(0);
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState(undefined);
   const re = /^\d*\.?\d*$/;
 
   const [categories, setCategories] = useState([]);
@@ -58,10 +58,25 @@ const EditProduct = () => {
         var currRole = AuthenticationService.getCurrentUserRole();
         if (currRole === null || (currRole !== null && currRole !== "Admin"))
           navigate("/un-auth");
-        else getCategories();
+        else {
+          getProduct(selectedProductId);
+          getCategories();
+        }
       }
     }
   }, []);
+
+  // get product
+  const getProduct = (id) => {
+    ProductService.getProduct(id)
+      .then((response) => {
+        console.log(response.data);
+        setProduct(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   const productEditSuccessOptions = {
     autoClose: 2000,
@@ -262,7 +277,11 @@ const EditProduct = () => {
                 <div className="cardHeader">
                   <i className="bi bi-pencil-square"></i>
                   &nbsp; Edit - Product
-                  <div>{}</div>
+                  {product && (
+                    <div className="editProductId">
+                      Product ID # {product.productId}
+                    </div>
+                  )}
                 </div>
                 {editProductResponse &&
                 editProductResponse.responseCode !== 200 ? (
@@ -280,100 +299,104 @@ const EditProduct = () => {
                   <span></span>
                 )}
               </div>
-              <div className="card-body">
-                <Form ref={formRef}>
-                  <div className="row">
-                    <div className="col-sm-1"></div>
-                    <div className="col-sm-10">
-                      <Form.Group controlId="category">
-                        <Form.Control
-                          as="select"
-                          isInvalid={!!errors.category}
-                          onChange={(e) => {
-                            setField("category", e.target.value);
-                          }}
-                        >
-                          <option value="">Choose Category</option>
-                          {renderOptionsForCategory()}
-                        </Form.Control>
-                        <Form.Control.Feedback
-                          type="invalid"
-                          className="errorDisplay"
-                        >
-                          {errors.category}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <p></p>
-                      <Form.Group controlId="productName">
-                        <Form.Control
-                          placeholder="Enter Product Name"
-                          type="text"
-                          isInvalid={!!errors.productName}
-                          onChange={(e) =>
-                            setField("productName", e.target.value)
-                          }
-                        />
-                        <Form.Control.Feedback
-                          type="invalid"
-                          className="errorDisplay"
-                        >
-                          {errors.productName}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <p></p>
-                      <Form.Group controlId="productDesc">
-                        <Form.Control
-                          placeholder="Enter Product Description"
-                          type="text"
-                          onChange={(e) =>
-                            setField("productDesc", e.target.value)
-                          }
-                        />
-                      </Form.Group>
-                      <p></p>
-                      <Form.Group controlId="price">
-                        <Form.Control
-                          placeholder="Enter Price"
-                          type="text"
-                          isInvalid={!!errors.price}
-                          onChange={(e) => setField("price", e.target.value)}
-                        />
-                        <Form.Control.Feedback
-                          type="invalid"
-                          className="errorDisplay"
-                        >
-                          {errors.price}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                    </div>
-                    <div className="col-sm-1"></div>
-                  </div>
-                  <p></p>
-                  <div>
-                    <hr />
+              {product && (
+                <div className="card-body">
+                  <Form ref={formRef}>
                     <div className="row">
-                      <div className="col-sm-6 submitBtn">
-                        <Button
-                          className="btn btn-success"
-                          type="button"
-                          onClick={(e) => handleSubmit(e)}
-                        >
-                          Edit-Product
-                        </Button>
+                      <div className="col-sm-1"></div>
+                      <div className="col-sm-10">
+                        <Form.Group controlId="category">
+                          <Form.Control
+                            as="select"
+                            value={product.categoryId}
+                            isInvalid={!!errors.category}
+                            onChange={(e) => {
+                              setField("category", e.target.value);
+                            }}
+                          >
+                            <option value="">Choose Category</option>
+                            {renderOptionsForCategory()}
+                          </Form.Control>
+                          <Form.Control.Feedback
+                            type="invalid"
+                            className="errorDisplay"
+                          >
+                            {errors.category}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <p></p>
+                        <Form.Group controlId="productName">
+                          <Form.Control
+                            value={product.productName}
+                            type="text"
+                            isInvalid={!!errors.productName}
+                            onChange={(e) =>
+                              setField("productName", e.target.value)
+                            }
+                          />
+                          <Form.Control.Feedback
+                            type="invalid"
+                            className="errorDisplay"
+                          >
+                            {errors.productName}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <p></p>
+                        <Form.Group controlId="productDesc">
+                          <Form.Control
+                            value={product.productDesc}
+                            type="text"
+                            onChange={(e) =>
+                              setField("productDesc", e.target.value)
+                            }
+                          />
+                        </Form.Group>
+                        <p></p>
+                        <Form.Group controlId="price">
+                          <Form.Control
+                            value={product.price}
+                            type="text"
+                            isInvalid={!!errors.price}
+                            onChange={(e) => setField("price", e.target.value)}
+                          />
+                          <Form.Control.Feedback
+                            type="invalid"
+                            className="errorDisplay"
+                          >
+                            {errors.price}
+                          </Form.Control.Feedback>
+                        </Form.Group>
                       </div>
-                      <div className="col-sm-6 cancelBtn">
-                        <Button
-                          className="btn btn-primary"
-                          type="button"
-                          onClick={(e) => resetForm(e)}
-                        >
-                          Reset
-                        </Button>
+                      <div className="col-sm-1"></div>
+                    </div>
+                    <p></p>
+                    <div>
+                      <hr />
+                      <div className="row">
+                        <div className="col-sm-6 submitBtn">
+                          <Button
+                            className="btn btn-success"
+                            type="button"
+                            onClick={(e) => handleSubmit(e)}
+                          >
+                            Edit-Product
+                          </Button>
+                        </div>
+                        <div className="col-sm-6 cancelBtn">
+                          <Button
+                            className="btn btn-primary"
+                            type="button"
+                            onClick={(e) => resetForm(e)}
+                          >
+                            Reset
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Form>
-              </div>
+                  </Form>
+                </div>
+              )}
             </div>
           </div>
           <div className="col-md-6 mx-auto"></div>
