@@ -62,13 +62,16 @@ const EditProduct = () => {
         }
       }
     }
-  }, []);
+
+    return () => {};
+  }, [productId]);
 
   // get product
   const getProduct = (id) => {
     resetErrors();
     ProductService.getProduct(id)
       .then((response) => {
+        console.log(response.data);
         setForm({
           ...response.data,
         });
@@ -169,12 +172,9 @@ const EditProduct = () => {
     navigate("/view-products");
   };
   const resetForm = (e) => {
-    // formRef.current.reset();
     setErrors({});
-    // setForm({});
     setMessage("");
     setClassName("");
-
     resetErrors();
   };
 
@@ -500,7 +500,62 @@ const EditProduct = () => {
               )}
             </div>
           </div>
-          <div className="col-md-6 mx-auto"></div>
+          <div className="col-md-6 mx-auto">
+            {form && form.productImage ? (
+              <div>
+                {" "}
+                <img
+                  height="300"
+                  width="300"
+                  src={`${productImageUploadURL.url}/${form.productImage}`}
+                  alt="Product Image"
+                />
+              </div>
+            ) : (
+              <div className="noImg">no image</div>
+            )}
+            <p></p>
+            <div className="container">
+              <div>
+                <label className="btn btn-info">
+                  <input type="file" onChange={selectFile} />
+                </label>
+                <p></p>
+                {currentFile && (
+                  <div className="progress">
+                    <div
+                      className="progress-bar progress-bar-info progress-bar-striped"
+                      role="progressbar"
+                      aria-valuenow={progress}
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      style={{ width: progress + "%" }}
+                    >
+                      {progress}%
+                    </div>
+                  </div>
+                )}
+                <p></p>
+                <button
+                  className="btn btn-success"
+                  disabled={!selectedFiles}
+                  onClick={uploadProductImageHandler}
+                >
+                  Upload Product File
+                </button>
+
+                {className === "uploadSuccess" ? (
+                  <div className="alert alert-light uploadSuccess" role="alert">
+                    {message}
+                  </div>
+                ) : (
+                  <div className="alert alert-light uploadError" role="alert">
+                    {message}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

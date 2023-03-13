@@ -73,3 +73,10 @@
     padding-left: 2px;
     text-align: left;
 }
+
+.noImg{
+    color : red;
+    font-size: x-large;
+    font-weight: bold;
+    padding: 20px;
+}
