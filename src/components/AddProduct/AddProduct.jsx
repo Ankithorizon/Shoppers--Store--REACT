@@ -513,14 +513,15 @@ const AddProduct = () => {
                       Upload Product File
                     </button>
 
-                    {className === "uploadSuccess" ? (
+                    {className === "uploadSuccess" && (
                       <div
                         className="alert alert-light uploadSuccess"
                         role="alert"
                       >
                         {message}
                       </div>
-                    ) : (
+                    )}
+                    {className === "uploadError" && (
                       <div
                         className="alert alert-light uploadError"
                         role="alert"

@@ -49,11 +49,13 @@
 .uploadSuccess {
     color: green;
     font-size: large;
+    font-weight: bold;
 }
 
 .uploadError {
     color: red;
     font-size: large;
+    font-weight: bold;
 }
 
 .productImage {
@@ -79,4 +81,14 @@
     font-size: x-large;
     font-weight: bold;
     padding: 20px;
+}
+
+.imageUploadContainer {
+    text-align: center;
+    vertical-align: middle;
+    background-color: lightgoldenrodyellow;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    border: 2px solid red;
+    border-radius: 20px;
 }
