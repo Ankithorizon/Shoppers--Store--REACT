@@ -1,14 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 import Button from "react-bootstrap/Button";
 import ProductService from "../../../services/product.service";
+import AuthenticationService from "../../../services/authentication.service";
 import { useNavigate } from "react-router-dom";
+
 const ProductDetails = ({ product, categories }) => {
   let navigate = useNavigate();
   const productFilePath = "https://localhost:44379/Files/";
 
+  const [userRole, setUserRole] = useState("");
+
+  useEffect(() => {
+    var currRole = AuthenticationService.getCurrentUserRole();
+    if (currRole === null || (currRole !== null && currRole === "Shopper"))
+      navigate("/un-auth");
+    else {
+      setUserRole(currRole);
+    }
+  }, []);
+
   const editProduct = () => {
     navigate("/edit-product?id=" + product.productId);
+  };
+
+  const setDiscount = () => {
+    navigate("/set-discount?id=" + product.productId);
   };
   return (
     <div className="card">
@@ -41,15 +58,29 @@ const ProductDetails = ({ product, categories }) => {
           )}
         </div>
         <hr />
-        <div>
-          <Button
-            className="btn btn-info"
-            type="button"
-            onClick={(e) => editProduct(product)}
-          >
-            <i className="bi bi-pencil-square"></i>&nbsp;&nbsp;Edit
-          </Button>
-        </div>
+
+        {userRole === "Admin" && (
+          <div>
+            <Button
+              className="btn btn-info"
+              type="button"
+              onClick={(e) => editProduct()}
+            >
+              <i className="bi bi-pencil-square"></i>&nbsp;&nbsp;Edit
+            </Button>
+          </div>
+        )}
+        {userRole === "Manager" && (
+          <div>
+            <Button
+              className="btn btn-info"
+              type="button"
+              onClick={(e) => setDiscount()}
+            >
+              <i className="bi bi-chevron-double-down"></i>&nbsp;&nbsp;Set Discount
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

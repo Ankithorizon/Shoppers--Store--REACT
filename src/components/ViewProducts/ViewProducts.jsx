@@ -29,7 +29,7 @@ const ViewProducts = () => {
 
   useEffect(() => {
     var currRole = AuthenticationService.getCurrentUserRole();
-    if (currRole === null || (currRole !== null && currRole !== "Admin"))
+    if (currRole === null || (currRole !== null && currRole === "Shopper"))
       navigate("/un-auth");
     else {
       allProducts();

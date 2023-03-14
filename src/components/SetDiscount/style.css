@@ -1,0 +1,70 @@
+.mainContainer {
+    padding: 15px;
+}
+
+.cardHeader {
+    color: green;
+    font-size: x-large;
+}
+
+
+.setDiscountSuccess {
+    color: green;
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.setDiscountError {
+    color: red;
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.submitBtn {
+    text-align: left;
+}
+
+.cancelBtn {
+    text-align: right;
+}
+
+.productContainer {
+    text-align: center;
+    vertical-align: middle;
+    background-color: lightyellow;
+    padding: 20px;
+    border: 2px solid red;
+    border-radius: 20px;
+}
+.productImage {
+    padding: 20px;
+    border: 5px dotted rgb(204, 40, 62);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.productDetails {
+    text-align: left;
+    color: blue;
+    background-color: lightyellow;
+    font-weight: bold;
+    padding: 20px;
+}
+
+.noImg {
+    color: red;
+    font-size: x-large;
+    font-weight: bold;
+    padding: 20px;
+}
+.discountProductId {
+    font-size: large;
+    font-weight: bold;
+    padding-top: 10px;
+}

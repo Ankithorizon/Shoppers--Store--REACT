@@ -11,6 +11,7 @@ import Home from "./components/Home/Home";
 import AddProduct from "./components/AddProduct/AddProduct";
 import ViewProducts from "./components/ViewProducts/ViewProducts";
 import EditProduct from "./components/EditProduct/EditProduct";
+import SetDiscount from "./components/SetDiscount/SetDiscount";
 import Header from "./components/Header/Header";
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
@@ -31,6 +32,7 @@ function App() {
             <Route path="/add-product" element={<AddProduct />} />
             <Route path="/view-products" element={<ViewProducts />} />
             <Route path="/edit-product" element={<EditProduct />} />
+            <Route path="/set-discount" element={<SetDiscount />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/un-auth" element={<UnAuth />} />
