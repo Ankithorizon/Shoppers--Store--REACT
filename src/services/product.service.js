@@ -46,6 +46,12 @@ class ProductDataService {
       headers: authenticationHeader(),
     });
   };
+
+  setProductDiscount = (data) => {
+    return productHttp.post("/setProductDiscount", data, {
+      headers: authenticationHeader(),
+    });
+  };
 }
 
 export default new ProductDataService();

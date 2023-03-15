@@ -26,18 +26,20 @@ function App() {
           <ToastContainer style={{ width: "500px" }} />
 
           <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/add-product" element={<AddProduct />} />
-            <Route path="/view-products" element={<ViewProducts />} />
-            <Route path="/edit-product" element={<EditProduct />} />
-            <Route path="/set-discount" element={<SetDiscount />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/un-auth" element={<UnAuth />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <div className="mainContent">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/add-product" element={<AddProduct />} />
+              <Route path="/view-products" element={<ViewProducts />} />
+              <Route path="/edit-product" element={<EditProduct />} />
+              <Route path="/set-discount" element={<SetDiscount />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/un-auth" element={<UnAuth />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
         </Router>
       </div>
     </div>

@@ -29,6 +29,8 @@ const SetDiscount = () => {
   const [form, setForm] = useState(undefined);
   const [errors, setErrors] = useState({});
 
+  const [discountedPrice, setDiscountedPrice] = useState(0);
+
   // reset form
   // form reference
   const formRef = useRef(null);
@@ -160,6 +162,20 @@ const SetDiscount = () => {
     setErrors({});
   };
 
+  const nowPriceWithDiscount = (e) => {
+    if (form.currentDiscountPercentage > 0) {
+      var currentDiscount = form.currentDiscountPercentage;
+      var discountedPrice_ =
+        product.price - (product.price * currentDiscount) / 100;
+
+      var discountedPrice__ = Math.round(discountedPrice_ * 100) / 100;
+
+      setDiscountedPrice(discountedPrice__);
+    } else {
+      setDiscountedPrice(0);
+    }
+  };
+
   const handleSubmit = (e) => {
     setDiscountResponse({});
 
@@ -171,6 +187,37 @@ const SetDiscount = () => {
       setErrors(newErrors);
     } else {
       console.log(form);
+
+      var productDiscountDTO = {
+        productId: product.productId,
+        discountPercentage: Number(form.currentDiscountPercentage),
+      };
+
+      var discountResponse_ = {};
+      ProductService.setProductDiscount(productDiscountDTO)
+        .then((response) => {
+          if (response.data.apiResponse.responseCode === 0) {
+            discountResponse_ = {
+              responseCode: response.data.apiResponse.responseCode,
+              responseMessage: response.data.apiResponse.responseMessage,
+            };
+            setDiscountResponse(discountResponse_);
+            toast(
+              response.data.apiResponse.responseMessage,
+              discountSuccessOptions
+            );
+
+            setTimeout(() => {
+              setDiscountedPrice(0);
+              formRef.current.reset();
+              setForm({});
+              navigate("/view-products");
+            }, 3000);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     }
   };
 
@@ -190,7 +237,7 @@ const SetDiscount = () => {
                     </div>
                   )}
                 </div>
-                {discountResponse && discountResponse.responseCode !== 200 ? (
+                {discountResponse && discountResponse.responseCode !== 0 ? (
                   <div className="discountError">
                     {discountResponse.responseMessage}
                   </div>
@@ -208,7 +255,7 @@ const SetDiscount = () => {
                       <div className="col-sm-10">
                         <div className="row">
                           <div className="col-sm-3 colTitle">Discount : </div>
-                          <div className="col-sm-9">
+                          <div className="col-sm-6">
                             <Form.Group controlId="discount">
                               <Form.Control
                                 value={form.currentDiscountPercentage}
@@ -220,6 +267,7 @@ const SetDiscount = () => {
                                     e.target.value
                                   )
                                 }
+                                onBlur={(e) => nowPriceWithDiscount(e)}
                               />
                               <Form.Control.Feedback
                                 type="invalid"
@@ -228,7 +276,13 @@ const SetDiscount = () => {
                                 {errors.currentDiscountPercentage}
                               </Form.Control.Feedback>
                             </Form.Group>
+                            {discountedPrice > 0 && (
+                              <div className="discountedPrice">
+                                NOW ${discountedPrice}
+                              </div>
+                            )}
                           </div>
+                          <div className="col-sm-3"></div>
                         </div>
                       </div>
                       <div className="col-sm-1"></div>
@@ -288,7 +342,7 @@ const SetDiscount = () => {
                     </div>
                     <div>Price : ${product.price}</div>
                     <div>
-                      Current Discount[%] : {product.currentDiscountPercentage}
+                      Current Discount : {product.currentDiscountPercentage}%
                     </div>
                     {product.productDesc && (
                       <div>Desc : {product.productDesc}</div>

@@ -14,11 +14,12 @@ const Product = ({ product, action }) => {
     <div className="row">
       <div className="col-sm-1">{product.productId}</div>
       <div className="col-sm-3">{product.productName}</div>
-      <div className="col-sm-2">
+      <div className="col-sm-3">
         ${product.price}
         {product.price !== product.currentPrice ? (
           <span className="displayCurrentPriceInTable">
-            &nbsp;<u>[ NOW: ${product.currentPrice} ]</u>
+            <br />
+            <u>[ NOW: ${product.currentPrice} ]</u>
           </span>
         ) : (
           <span></span>
@@ -38,7 +39,7 @@ const Product = ({ product, action }) => {
           <span className="noImage">NO IMAGE</span>
         )}
       </div>
-      <div className="col-sm-3">
+      <div className="col-sm-2">
         <Button
           className="btn btn-info viewBtn"
           type="button"

@@ -324,9 +324,9 @@ const ViewProducts = () => {
                       <div className="row tableHeader">
                         <div className="col-sm-1">#</div>
                         <div className="col-sm-3">Name</div>
-                        <div className="col-sm-2">Price</div>
+                        <div className="col-sm-3">Price</div>
                         <div className="col-sm-3">Image</div>
-                        <div className="col-sm-3"></div>
+                        <div className="col-sm-2"></div>
                       </div>
                       {/* {displayData()} */}
                       {displayPageData()}

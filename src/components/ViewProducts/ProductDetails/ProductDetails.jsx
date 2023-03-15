@@ -12,6 +12,7 @@ const ProductDetails = ({ product, categories }) => {
   const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
+    console.log(product);
     var currRole = AuthenticationService.getCurrentUserRole();
     if (currRole === null || (currRole !== null && currRole === "Shopper"))
       navigate("/un-auth");
@@ -41,7 +42,10 @@ const ProductDetails = ({ product, categories }) => {
         <h5>Name : {product.productName}</h5>
         <h5>Description : {product.productDesc}</h5>
         <h5>
-          Price : <span className="price">${product.price}</span>
+          Price : <span className="price">${product.price}&nbsp;&nbsp;</span>
+          {product.currentDiscountPercentage > 0 && (
+            <span className="nowPrice">NOW ${product.currentPrice}</span>
+          )}
         </h5>
         <div>
           {product.productImage ? (
@@ -77,7 +81,8 @@ const ProductDetails = ({ product, categories }) => {
               type="button"
               onClick={(e) => setDiscount()}
             >
-              <i className="bi bi-chevron-double-down"></i>&nbsp;&nbsp;Set Discount
+              <i className="bi bi-chevron-double-down"></i>&nbsp;&nbsp;Set
+              Discount
             </Button>
           </div>
         )}

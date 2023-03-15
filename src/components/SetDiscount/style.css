@@ -8,22 +8,24 @@
 }
 
 
-.setDiscountSuccess {
+.discountSuccess {
     color: green;
     font-size: large;
     font-weight: bold;
     text-align: center;
     padding-top: 10px;
     padding-bottom: 10px;
+    font-weight: bold;
 }
 
-.setDiscountError {
+.discountError {
     color: red;
     font-size: large;
     font-weight: bold;
     text-align: center;
     padding-top: 10px;
     padding-bottom: 10px;
+    font-weight: bold;
 }
 
 .submitBtn {
@@ -67,4 +69,14 @@
     font-size: large;
     font-weight: bold;
     padding-top: 10px;
+}
+
+.discountedPrice{
+    color : red;
+    background-color: bisque;
+    font-weight: bold;
+    font-size: large;
+    padding: 5px;
+    margin: 5px;
+
 }

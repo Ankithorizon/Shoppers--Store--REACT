@@ -1,6 +1,6 @@
 .displayCurrentPriceInTable {
-    color: white;
-    font-size: larger;
+    color: red;
+    font-size: medium;
     font-weight: bold;
 }
 

@@ -14,3 +14,9 @@
     background-color: white;
     font-weight: bold;
 }
+.nowPrice{
+    color: red;
+    background-color: bisque;
+    font-size: medium;
+    padding: 5px;
+}
