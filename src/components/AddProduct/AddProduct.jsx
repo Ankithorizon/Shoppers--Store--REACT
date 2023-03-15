@@ -418,7 +418,7 @@ const AddProduct = () => {
                       <div className="col-sm-6 submitBtn">
                         <Button
                           disabled={newProduct}
-                          className="btn btn-success"
+                          className="btn btn-info"
                           type="button"
                           onClick={(e) => handleSubmit(e)}
                         >
@@ -428,7 +428,7 @@ const AddProduct = () => {
                       <div className="col-sm-6 cancelBtn">
                         <Button
                           disabled={newProduct}
-                          className="btn btn-primary"
+                          className="btn btn-info"
                           type="button"
                           onClick={(e) => resetForm(e)}
                         >

@@ -9,3 +9,8 @@
 .price{
     color : blue;
 }
+.editBtn{
+    color: black;
+    background-color: white;
+    font-weight: bold;
+}

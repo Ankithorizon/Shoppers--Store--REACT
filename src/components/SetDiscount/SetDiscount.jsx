@@ -239,7 +239,7 @@ const SetDiscount = () => {
                       <div className="row">
                         <div className="col-sm-6 submitBtn">
                           <Button
-                            className="btn btn-success"
+                            className="btn btn-info"
                             type="button"
                             onClick={(e) => handleSubmit(e)}
                           >
@@ -248,7 +248,7 @@ const SetDiscount = () => {
                         </div>
                         <div className="col-sm-6 cancelBtn">
                           <Button
-                            className="btn btn-primary"
+                            className="btn btn-info"
                             type="button"
                             onClick={(e) => goBack(e)}
                           >

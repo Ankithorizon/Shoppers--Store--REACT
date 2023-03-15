@@ -305,7 +305,9 @@ const Registration = () => {
                   <div>
                     <hr />
                     <div className="row">
-                      <div className="col-sm-6 submitBtn">
+                      <div className="col-sm-4"></div>
+
+                      <div className="col-sm-4">
                         <Button
                           className="btn btn-success"
                           type="button"
@@ -313,16 +315,17 @@ const Registration = () => {
                         >
                           Register
                         </Button>
-                      </div>
-                      <div className="col-sm-6 cancelBtn">
+                        &nbsp;&nbsp;
                         <Button
-                          className="btn btn-primary"
+                          className="btn btn-success"
                           type="button"
                           onClick={(e) => resetForm(e)}
                         >
                           Reset
                         </Button>
+                   
                       </div>
+                      <div className="col-sm-4"></div>
                     </div>
                   </div>
                 </Form>

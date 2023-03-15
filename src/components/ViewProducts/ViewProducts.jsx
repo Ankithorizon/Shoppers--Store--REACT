@@ -213,6 +213,7 @@ const ViewProducts = () => {
   // categories
   // filter
   let categoryList =
+    categories &&
     categories.length > 0 &&
     categories.map((item, i) => {
       return (
@@ -275,7 +276,7 @@ const ViewProducts = () => {
                   </div>
                   <div className="col-sm-2">
                     <Button
-                      className="btn btn-primary filterBtn"
+                      className="btn btn-success filterBtn"
                       type="button"
                       onClick={(e) => searchingProduct(e)}
                     >

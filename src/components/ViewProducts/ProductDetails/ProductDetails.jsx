@@ -62,7 +62,7 @@ const ProductDetails = ({ product, categories }) => {
         {userRole === "Admin" && (
           <div>
             <Button
-              className="btn btn-info"
+              className="btn btn-info editBtn"
               type="button"
               onClick={(e) => editProduct()}
             >

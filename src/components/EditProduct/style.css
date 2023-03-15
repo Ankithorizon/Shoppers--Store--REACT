@@ -36,6 +36,7 @@
 
 .submitBtn {
     text-align: left;
+ 
 }
 
 .cancelBtn {
@@ -90,4 +91,10 @@
     padding: 20px;
     border: 2px solid red;
     border-radius: 20px;
+}
+
+.btn{
+    color: black;
+    background-color: white;
+    font-weight: bold;
 }

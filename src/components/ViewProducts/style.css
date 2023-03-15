@@ -7,7 +7,7 @@
 }
 
 .tableHeader{
-    color: green;
+    color: black;
     font-size: medium;
     font-weight: bold;
     font-style: italic;
@@ -42,12 +42,13 @@
     color : white;
     font-size: small;
     background-color: green;
+    font-weight: bold;
 }
 
 .navBtn{
-    color: white;
+    color: black;
     font-size: small;
-    background-color: lightseagreen;
+    background-color: white;
     font-weight: bold;
 }
 

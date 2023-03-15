@@ -10,4 +10,7 @@
 
 .viewBtn {
     font-size: small;
+    color: black;
+    background-color: white;
+    font-weight: bold;
 }
