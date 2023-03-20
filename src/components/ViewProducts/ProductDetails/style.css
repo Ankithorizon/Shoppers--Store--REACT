@@ -20,3 +20,23 @@
     font-size: medium;
     padding: 5px;
 }
+
+.discountSuccess {
+    color: green;
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: bold;
+}
+
+.discountError {
+    color: red;
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: bold;
+}

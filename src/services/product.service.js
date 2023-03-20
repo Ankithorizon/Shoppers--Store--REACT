@@ -47,8 +47,14 @@ class ProductDataService {
     });
   };
 
-  setProductDiscount = (data) => {
+  setProductDiscount = async (data) => {
     return productHttp.post("/setProductDiscount", data, {
+      headers: authenticationHeader(),
+    });
+  };
+
+  resetProductDiscount = async (selectedProductId) => {
+    return productHttp.get(`/resetProductDiscount/${selectedProductId}`, {
       headers: authenticationHeader(),
     });
   };

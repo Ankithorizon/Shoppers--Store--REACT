@@ -4,15 +4,20 @@ import Button from "react-bootstrap/Button";
 import ProductService from "../../../services/product.service";
 import AuthenticationService from "../../../services/authentication.service";
 import { useNavigate } from "react-router-dom";
+import "./style.css";
 
-const ProductDetails = ({ product, categories }) => {
+const ProductDetails = ({ product, categories, action }) => {
   let navigate = useNavigate();
   const productFilePath = "https://localhost:44379/Files/";
 
   const [userRole, setUserRole] = useState("");
 
+  const [resetDisRes, setResetDisRes] = useState("");
+  const [resetDisClass, setResetDisClass] = useState("");
+
   useEffect(() => {
     console.log(product);
+
     var currRole = AuthenticationService.getCurrentUserRole();
     if (currRole === null || (currRole !== null && currRole === "Shopper"))
       navigate("/un-auth");
@@ -27,6 +32,45 @@ const ProductDetails = ({ product, categories }) => {
 
   const setDiscount = () => {
     navigate("/set-discount?id=" + product.productId);
+  };
+
+  const resetDiscount = () => {
+    setResetDisRes("");
+    setResetDisClass("");
+    ProductService.resetProductDiscount(product.productId)
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setResetDisRes("Reset-Discount Success !");
+          setResetDisClass("discountSuccess");
+
+          // update product through master component
+          var product_ = {
+            ...product,
+            currentDiscountPercentage: 0,
+            currentPrice: product.price,
+          };
+
+          setTimeout(() => {
+            setResetDisRes("");
+            setResetDisClass("");
+            action(product_);
+          }, 3000);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        setResetDisClass("discountError");
+        if (e.response.status === 500) {
+          setResetDisRes(e.response.data);
+        } else {
+          setResetDisRes("Error !");
+        }
+        setTimeout(() => {
+          setResetDisRes("");
+          setResetDisClass("");
+        }, 3000);
+      });
   };
   return (
     <div className="card">
@@ -84,6 +128,16 @@ const ProductDetails = ({ product, categories }) => {
               <i className="bi bi-chevron-double-down"></i>&nbsp;&nbsp;Set
               Discount
             </Button>
+            &nbsp;&nbsp;&nbsp;
+            <Button
+              className="btn btn-info"
+              type="button"
+              onClick={(e) => resetDiscount()}
+            >
+              <i className="bi bi-x-octagon"></i>&nbsp;&nbsp; Reset Discount
+            </Button>
+            <p></p>
+            {resetDisRes && <div className={resetDisClass}>{resetDisRes}</div>}
           </div>
         )}
       </div>

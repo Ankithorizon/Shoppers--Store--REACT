@@ -340,7 +340,14 @@ const SetDiscount = () => {
                           )}
                       </span>
                     </div>
-                    <div>Price : ${product.price}</div>
+                    <div>
+                      Price : ${product.price}
+                      {product.currentDiscountPercentage > 0 && (
+                        <span className="nowPrice">
+                          NOW ${product.currentPrice}
+                        </span>
+                      )}
+                    </div>
                     <div>
                       Current Discount : {product.currentDiscountPercentage}%
                     </div>

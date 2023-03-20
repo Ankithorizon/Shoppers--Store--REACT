@@ -78,5 +78,13 @@
     font-size: large;
     padding: 5px;
     margin: 5px;
+}
 
+
+.nowPrice {
+    color: red;
+    background-color: bisque;
+    font-size: medium;
+    padding: 5px;
+    margin: 10px;
 }

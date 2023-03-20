@@ -143,6 +143,18 @@ const ViewProducts = () => {
     setSelectedProduct(selectedProduct);
   };
 
+  // this will update [this] master component when [Product] detail component notify
+  // through event
+  const updateMasterComponent_After_Reset_Discount = (
+    selectedProductAfterResetDiscount
+  ) => {
+    console.log(
+      "master is called from child",
+      selectedProductAfterResetDiscount
+    );
+    setSelectedProduct(selectedProductAfterResetDiscount);
+  };
+
   // no paging
   // display all data
   let displayData = () => {
@@ -226,7 +238,7 @@ const ViewProducts = () => {
     <div className="mainContainer">
       <div className="container">
         <div className="row">
-          <div className="col-md-8 mx-auto">
+          <div className="col-md-7 mx-auto">
             <div className="card">
               <div className="card-header">
                 <div className="cardHeader">
@@ -238,7 +250,7 @@ const ViewProducts = () => {
                     <Card.Text>
                       <select
                         style={{
-                          width: 200,
+                          width: 180,
                           height: 32,
                           borderColor: "green",
                           borderWidth: 3,
@@ -259,7 +271,7 @@ const ViewProducts = () => {
                     <Card.Text>
                       <input
                         style={{
-                          width: 300,
+                          width: 250,
                           height: 32,
                           borderColor: "green",
                           borderWidth: 3,
@@ -338,12 +350,13 @@ const ViewProducts = () => {
               )}
             </div>
           </div>
-          <div className="col-md-4 mx-auto">
+          <div className="col-md-5 mx-auto">
             {selectedProduct && (
               <div className="content">
                 <ProductDetails
                   categories={categories}
                   product={selectedProduct}
+                  action={updateMasterComponent_After_Reset_Discount}
                 ></ProductDetails>
               </div>
             )}
