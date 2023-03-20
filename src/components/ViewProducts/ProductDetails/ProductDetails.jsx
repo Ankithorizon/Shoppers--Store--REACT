@@ -54,6 +54,8 @@ const ProductDetails = ({ product, categories, action }) => {
           setTimeout(() => {
             setResetDisRes("");
             setResetDisClass("");
+
+            // notify master view-products component
             action(product_);
           }, 3000);
         }

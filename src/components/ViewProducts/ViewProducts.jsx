@@ -136,23 +136,41 @@ const ViewProducts = () => {
       });
   };
 
-  // this will update [this] master component when [Product] detail component notify
-  // through event
+  // master : view-products component
+  // child : product component
   const updateMasterComponent_SelectedProductChanged = (selectedProduct) => {
-    console.log("master is called from child", selectedProduct);
-    setSelectedProduct(selectedProduct);
+    setSelectedProduct({ ...selectedProduct });
   };
 
-  // this will update [this] master component when [Product] detail component notify
-  // through event
+  // master : view-products component
+  // child : product-details component
   const updateMasterComponent_After_Reset_Discount = (
     selectedProductAfterResetDiscount
   ) => {
-    console.log(
-      "master is called from child",
-      selectedProductAfterResetDiscount
+    // update selectedProduct
+    // so product-details component will update
+    setSelectedProduct({
+      ...selectedProduct,
+      currentDiscountPercentage:
+        selectedProductAfterResetDiscount.currentDiscountPercentage,
+      currentPrice: selectedProductAfterResetDiscount.currentPrice,
+    });
+
+    // update products[]
+    // so product component will update
+    const currentProductIndex = products.findIndex(
+      (p) => p.productId === selectedProductAfterResetDiscount.productId
     );
-    setSelectedProduct(selectedProductAfterResetDiscount);
+    const newProducts = { ...products };
+    newProducts[currentProductIndex] = {
+      ...selectedProduct,
+      currentDiscountPercentage:
+        selectedProductAfterResetDiscount.currentDiscountPercentage,
+      currentPrice: selectedProductAfterResetDiscount.currentPrice,
+    };
+    setProducts({ ...newProducts });
+    setTotalPages(Math.ceil(newProducts.length / recordsPerPage));
+    getPageData(newProducts);
   };
 
   // no paging

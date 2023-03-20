@@ -7,6 +7,7 @@ const Product = ({ product, action }) => {
   const productFilePath = "https://localhost:44379/Files/";
 
   const getProductDetails = (product) => {
+    // notify master view-products component
     action(product);
   };
 
