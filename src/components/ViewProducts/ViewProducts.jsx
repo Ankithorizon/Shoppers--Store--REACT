@@ -71,7 +71,6 @@ const ViewProducts = () => {
   // filter
   const searchingProduct = () => {
     setSelectedProduct(null);
-
     ProductService.findingProduct(searchProductName, selectedCategoryId)
       .then((response) => {
         if (response.data.length > 0) {

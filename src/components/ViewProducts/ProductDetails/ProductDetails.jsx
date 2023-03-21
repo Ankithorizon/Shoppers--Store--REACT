@@ -44,7 +44,7 @@ const ProductDetails = ({ product, categories, action }) => {
           setResetDisRes("Reset-Discount Success !");
           setResetDisClass("discountSuccess");
 
-          // update product through master component
+          // update product component through master view-products component
           var product_ = {
             ...product,
             currentDiscountPercentage: 0,
@@ -90,7 +90,10 @@ const ProductDetails = ({ product, categories, action }) => {
         <h5>
           Price : <span className="price">${product.price}&nbsp;&nbsp;</span>
           {product.currentDiscountPercentage > 0 && (
-            <span className="nowPrice">NOW ${product.currentPrice}</span>
+            <span className="nowPrice">
+              NOW ${product.currentPrice}
+              &nbsp;&nbsp;&nbsp;[Discount {product.currentDiscountPercentage}%]
+            </span>
           )}
         </h5>
         <div>
@@ -121,23 +124,26 @@ const ProductDetails = ({ product, categories, action }) => {
           </div>
         )}
         {userRole === "Manager" && (
-          <div>
-            <Button
-              className="btn btn-info"
-              type="button"
-              onClick={(e) => setDiscount()}
-            >
-              <i className="bi bi-chevron-double-down"></i>&nbsp;&nbsp;Set
-              Discount
-            </Button>
-            &nbsp;&nbsp;&nbsp;
-            <Button
-              className="btn btn-info"
-              type="button"
-              onClick={(e) => resetDiscount()}
-            >
-              <i className="bi bi-x-octagon"></i>&nbsp;&nbsp; Reset Discount
-            </Button>
+          <div className="row">
+            <div className="col-sm-6">
+              <Button
+                className="btn btn-info"
+                type="button"
+                onClick={(e) => setDiscount()}
+              >
+                <i className="bi bi-chevron-double-down"></i>&nbsp;&nbsp;Set
+                Discount
+              </Button>
+            </div>
+            <div className="col-sm-6 discountBtn">
+              <Button
+                className="btn btn-info"
+                type="button"
+                onClick={(e) => resetDiscount()}
+              >
+                <i className="bi bi-x-octagon"></i>&nbsp;&nbsp; Reset Discount
+              </Button>
+            </div>
             <p></p>
             {resetDisRes && <div className={resetDisClass}>{resetDisRes}</div>}
           </div>
