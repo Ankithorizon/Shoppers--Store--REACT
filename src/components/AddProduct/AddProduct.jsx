@@ -276,20 +276,28 @@ const AddProduct = () => {
       .then((response) => {
         console.log(response);
         setMessage(response.data.responseMessage);
-        setClassName("uploadSuccess");
 
-        setNewProduct({
-          ...newProduct,
-          productImage: response.data.productImage,
-          ProductFileId: response.data.ProductFileId,
-        });
+        if (response.data.responseCode === 0) {
+          setClassName("uploadSuccess");
 
-        toast(response.data.responseMessage, productAddSuccessOptions);
+          setNewProduct({
+            ...newProduct,
+            productImage: response.data.productImage,
+            ProductFileId: response.data.ProductFileId,
+          });
 
-        setTimeout(() => {
-          resetForm();
-          // setNewProduct({});
-        }, 3000);
+          toast(response.data.responseMessage, productAddSuccessOptions);
+
+          setTimeout(() => {
+            resetForm();
+            // setNewProduct({});
+            navigate("/view-products");
+          }, 3000);
+        } else if (response.data.responseCode === -1) {
+          setClassName("uploadError");
+
+          toast(response.data.responseMessage, productAddErrorOptions);
+        }
       })
       .catch((error) => {
         console.log(error);
