@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Button, Card } from "react-bootstrap";
 
-const SearchByCat = () => {
+const SearchByCat = ({ products, action }) => {
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState(0);
 
@@ -29,6 +29,18 @@ const SearchByCat = () => {
   const onChangeCategory = (categoryId) => {
     setCategory(categoryId);
     console.log(categoryId);
+
+    var searchValue = "";
+
+    ProductService.findingProduct(searchValue, categoryId)
+      .then((response) => {
+        console.log(response.data);
+        // notify master shopping component
+        action(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   let displayCategories =

@@ -1,0 +1,23 @@
+.productPanel {
+    padding: 10px;
+    background-color: lightgoldenrodyellow;
+    color: palevioletred;
+    text-align: left;
+}
+
+.productBtn {
+    height:150px;
+    width: 150px;
+    text-align: center;
+    vertical-align: middle;
+    color: blue;
+    background-color: lightyellow;
+    margin: 5px;
+    padding: 10px;
+    border: 2px solid rgb(180, 131, 131);
+}
+
+.nowPrice{
+    color: red;
+    font-weight: bold;
+}
