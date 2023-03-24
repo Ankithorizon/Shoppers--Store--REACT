@@ -51,7 +51,7 @@ class ProductDataService {
     return productHttp.post("/setProductDiscount", data, {
       headers: authenticationHeader(),
     });
-  };
+  };  
 
   resetProductDiscount = async (selectedProductId) => {
     return productHttp.get(`/resetProductDiscount/${selectedProductId}`, {

@@ -14,6 +14,7 @@ import EditProduct from "./components/EditProduct/EditProduct";
 import SetDiscount from "./components/SetDiscount/SetDiscount";
 import TextReports from "./components/Reports/TextReports/TextReports";
 import ChartReports from "./components/Reports/ChartReports/ChartReports";
+import Shopping from "./components/Shopping/Shopping";
 import Header from "./components/Header/Header";
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
@@ -38,6 +39,7 @@ function App() {
               <Route path="/set-discount" element={<SetDiscount />} />
               <Route path="/text-reports" element={<TextReports />} />
               <Route path="/chart-reports" element={<ChartReports />} />
+              <Route path="/shopping" element={<Shopping />} />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/un-auth" element={<UnAuth />} />

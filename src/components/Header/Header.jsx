@@ -81,8 +81,8 @@ const Header = () => {
               <Link to={"/home"} className="nav-link">
                 <i className="bi bi-house-door-fill"></i>Home
               </Link>
-              <Link to={"/view-products"} className="nav-link">
-                <i className="bi bi-binoculars-fill"></i>[VIEW]Products
+              <Link to={"/shopping"} className="nav-link">
+                <i className="bi bi-cart4"></i>Shopping
               </Link>
             </Nav>
           )}
