@@ -22,3 +22,15 @@
     font-weight: bold;
     margin-top: 5px;
 }
+
+.selectedProduct {
+    height:150px;
+    width: 150px;
+    text-align: center;
+    vertical-align: middle;
+    color: blue;
+    background-color: lightyellow;
+    padding: 10px;
+    border: 3px dotted blue;
+    margin: 10px;
+}

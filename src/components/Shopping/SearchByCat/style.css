@@ -6,7 +6,8 @@
     margin: 10px;
 }
 .selectedCat{
-    color:red;
+    color:blue;
     font-weight: bold;
     font-style: italic;
+    font-size: large;
 }

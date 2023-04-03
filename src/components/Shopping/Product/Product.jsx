@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 
 import AuthenticationService from "../../../services/authentication.service";
@@ -10,12 +10,27 @@ import { Button, Card } from "react-bootstrap";
 
 const Product = ({ products }) => {
   const productFilePath = "https://localhost:44379/Files/";
+  const [ProductId, setProductId] = useState(0);
+  const onChangeProduct = (productId) => {
+    setProductId(productId);
+    console.log(ProductId);
+  };
 
   let displayProducts =
     products.length > 0 &&
     products.map((item, i) => {
       return (
-        <Button key={i} className="btn btn-success productBtn" type="button">
+        <Button
+          key={i}
+          onClick={(e) => onChangeProduct(item.productId)}
+          className={
+            "btn btn-success " +
+            (ProductId === item.productId
+              ? " productBtn selectedProduct"
+              : " productBtn")
+          }
+          type="button"
+        >
           <div>
             {item.productImage && (
               <span>
