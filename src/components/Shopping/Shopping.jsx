@@ -14,6 +14,7 @@ import Product from "./Product/Product";
 
 const Shopping = () => {
   const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   let navigate = useNavigate();
   useEffect(() => {
@@ -52,9 +53,23 @@ const Shopping = () => {
 
   // master : shopping component
   // child : search-by-cat component
+  // child : search component
   const updateMasterComponent_SearchProducts = (searchProducts) => {
     console.log("in the master now", searchProducts);
     setProducts([...searchProducts]);
+  };
+
+  // master : shopping component
+  // child : product component
+  const updateMasterComponent_SetSelectedProduct = (selectedProduct) => {
+    console.log("in the master now", selectedProduct);
+    setSelectedProduct({ ...selectedProduct });
+  };
+
+  // master : shopping component
+  // child : product-details component
+  const updateMasterComponent_AddProductToCart = (selectedProduct) => {
+    console.log("in the master now", selectedProduct);
   };
 
   return (
@@ -74,13 +89,24 @@ const Shopping = () => {
           <hr />
           {products && products.length > 0 ? (
             <div>
-              <Product products={products}></Product>
+              <Product
+                products={products}
+                action={updateMasterComponent_SetSelectedProduct}
+              ></Product>
             </div>
           ) : (
             <div className="noProducts">Products Not Found !</div>
           )}
         </div>
-        <div className="col-sm-4">product-detail &amp; cart</div>
+        {selectedProduct && (
+          <div className="col-sm-4">
+            <ProductDetails
+              product={selectedProduct}
+              categories={categories}
+              action={updateMasterComponent_AddProductToCart}
+            ></ProductDetails>
+          </div>
+        )}
       </div>
     </div>
   );

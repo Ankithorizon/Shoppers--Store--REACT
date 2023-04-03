@@ -1,0 +1,20 @@
+.noImage {
+    color: red;
+}
+
+.cardHeader {
+    color: green;
+    font-size: x-large;
+    text-align: center;
+}
+
+.price {
+    color: blue;
+}
+
+.nowPrice {
+    color: red;
+    background-color: bisque;
+    font-size: medium;
+    padding: 5px;
+}

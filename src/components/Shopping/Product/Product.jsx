@@ -8,12 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 import { Button, Card } from "react-bootstrap";
 
-const Product = ({ products }) => {
+const Product = ({ products, action }) => {
   const productFilePath = "https://localhost:44379/Files/";
   const [ProductId, setProductId] = useState(0);
-  const onChangeProduct = (productId) => {
-    setProductId(productId);
-    console.log(ProductId);
+  const onChangeProduct = (product) => {
+    setProductId(product.productId);
+    action(product);
   };
 
   let displayProducts =
@@ -22,7 +22,7 @@ const Product = ({ products }) => {
       return (
         <Button
           key={i}
-          onClick={(e) => onChangeProduct(item.productId)}
+          onClick={(e) => onChangeProduct(item)}
           className={
             "btn btn-success " +
             (ProductId === item.productId
