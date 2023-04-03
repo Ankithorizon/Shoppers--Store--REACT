@@ -31,9 +31,8 @@ const Product = ({ products }) => {
             {item.productName}
             <br />
             <span>${item.price}</span>
-            <br />
             {item.currentDiscountPercentage > 0 && (
-              <span className="nowPrice">Now ${item.currentPrice}</span>
+              <div className="nowPrice">Now ${item.currentPrice}</div>
             )}
           </div>
         </Button>

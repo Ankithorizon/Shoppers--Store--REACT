@@ -5,3 +5,8 @@
 .searchByCatBtn{
     margin: 10px;
 }
+.selectedCat{
+    color:red;
+    font-weight: bold;
+    font-style: italic;
+}

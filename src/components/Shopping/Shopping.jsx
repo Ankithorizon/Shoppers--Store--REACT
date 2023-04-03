@@ -61,7 +61,10 @@ const Shopping = () => {
     <div className="mainContainer">
       <div className="row">
         <div className="col-sm-8">
-          <Search></Search>
+          <Search
+            products={products}
+            action={updateMasterComponent_SearchProducts}
+          ></Search>
           <p></p>
           <SearchByCat
             products={products}

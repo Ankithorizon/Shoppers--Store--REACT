@@ -1,7 +1,6 @@
-.searchPanel { 
-    color: green;
-    background-color: lightgoldenrodyellow;
+.searchPanel {   
     padding:10px;
     font-weight: bold;
     font-style: italic;
+    text-align: center;
 }

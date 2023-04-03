@@ -12,8 +12,11 @@ const SearchByCat = ({ products, action }) => {
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState(0);
 
+  const [selectedCatClass, setSelectedCatClass] = useState("selectedCat");
   useEffect(() => {
     getCategories();
+
+    console.log(selectedCatClass);
   }, []);
 
   const getCategories = () => {
@@ -49,7 +52,11 @@ const SearchByCat = ({ products, action }) => {
       return (
         <Button
           key={i}
-          className="btn btn-info searchByCatBtn"
+          className={
+            "btn btn-info" + "4" === item.categoryId
+              ? "searchByCatBtn selectedCat"
+              : "searchByCatBtn"
+          }
           type="button"
           onClick={(e) => onChangeCategory(item.categoryId)}
         >
