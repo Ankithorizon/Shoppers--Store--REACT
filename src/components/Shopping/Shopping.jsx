@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Card } from "react-bootstrap";
 import Product from "./Product/Product";
 import ProductDetails from "./ProductDetails/ProductDetails";
+import MyCart from "./MyCart/MyCart";
 
 const Shopping = () => {
   const [products, setProducts] = useState([]);
@@ -19,7 +20,8 @@ const Shopping = () => {
 
   const [categories, setCategories] = useState([]);
 
-  
+  const [cart, setCart] = useState([]);
+
   let navigate = useNavigate();
   useEffect(() => {
     var currRole = AuthenticationService.getCurrentUserRole();
@@ -88,8 +90,33 @@ const Shopping = () => {
 
   // master : shopping component
   // child : product-details component
-  const updateMasterComponent_AddProductToCart = (selectedProduct) => {
-    console.log("in the master now", selectedProduct);
+  const updateMasterComponent_AddProductToCart = (cartProduct) => {
+    console.log("in the master now", cartProduct);
+
+    var productInCart = {
+      productId: cartProduct.product.productId,
+      qtyBuy: cartProduct.qty,
+      currentPrice: cartProduct.product.currentPrice,
+      productImage: cartProduct.product.productImage,
+    };
+    let currentCart = [...cart];
+    const found = currentCart.filter(
+      (entry) => entry.productId === productInCart.productId
+    );
+
+    if (found.length > 0) {
+      // edit qty for productId
+      const newCart = currentCart.map((p) =>
+        p.productId === productInCart.productId
+          ? { ...p, qtyBuy: Number(p.qtyBuy) + Number(productInCart.qtyBuy) }
+          : p
+      );
+      setCart([...newCart]);
+    } else {
+      // add product and it's qty
+      currentCart.push(productInCart);
+      setCart([...currentCart]);
+    }
   };
 
   return (
@@ -125,6 +152,10 @@ const Shopping = () => {
               categories={categories}
               action={updateMasterComponent_AddProductToCart}
             ></ProductDetails>
+            <p></p>
+            <div>
+              {cart && cart.length > 0 && <MyCart cart={cart}></MyCart>}
+            </div>
           </div>
         )}
       </div>

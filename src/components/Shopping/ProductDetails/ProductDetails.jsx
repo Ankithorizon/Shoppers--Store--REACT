@@ -22,6 +22,12 @@ const ProductDetails = ({ product, categories, action }) => {
     if (qty < 0) {
       setQty(0);
       return;
+    } else {
+        var cart = {
+            product: product,
+            qty : qty
+        };
+        action(cart);
     }
   };
   return (

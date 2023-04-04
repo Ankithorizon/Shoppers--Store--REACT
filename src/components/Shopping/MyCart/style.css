@@ -1,0 +1,19 @@
+.cartContainer{
+    border: 2px solid red;
+    border-radius: 20px;
+    padding : 15px;
+}
+.cartPanel {
+    padding: 5px;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;  
+}
+
+.cartTotal {
+    color : blue;
+    padding: 5px;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+}
