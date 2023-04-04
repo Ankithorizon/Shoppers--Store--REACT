@@ -5,15 +5,25 @@ import ProductService from "../../../services/product.service";
 import AuthenticationService from "../../../services/authentication.service";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
+import Form from "react-bootstrap/Form";
 
 const ProductDetails = ({ product, categories, action }) => {
   let navigate = useNavigate();
   const productFilePath = "https://localhost:44379/Files/";
 
+  const [qty, setQty] = useState(1);
   useEffect(() => {
     console.log(product);
-  }, []);
+    setQty(1);
+  }, [product]);
 
+  const addToCart = () => {
+    console.log("adding product #", product.productId, qty);
+    if (qty < 0) {
+      setQty(0);
+      return;
+    }
+  };
   return (
     <div className="card">
       <div className="card-header">
@@ -37,19 +47,42 @@ const ProductDetails = ({ product, categories, action }) => {
             </span>
           )}
         </h5>
-        <div>
-          {product.productImage ? (
-            <span>
-              <img
-                width="100"
-                height="100"
-                src={`${productFilePath}/${product.productImage}`}
-                alt="Product Image"
-              />
-            </span>
-          ) : (
-            <span className="noImage">NO IMAGE</span>
-          )}
+        <div className="row">
+          <div className="col-sm-6">
+            {product.productImage ? (
+              <div>
+                <img
+                  width="100"
+                  height="100"
+                  src={`${productFilePath}/${product.productImage}`}
+                  alt="Product Image"
+                />
+              </div>
+            ) : (
+              <div className="noImage">NO IMAGE</div>
+            )}
+          </div>
+          <div className="col-sm-6 addCartBtn">
+            <div className="row">
+              <div className="col-sm-5 qty">
+                <Form.Control
+                  value={qty}
+                  pattern="[0-9]*"
+                  type="number"
+                  onChange={(e) => setQty(e.target.value)}
+                />
+              </div>
+              <div className="col-sm-7">
+                <Button
+                  className="btn btn-info"
+                  type="button"
+                  onClick={(e) => addToCart(e)}
+                >
+                  Add &nbsp;&nbsp;<i className="bi bi-cart4"></i>
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

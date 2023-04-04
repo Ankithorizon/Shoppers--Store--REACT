@@ -15,6 +15,21 @@
 .nowPrice {
     color: red;
     background-color: bisque;
-    font-size: medium;
-    padding: 5px;
+    font-size: medium;    
+    padding: 10px;
+}
+
+.card-body{
+    text-align: left;
+}
+
+.addCartBtn{
+    position: absolute;
+    right:    0;
+    bottom:   0;
+    text-align: left;
+    padding-bottom: 20px;
+}
+.qty{
+    text-align: right;
 }

@@ -11,11 +11,15 @@ import { useNavigate } from "react-router-dom";
 
 import { Button, Card } from "react-bootstrap";
 import Product from "./Product/Product";
+import ProductDetails from "./ProductDetails/ProductDetails";
 
 const Shopping = () => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
+  const [categories, setCategories] = useState([]);
+
+  
   let navigate = useNavigate();
   useEffect(() => {
     var currRole = AuthenticationService.getCurrentUserRole();
@@ -23,8 +27,24 @@ const Shopping = () => {
       navigate("/un-auth");
     else {
       allProducts();
+      getCategories();
     }
   }, []);
+
+  const getCategories = () => {
+    ProductService.getCategories()
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((e) => {
+        setCategories(null);
+        if (e.response.status === 400) {
+          console.log(e.response.statusText);
+        } else {
+          unAuthHandler401(e);
+        }
+      });
+  };
 
   const allProducts = () => {
     ProductService.allProducts()
