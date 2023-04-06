@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 import "./App.css";
@@ -22,13 +22,22 @@ import UnAuth from "./components/UnAuth/UnAuth";
 import NotFound from "./components/NotFound/NotFound";
 
 function App() {
+  const [cart, setCart] = useState([]);
+
+  // this will be called by child : shopping component
+  // to notify this master : app component's cart[]
+  const updateCartCount_WhenCartUpdated = (updatedCart) => {
+    console.log("in the app now", updatedCart);
+    setCart([...updatedCart]);
+  };
+
   return (
     <div className="App">
       <div className="main-wrapper">
         <Router>
           <ToastContainer style={{ width: "500px" }} />
 
-          <Header />
+          <Header cart={cart}></Header>
           <div className="mainContent">
             <Routes>
               <Route path="/" element={<Home />} />
@@ -39,7 +48,10 @@ function App() {
               <Route path="/set-discount" element={<SetDiscount />} />
               <Route path="/text-reports" element={<TextReports />} />
               <Route path="/chart-reports" element={<ChartReports />} />
-              <Route path="/shopping" element={<Shopping />} />
+              <Route
+                path="/shopping"
+                element={<Shopping action={updateCartCount_WhenCartUpdated} />}
+              />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/un-auth" element={<UnAuth />} />

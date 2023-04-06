@@ -10,13 +10,26 @@ import { Button, Card } from "react-bootstrap";
 
 // this component will display total number of products in your cart
 const CartHeader = ({ cart }) => {
-  const [totalItems, setTotalItems] = useState(0);
-
+  const [cartItemCount, setCartItemCount] = useState(0);
   useEffect(() => {
-    setTotalItems(totalItems + 10);
+    let cartItemCount_ = 0;
+    var myCart = cart.map((p) => {
+      cartItemCount_ += Number(p.qtyBuy);
+    });
+    setCartItemCount(cartItemCount_);
   }, [cart]);
 
-    return <div className="cart">{totalItems }</div>;
+  return (
+    <div>
+      {cartItemCount > 0 && (
+        <div className="cart">
+          <i className="bi bi-cart4"></i>
+          &nbsp;&nbsp;
+          {cartItemCount}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default CartHeader;

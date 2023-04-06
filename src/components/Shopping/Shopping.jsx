@@ -14,7 +14,7 @@ import Product from "./Product/Product";
 import ProductDetails from "./ProductDetails/ProductDetails";
 import MyCart from "./MyCart/MyCart";
 
-const Shopping = () => {
+const Shopping = ({ action }) => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -112,18 +112,29 @@ const Shopping = () => {
           : p
       );
       setCart([...newCart]);
+
+      // master : app component
+      // child : shopping component
+      // when app component get notified with updated cart,,,
+      // by it's child : shopping component
+      // then app component will send this updated information to it's another
+      // child : header component [child:cart-header component],,,
+      // that only displays total cart products
+      action(newCart);
     } else {
       // add product and it's qty
       currentCart.push(productInCart);
       setCart([...currentCart]);
-    }
 
-    // master : header component
-    // child : shopping component
-    // when header component get notified with updated total cart products,,,
-    // by it's child : shopping component
-    // then header component will send this information to it's
-    // child : cart-header component which only displays total cart products
+      // master : app component
+      // child : shopping component
+      // when app component get notified with updated cart,,,
+      // by it's child : shopping component
+      // then app component will send this updated information to it's another
+      // child : header component [child:cart-header component],,,
+      // that only displays total cart products
+      action(currentCart);
+    }
   };
 
   return (

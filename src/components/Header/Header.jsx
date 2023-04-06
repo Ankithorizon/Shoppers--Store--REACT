@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import AuthenticationService from "../../services/authentication.service";
 import CartHeader from "../CartHeader/CartHeader";
 
-const Header = () => {
+const Header = ({ cart }) => {
   const navigate = useNavigate();
 
   const [currentUserName, setCurrentUserName] = useState(null);
@@ -91,7 +91,7 @@ const Header = () => {
           {currentUserName ? (
             <Nav>
               <Link to={"/shopping"} className="nav-link">
-                <CartHeader></CartHeader>
+                <CartHeader cart={cart}></CartHeader>
               </Link>
               <a href="/login" onClick={() => logout()} className="nav-link">
                 <h6>
