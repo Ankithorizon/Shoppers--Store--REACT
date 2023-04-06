@@ -117,6 +117,13 @@ const Shopping = () => {
       currentCart.push(productInCart);
       setCart([...currentCart]);
     }
+
+    // master : header component
+    // child : shopping component
+    // when header component get notified with updated total cart products,,,
+    // by it's child : shopping component
+    // then header component will send this information to it's
+    // child : cart-header component which only displays total cart products
   };
 
   return (

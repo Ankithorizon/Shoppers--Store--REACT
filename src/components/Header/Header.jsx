@@ -7,6 +7,7 @@ import "./style.css";
 
 import { useNavigate } from "react-router-dom";
 import AuthenticationService from "../../services/authentication.service";
+import CartHeader from "../CartHeader/CartHeader";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -89,6 +90,9 @@ const Header = () => {
 
           {currentUserName ? (
             <Nav>
+              <Link to={"/shopping"} className="nav-link">
+                <CartHeader></CartHeader>
+              </Link>
               <a href="/login" onClick={() => logout()} className="nav-link">
                 <h6>
                   <b>
