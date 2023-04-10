@@ -12,6 +12,9 @@ const MyCart = ({ cart }) => {
   const productFilePath = "https://localhost:44379/Files/";
 
   const [cartTotal, setCartTotal] = useState(0);
+  const [amountToPay, setAmountToPay] = useState(0);
+
+  // parseFloat(((currentItem.currentPrice * currentItem.qtyBuy).toFixed(2))), 0));
   useEffect(() => {
     var cartTotal_ = cart.reduce(
       (total, currentItem) =>
@@ -23,6 +26,7 @@ const MyCart = ({ cart }) => {
       0
     );
     setCartTotal(cartTotal_);
+    setAmountToPay((Math.ceil(cartTotal_ * 20 - 0.5) / 20).toFixed(2));
   }, [cart]);
 
   const displayCartHeader = () => {
@@ -70,6 +74,8 @@ const MyCart = ({ cart }) => {
       <div> {displayCart}</div>
       <div className="cartTotal">
         Cart Total $ {Math.round(cartTotal * 100) / 100}
+        <br />
+        <span className="amountToPay">Amount To Pay ${amountToPay}</span>
       </div>
       <div>
         <Button
