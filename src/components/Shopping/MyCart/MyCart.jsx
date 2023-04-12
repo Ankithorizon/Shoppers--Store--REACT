@@ -70,6 +70,7 @@ const MyCart = ({ cart }) => {
   const viewEditCart = () => {};
   return (
     <div className="cartContainer">
+      {/*
       {displayCartHeader()} <p></p>
       <div> {displayCart}</div>
       <div className="cartTotal">
@@ -77,6 +78,7 @@ const MyCart = ({ cart }) => {
         <br />
         <span className="amountToPay">Amount To Pay ${amountToPay}</span>
       </div>
+      */}
       <div>
         <Button
           className="btn btn-info"
