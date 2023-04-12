@@ -24,6 +24,15 @@ import NotFound from "./components/NotFound/NotFound";
 function App() {
   const [cart, setCart] = useState([]);
 
+  // this will get cart[] from local-storage when browser refresh
+  useEffect(() => {
+    // check for cart[] @ local-storage
+    var myCart = JSON.parse(localStorage.getItem("my-cart") || "[]");
+    if (myCart !== undefined && myCart !== null && myCart.length > 0) {
+      setCart([...myCart]);
+    }
+  }, []);
+
   // this will be called by child : shopping component
   // to notify this master : app component's cart[]
   const updateCartCount_WhenCartUpdated = (updatedCart) => {

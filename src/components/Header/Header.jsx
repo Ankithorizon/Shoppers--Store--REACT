@@ -33,6 +33,9 @@ const Header = ({ cart }) => {
     setCurrentUserName(null);
     setCurrentUserRole(null);
     setCurrentUserToken(null);
+
+    // remove cart[] from local-storage
+    localStorage.removeItem("my-cart");
   };
 
   return (

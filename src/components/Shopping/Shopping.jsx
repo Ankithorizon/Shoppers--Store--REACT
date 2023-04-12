@@ -29,7 +29,7 @@ const Shopping = ({ action }) => {
       navigate("/un-auth");
     else {
       allProducts();
-      getCategories();
+      getCategories();     
     }
   }, []);
 
@@ -99,7 +99,16 @@ const Shopping = ({ action }) => {
       currentPrice: cartProduct.product.currentPrice,
       productImage: cartProduct.product.productImage,
     };
-    let currentCart = [...cart];
+
+    var currentCart = [];
+    // check for cart[] @ local-storage
+    var myCart = JSON.parse(localStorage.getItem("my-cart") || "[]");
+    if (myCart !== undefined && myCart !== null && myCart.length > 0) {
+      currentCart = [...myCart];
+    } else {
+      currentCart = [...cart];
+    }
+    
     const found = currentCart.filter(
       (entry) => entry.productId === productInCart.productId
     );
@@ -113,6 +122,9 @@ const Shopping = ({ action }) => {
       );
       setCart([...newCart]);
 
+      // update local-storage for cart[]
+      localStorage.setItem("my-cart", JSON.stringify(newCart));
+
       // master : app component
       // child : shopping component
       // when app component get notified with updated cart,,,
@@ -125,6 +137,9 @@ const Shopping = ({ action }) => {
       // add product and it's qty
       currentCart.push(productInCart);
       setCart([...currentCart]);
+
+      // update local-storage for cart[]
+      localStorage.setItem("my-cart", JSON.stringify(currentCart));
 
       // master : app component
       // child : shopping component
