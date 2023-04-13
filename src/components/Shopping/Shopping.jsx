@@ -29,7 +29,7 @@ const Shopping = ({ action }) => {
       navigate("/un-auth");
     else {
       allProducts();
-      getCategories();     
+      getCategories();
     }
   }, []);
 
@@ -108,7 +108,7 @@ const Shopping = ({ action }) => {
     } else {
       currentCart = [...cart];
     }
-    
+
     const found = currentCart.filter(
       (entry) => entry.productId === productInCart.productId
     );

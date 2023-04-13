@@ -13,8 +13,7 @@ const MyCart = ({ cart }) => {
 
   const [cartTotal, setCartTotal] = useState(0);
   const [amountToPay, setAmountToPay] = useState(0);
-
-  // parseFloat(((currentItem.currentPrice * currentItem.qtyBuy).toFixed(2))), 0));
+  
   useEffect(() => {
     var cartTotal_ = cart.reduce(
       (total, currentItem) =>
@@ -70,7 +69,6 @@ const MyCart = ({ cart }) => {
   const viewEditCart = () => {};
   return (
     <div className="cartContainer">
-      {/*
       {displayCartHeader()} <p></p>
       <div> {displayCart}</div>
       <div className="cartTotal">
@@ -78,7 +76,6 @@ const MyCart = ({ cart }) => {
         <br />
         <span className="amountToPay">Amount To Pay ${amountToPay}</span>
       </div>
-      */}
       <div>
         <Button
           className="btn btn-info"
