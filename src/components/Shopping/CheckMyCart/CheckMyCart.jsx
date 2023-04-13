@@ -65,6 +65,8 @@ const CheckMyCart = ({ cart, action }) => {
     action([...newCart]);
   };
 
+  const checkOut = () => {};
+
   const displayCartHeader = () => {
     return (
       <div className="row">
@@ -96,21 +98,21 @@ const CheckMyCart = ({ cart, action }) => {
           </div>
           <div className="col-sm-2">
             <Button
-              className="btn btn-info"
+              className="btn btn-info minusBtn"
               onClick={(e) => minusQty(item)}
               type="button"
             >
-              <i className="bi bi-cart4"></i>
+              <i className="bi bi-dash-circle"></i>
             </Button>
             &nbsp;&nbsp;
             {item.qtyBuy}
             &nbsp;&nbsp;
             <Button
-              className="btn btn-info"
+              className="btn btn-info plusBtn"
               onClick={(e) => plusQty(item)}
               type="button"
             >
-              <i className="bi bi-cart4"></i>
+              <i className="bi bi-plus-circle"></i>
             </Button>
           </div>
           <div className="col-sm-2">{item.currentPrice}</div>
@@ -132,7 +134,21 @@ const CheckMyCart = ({ cart, action }) => {
             <div className="cartTotal">
               Cart Total $ {Math.round(cartTotal * 100) / 100}
               <br />
-              <span className="amountToPay">Amount To Pay ${amountToPay}</span>
+              <span className="amountToPay">
+                Amount To Pay ${amountToPay}
+                &nbsp;&nbsp;
+                {amountToPay > 0 && (
+                  <Button
+                    className="btn btn-info"
+                    onClick={(e) => checkOut()}
+                    type="button"
+                  >
+                    <i className="bi bi-credit-card-2-front-fill"></i>
+                    &nbsp;Check Out&nbsp;
+                    <i className="bi bi-wallet-fill"></i>
+                  </Button>
+                )}
+              </span>
             </div>
             <div></div>
           </div>
