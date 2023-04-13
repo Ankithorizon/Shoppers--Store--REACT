@@ -9,11 +9,13 @@ import { useNavigate } from "react-router-dom";
 import { Button, Card } from "react-bootstrap";
 
 const MyCart = ({ cart }) => {
+  const navigate = useNavigate();
+
   const productFilePath = "https://localhost:44379/Files/";
 
   const [cartTotal, setCartTotal] = useState(0);
   const [amountToPay, setAmountToPay] = useState(0);
-  
+
   useEffect(() => {
     var cartTotal_ = cart.reduce(
       (total, currentItem) =>
@@ -66,7 +68,9 @@ const MyCart = ({ cart }) => {
       );
     }, this);
 
-  const viewEditCart = () => {};
+  const viewEditCart = () => {
+    navigate("/check-my-cart");
+  };
   return (
     <div className="cartContainer">
       {displayCartHeader()} <p></p>

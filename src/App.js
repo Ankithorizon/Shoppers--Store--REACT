@@ -39,6 +39,19 @@ function App() {
   const updateCartCount_WhenCartUpdated = (updatedCart) => {
     console.log("in the app now", updatedCart);
     setCart([...updatedCart]);
+
+    // update local-storage for cart[]
+    localStorage.setItem("my-cart", JSON.stringify(updatedCart));
+  };
+
+  // this will be called by child : check-my-cart component
+  // to notify this master : app component's cart[]
+  const updateCart_WhenCartUpdated = (updatedCart) => {
+    console.log("in the app now", updatedCart);
+    setCart([...updatedCart]);
+
+    // update local-storage for cart[]
+    localStorage.setItem("my-cart", JSON.stringify(updatedCart));
   };
 
   return (
@@ -64,7 +77,12 @@ function App() {
               />
               <Route
                 path="/check-my-cart"
-                element={<CheckMyCart cart={cart} />}
+                element={
+                  <CheckMyCart
+                    action={updateCart_WhenCartUpdated}
+                    cart={cart}
+                  />
+                }
               />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />

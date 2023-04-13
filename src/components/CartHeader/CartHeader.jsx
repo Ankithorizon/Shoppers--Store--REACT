@@ -4,8 +4,6 @@ import "./style.css";
 import AuthenticationService from "../../services/authentication.service";
 import ProductService from "../../services/product.service";
 
-import { useNavigate } from "react-router-dom";
-
 import { Button, Card } from "react-bootstrap";
 
 // this component will display total number of products in your cart

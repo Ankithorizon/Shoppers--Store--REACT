@@ -8,29 +8,63 @@ import { useNavigate } from "react-router-dom";
 
 import { Button, Card } from "react-bootstrap";
 
-const CheckMyCart = ({ cart }) => {
+const CheckMyCart = ({ cart, action }) => {
+  let navigate = useNavigate();
+
   const productFilePath = "https://localhost:44379/Files/";
   const [cartTotal, setCartTotal] = useState(0);
   const [amountToPay, setAmountToPay] = useState(0);
 
   useEffect(() => {
-    var cartTotal_ = cart.reduce(
-      (total, currentItem) =>
-        (total =
-          total +
-          parseFloat(
-            (currentItem.currentPrice * currentItem.qtyBuy).toFixed(2)
-          )),
-      0
-    );
-    setCartTotal(cartTotal_);
-    setAmountToPay((Math.ceil(cartTotal_ * 20 - 0.5) / 20).toFixed(2));
+    var currRole = AuthenticationService.getCurrentUserRole();
+    if (currRole === null || (currRole !== null && currRole !== "Shopper"))
+      navigate("/un-auth");
+    else {
+      var cartTotal_ = cart.reduce(
+        (total, currentItem) =>
+          (total =
+            total +
+            parseFloat(
+              (currentItem.currentPrice * currentItem.qtyBuy).toFixed(2)
+            )),
+        0
+      );
+      setCartTotal(cartTotal_);
+      setAmountToPay((Math.ceil(cartTotal_ * 20 - 0.5) / 20).toFixed(2));
+    }
   }, [cart]);
 
-  const minusQty = (item) => {};
+  const minusQty = (item) => {
+    let cart_ = [...cart];
 
-  const plusQty = (item) => { };
-  
+    if (item.qtyBuy - 1 < 1) {
+      let filteredArray = cart_.filter(
+        (product) => product.productId !== item.productId
+      );
+      action([...filteredArray]);
+    } else {
+      console.log("minus 1 item from cart,,,");
+      // edit qty for productId
+      const newCart = cart_.map((p) =>
+        p.productId === item.productId
+          ? { ...p, qtyBuy: Number(p.qtyBuy) - 1 }
+          : p
+      );
+      action([...newCart]);
+    }
+  };
+
+  const plusQty = (item) => {
+    let cart_ = [...cart];
+    // edit qty for productId
+    const newCart = cart_.map((p) =>
+      p.productId === item.productId
+        ? { ...p, qtyBuy: Number(p.qtyBuy) + 1 }
+        : p
+    );
+    action([...newCart]);
+  };
+
   const displayCartHeader = () => {
     return (
       <div className="row">
@@ -90,8 +124,8 @@ const CheckMyCart = ({ cart }) => {
   return (
     <div className="mainContainer">
       <div className="row">
-        <div className="col-sm-1"></div>
-        <div className="col-sm-10">
+        <div className="col-sm-2"></div>
+        <div className="col-sm-8">
           <div className="cartContainer">
             {displayCartHeader()} <p></p>
             <div> {displayCart}</div>
@@ -103,7 +137,7 @@ const CheckMyCart = ({ cart }) => {
             <div></div>
           </div>
         </div>
-        <div className="col-sm-1"></div>
+        <div className="col-sm-2"></div>
       </div>
     </div>
   );

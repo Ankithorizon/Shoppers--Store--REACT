@@ -93,7 +93,7 @@ const Header = ({ cart }) => {
 
           {currentUserName ? (
             <Nav>
-              <Link to={"/shopping"} className="nav-link">
+              <Link to={"/check-my-cart"} className="nav-link">
                 <CartHeader cart={cart}></CartHeader>
               </Link>
               <a href="/login" onClick={() => logout()} className="nav-link">

@@ -122,9 +122,7 @@ const Shopping = ({ action }) => {
       );
       setCart([...newCart]);
 
-      // update local-storage for cart[]
-      localStorage.setItem("my-cart", JSON.stringify(newCart));
-
+     
       // master : app component
       // child : shopping component
       // when app component get notified with updated cart,,,
@@ -138,9 +136,7 @@ const Shopping = ({ action }) => {
       currentCart.push(productInCart);
       setCart([...currentCart]);
 
-      // update local-storage for cart[]
-      localStorage.setItem("my-cart", JSON.stringify(currentCart));
-
+    
       // master : app component
       // child : shopping component
       // when app component get notified with updated cart,,,
