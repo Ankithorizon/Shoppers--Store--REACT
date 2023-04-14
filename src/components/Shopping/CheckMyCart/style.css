@@ -34,3 +34,19 @@
 .plusBtn { 
     color : green;
 }
+
+.myCart{
+    color : red;
+    background-color: lightgoldenrodyellow;
+    font-size: x-large;
+    font-weight: bold;
+    font-style: italic;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.emptyCartBtn{
+    color : red;
+    font-size: large;
+    font-weight: bold;
+}

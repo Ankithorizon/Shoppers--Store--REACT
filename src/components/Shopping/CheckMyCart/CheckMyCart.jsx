@@ -65,20 +65,28 @@ const CheckMyCart = ({ cart, action }) => {
     action([...newCart]);
   };
 
-  const checkOut = () => {};
+  const checkOut = () => {
+    navigate("/payment");
+  };
 
   const displayCartHeader = () => {
     return (
       <div className="row">
         <div className="col-sm-2"></div>
-        <div className="col-sm-2">
-          <b>QTY</b>
+        <div className="col-sm-4">
+          <b>
+            <u>QTY</u>
+          </b>
         </div>
         <div className="col-sm-2">
-          <b>PRICE</b>
+          <b>
+            <u>PRICE</u>
+          </b>
         </div>
         <div className="col-sm-2">
-          <b>$ TOTAL</b>
+          <b>
+            <u>$ TOTAL</u>
+          </b>
         </div>
       </div>
     );
@@ -96,7 +104,7 @@ const CheckMyCart = ({ cart, action }) => {
               src={`${productFilePath}/${item.productImage}`}
             />
           </div>
-          <div className="col-sm-2">
+          <div className="col-sm-4">
             <Button
               className="btn btn-info minusBtn"
               onClick={(e) => minusQty(item)}
@@ -123,20 +131,37 @@ const CheckMyCart = ({ cart, action }) => {
       );
     }, this);
 
+  const emptyCart = () => {
+    // remove cart[] from local-storage
+    localStorage.removeItem("my-cart");
+
+    // this will empty cart[] @ App - master component
+    action([]);
+  };
   return (
     <div className="mainContainer">
       <div className="row">
-        <div className="col-sm-2"></div>
-        <div className="col-sm-8">
+        <div className="col-sm-3"></div>
+        <div className="col-sm-6">
           <div className="cartContainer">
+            <div className="row myCart">
+              <div className="col-sm-10">My-Cart</div>
+              <div className="col-sm-2">
+                <Button
+                  className="btn btn-info emptyCartBtn"
+                  onClick={() => emptyCart()}
+                  type="button"
+                >
+                  <i className="bi bi-cart-x"></i>
+                </Button>
+              </div>
+            </div>
             {displayCartHeader()} <p></p>
             <div> {displayCart}</div>
             <div className="cartTotal">
               Cart Total $ {Math.round(cartTotal * 100) / 100}
-              <br />
+              <p></p>
               <span className="amountToPay">
-                Amount To Pay ${amountToPay}
-                &nbsp;&nbsp;
                 {amountToPay > 0 && (
                   <Button
                     className="btn btn-info"
@@ -146,14 +171,14 @@ const CheckMyCart = ({ cart, action }) => {
                     <i className="bi bi-credit-card-2-front-fill"></i>
                     &nbsp;Check Out&nbsp;
                     <i className="bi bi-wallet-fill"></i>
+                    <br />${amountToPay}
                   </Button>
                 )}
               </span>
             </div>
-            <div></div>
           </div>
         </div>
-        <div className="col-sm-2"></div>
+        <div className="col-sm-3"></div>
       </div>
     </div>
   );

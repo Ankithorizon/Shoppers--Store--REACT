@@ -16,6 +16,7 @@ import TextReports from "./components/Reports/TextReports/TextReports";
 import ChartReports from "./components/Reports/ChartReports/ChartReports";
 import Shopping from "./components/Shopping/Shopping";
 import CheckMyCart from "./components/Shopping/CheckMyCart/CheckMyCart";
+import Payment from "./components/Payment/Payment";
 import Header from "./components/Header/Header";
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
@@ -80,6 +81,14 @@ function App() {
                 element={
                   <CheckMyCart
                     action={updateCart_WhenCartUpdated}
+                    cart={cart}
+                  />
+                }
+              />
+              <Route
+                path="/payment"
+                element={
+                  <Payment
                     cart={cart}
                   />
                 }
