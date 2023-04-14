@@ -1,0 +1,12 @@
+.errorDisplay{
+    color : rgb(196, 21, 21);
+    font-size: medium;
+    font-weight: bold;
+    font-style: normal;
+}
+.cvvNumber {
+    width: 100px;
+}
+.ccNumber {
+    width: 300px;
+}
