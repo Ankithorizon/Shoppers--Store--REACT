@@ -55,6 +55,16 @@ function App() {
     localStorage.setItem("my-cart", JSON.stringify(updatedCart));
   };
 
+  // this will be called by child : payment-->>cc-payment & cash-payment component
+  // to notify this master : app component's cart[]
+  const updateCart_AfterSuccessful_Payment = (updatedCart) => {
+    console.log("in the app now", updatedCart);
+    setCart([...updatedCart]);
+
+    // update local-storage for cart[]
+    localStorage.setItem("my-cart", JSON.stringify(updatedCart));
+  };
+
   return (
     <div className="App">
       <div className="main-wrapper">
@@ -89,6 +99,7 @@ function App() {
                 path="/payment"
                 element={
                   <Payment
+                    action={updateCart_AfterSuccessful_Payment}
                     cart={cart}
                   />
                 }

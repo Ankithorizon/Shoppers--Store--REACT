@@ -3,6 +3,7 @@ import "./style.css";
 
 import AuthenticationService from "../../../services/authentication.service";
 import ProductService from "../../../services/product.service";
+import ProductSellService from "../../../services/product.sell.service";
 import authenticationHeader from "../../../services/authentication.header";
 
 import Form from "react-bootstrap/Form";
@@ -11,7 +12,7 @@ import { Card } from "react-bootstrap";
 
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-const CCPayment = () => {
+const CCPayment = ({ cart, action }) => {
   // reset form
   // form reference
   const formRef = useRef(null);
@@ -27,6 +28,10 @@ const CCPayment = () => {
   // 1=cash/2=cc
   const [paymentType, setPaymentType] = useState(2);
   const [cardType, setCardType] = useState("");
+
+  const [amountToPay, setAmountToPay] = useState(0);
+
+  const [bill, setBill] = useState(null);
 
   const years_ = Array.from([2023, 2024, 2025], (e) => {
     return {
@@ -55,14 +60,20 @@ const CCPayment = () => {
   };
 
   useEffect(() => {
-    var currRole = AuthenticationService.getCurrentUserRole();
+    setMonths(months_);
+    setYears(years_);
 
-    if (currRole === null || (currRole !== null && currRole !== "Shopper"))
-      navigate("/un-auth");
-    else {
-      setMonths(months_);
-      setYears(years_);
-    }
+    // get cart total
+    var cartTotal_ = cart.reduce(
+      (total, currentItem) =>
+        (total =
+          total +
+          parseFloat(
+            (currentItem.currentPrice * currentItem.qtyBuy).toFixed(2)
+          )),
+      0
+    );
+    setAmountToPay((Math.ceil(cartTotal_ * 20 - 0.5) / 20).toFixed(2));
   }, []);
 
   const setField = (field, value) => {
@@ -87,17 +98,17 @@ const CCPayment = () => {
       newErrors.ccNumber = "Credit Card Number is Required!";
     else {
       let accepted = false;
-      let ccType = "";
 
       // loop through the keys (visa, mastercard, amex, etc.)
       Object.keys(creditCardTypes).forEach(function (key) {
         var regex = creditCardTypes[key];
+        console.log(regex);
         if (regex.test(ccNumber)) {
           accepted = true;
-          ccType = key;
+          console.log("your cc is : ", key);
+          setCardType(key);
         }
       });
-      setCardType(ccType);
       if (!accepted) {
         newErrors.ccNumber = "Invalid CC Number!";
       }
@@ -157,7 +168,7 @@ const CCPayment = () => {
       // cc
       paymentDTO = {
         paymentType: Number(paymentType), // 1=cash/2=cc
-        amountPaid: Number(1000),
+        amountPaid: Number(amountToPay),
         cardNumber: form.ccNumber,
         cardType: cardType,
         cardCVV: Number(form.cvvNumber),
@@ -175,6 +186,42 @@ const CCPayment = () => {
 
       // bill
       console.log(billDTO);
+
+      // api call
+      ProductSellService.billCreate(billDTO)
+        .then((response) => {
+          // console.log(response);
+
+          if (
+            response.data.billRefCode === "" ||
+            response.data.billRefCode === null
+          ) {
+            console.log("Bill can not create...");
+            toast("Server Error - Payment : Fail !", errorOptions);
+          } else {
+            // display bill when bill-create-success
+            var billCustomerCopy = {
+              billRefCode: response.data.billRefCode,
+              billAmount: response.data.payment.amountPaid,
+              paymentType: response.data.payment.paymentType,
+              cart: response.data.cart.products,
+            };
+            setBill(billCustomerCopy);
+
+            resetForm();
+
+            toast("Payment : Success !", successOptions);
+
+            // reset cart[] after successful payment
+            // notify master : payment component
+            action([]);
+
+            navigate("/shopping");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
@@ -183,6 +230,7 @@ const CCPayment = () => {
     setErrors({});
     setForm({});
     resetErrors();
+    setAmountToPay(0);
   };
 
   const renderOptionsForMonth = () => {
@@ -229,7 +277,6 @@ const CCPayment = () => {
   };
   return (
     <div>
-      {" "}
       <div className="card">
         <div className="card-header">
           <div className="cardHeader">
@@ -279,7 +326,7 @@ const CCPayment = () => {
                 </div>
                 <p></p>
                 <div className="row">
-                  <div className="col-sm-6">
+                  <div className="col-sm-5">
                     <Form.Group controlId="mm">
                       <Form.Control
                         as="select"
@@ -298,6 +345,9 @@ const CCPayment = () => {
                         {errors.mm}
                       </Form.Control.Feedback>
                     </Form.Group>
+                  </div>
+                  <div className="col-sm-1">
+                    <span>/</span>
                   </div>
                   <div className="col-sm-6">
                     <Form.Group controlId="yy">

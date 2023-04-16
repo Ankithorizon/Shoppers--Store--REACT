@@ -10,14 +10,40 @@ import { Button, Card } from "react-bootstrap";
 import CashPayment from "./CashPayment/CashPayment";
 import CCPayment from "./CCPayment/CCPayment";
 
-const Payment = ({ cart }) => {
+const Payment = ({ cart, action }) => {
+  let navigate = useNavigate();
+
   const [payByMethod, setPayByMethod] = useState("");
+
+  useEffect(() => {
+    console.log(cart);
+    var currRole = AuthenticationService.getCurrentUserRole();
+
+    if (currRole === null || (currRole !== null && currRole !== "Shopper"))
+      navigate("/un-auth");
+    else {
+      if (cart && cart.length > 0) {
+      } else {
+        navigate("/shopping");
+      }
+    }
+  }, []);
+
   const payByCash = () => {
     setPayByMethod("CASH");
   };
   const payByCC = () => {
     setPayByMethod("CC");
   };
+
+  // this will be called by child : cc-payment & cash-payment component
+  // to notify this master : payment component
+  const updateCart_AfterSuccessful_Payment = (updatedCart) => {
+    // up further this payment component, notify app master component
+    // to update cart[] after successful payment
+    action(updatedCart);
+  };
+
   return (
     <div className="mainContainer">
       <div className="container">
@@ -58,7 +84,10 @@ const Payment = ({ cart }) => {
             )}
             {payByMethod === "CC" && (
               <div className="payMethodContainer">
-                <CCPayment></CCPayment>
+                <CCPayment
+                  cart={cart}
+                  action={updateCart_AfterSuccessful_Payment}
+                ></CCPayment>
               </div>
             )}
           </div>

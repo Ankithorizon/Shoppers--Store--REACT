@@ -1,7 +1,7 @@
 import productSellHttp from "../axios/product-sell-http-common";
-import authHeader from "./auth-header";
+import authenticationHeader from "./authentication.header";
 
-class ProductSellDataService {
+class ProductSellService {
   billCreate = async (data) => {
     return productSellHttp.post("/billCreate", data, {
       headers: authenticationHeader(),
@@ -9,4 +9,4 @@ class ProductSellDataService {
   };
 }
 
-export default new ProductSellDataService();
+export default new ProductSellService();
