@@ -295,7 +295,6 @@ const CCPayment = ({ cart, action }) => {
                 <div>
                   <Form.Group controlId="ccNumber">
                     <Form.Control
-                      className="ccNumber"
                       placeholder="xxxx-xxxx-xxxx-xxxx"
                       type="text"
                       isInvalid={!!errors.ccNumber}

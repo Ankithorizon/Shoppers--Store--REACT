@@ -8,11 +8,10 @@ import { useNavigate } from "react-router-dom";
 
 import { Button, Card } from "react-bootstrap";
 
-const MyCart = ({ cart }) => {
-  const navigate = useNavigate();
+const BillItems = ({ cart }) => {
+  let navigate = useNavigate();
 
   const productFilePath = "https://localhost:44379/Files/";
-
   const [cartTotal, setCartTotal] = useState(0);
   const [amountToPay, setAmountToPay] = useState(0);
 
@@ -33,15 +32,16 @@ const MyCart = ({ cart }) => {
   const displayCartHeader = () => {
     return (
       <div className="row">
-        <div className="col-sm-3"></div>
-        <div className="col-sm-3">
-          <b>QTY</b>
+        <div className="col-sm-4"></div>
+        <div className="col-sm-4">
+          <b>
+            <u>PRICE [QTY]</u>
+          </b>
         </div>
-        <div className="col-sm-3">
-          <b>PRICE</b>
-        </div>
-        <div className="col-sm-3">
-          <b>$ TOTAL</b>
+        <div className="col-sm-4">
+          <b>
+            <u>$ TOTAL</u>
+          </b>
         </div>
       </div>
     );
@@ -52,16 +52,17 @@ const MyCart = ({ cart }) => {
     cart.map((item, i) => {
       return (
         <div className="row cartPanel" key={i}>
-          <div className="col-sm-3">
+          <div className="col-sm-4">
             <img
               width="35"
               height="35"
               src={`${productFilePath}/${item.productImage}`}
             />
           </div>
-          <div className="col-sm-3">{item.qtyBuy}</div>
-          <div className="col-sm-3">{item.currentPrice.toFixed(2)}</div>
-          <div className="col-sm-3">
+          <div className="col-sm-4">
+            {item.currentPrice.toFixed(2)} [{item.qtyBuy}]
+          </div>
+          <div className="col-sm-4">
             {(Math.round(item.qtyBuy * item.currentPrice * 100) / 100).toFixed(
               2
             )}
@@ -70,29 +71,24 @@ const MyCart = ({ cart }) => {
       );
     }, this);
 
-  const viewEditCart = () => {
-    navigate("/check-my-cart");
-  };
   return (
-    <div className="cartContainer">
-      {displayCartHeader()} <p></p>
-      <div> {displayCart}</div>
-      <div className="cartTotal">
-        Cart Total ${(Math.round(cartTotal * 100) / 100).toFixed(2)}
-        <br />
-        <span className="amountToPay">Amount To Pay ${amountToPay}</span>
-      </div>
-      <div>
-        <Button
-          className="btn btn-info"
-          type="button"
-          onClick={(e) => viewEditCart(e)}
-        >
-          Edit / View &nbsp;&nbsp;<i className="bi bi-cart4"></i>
-        </Button>
+    <div className="billContainer">
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="billSummary">
+            Cart Total ${(Math.round(cartTotal * 100) / 100).toFixed(2)}
+            <br />
+            <span className="amountToPay">Amount To Pay ${amountToPay}</span>
+          </div>
+          <p></p>
+          <div className="cartContainer">
+            {displayCartHeader()} <p></p>
+            <div> {displayCart}</div>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default MyCart;
+export default BillItems;

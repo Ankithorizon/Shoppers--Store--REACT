@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Card } from "react-bootstrap";
 import CashPayment from "./CashPayment/CashPayment";
 import CCPayment from "./CCPayment/CCPayment";
+import BillItems from "./BillItems/BillItems";
 
 const Payment = ({ cart, action }) => {
   let navigate = useNavigate();
@@ -49,7 +50,6 @@ const Payment = ({ cart, action }) => {
     <div className="mainContainer">
       <div className="container">
         <div className="row">
-          <div className="col-sm-3"></div>
           <div className="col-sm-6">
             <div className="row">
               <div className="col-sm-6">
@@ -73,10 +73,11 @@ const Payment = ({ cart, action }) => {
               </div>
             </div>
           </div>
-          <div className="col-sm-3"></div>
+          <div className="col-sm-6">
+            <h2>Bill Items</h2>
+          </div>
         </div>
         <div className="row">
-          <div className="col-sm-3"></div>
           <div className="col-sm-6">
             {payByMethod === "CASH" && (
               <div className="payMethodContainer">
@@ -92,7 +93,9 @@ const Payment = ({ cart, action }) => {
               </div>
             )}
           </div>
-          <div className="col-sm-3"></div>
+          <div className="col-sm-6">
+            <BillItems cart={cart}></BillItems>
+          </div>
         </div>
       </div>
     </div>

@@ -123,9 +123,11 @@ const CheckMyCart = ({ cart, action }) => {
               <i className="bi bi-plus-circle"></i>
             </Button>
           </div>
-          <div className="col-sm-2">{item.currentPrice}</div>
+          <div className="col-sm-2">{item.currentPrice.toFixed(2)}</div>
           <div className="col-sm-2">
-            {Math.round(item.qtyBuy * item.currentPrice * 100) / 100}
+            {(Math.round(item.qtyBuy * item.currentPrice * 100) / 100).toFixed(
+              2
+            )}
           </div>
         </div>
       );
@@ -159,7 +161,7 @@ const CheckMyCart = ({ cart, action }) => {
             {displayCartHeader()} <p></p>
             <div> {displayCart}</div>
             <div className="cartTotal">
-              Cart Total $ {Math.round(cartTotal * 100) / 100}
+              Cart Total ${(Math.round(cartTotal * 100) / 100).toFixed(2)}
               <p></p>
               <span className="amountToPay">
                 {amountToPay > 0 && (
