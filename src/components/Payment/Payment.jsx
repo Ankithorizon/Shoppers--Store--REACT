@@ -16,6 +16,8 @@ const Payment = ({ cart, action }) => {
 
   const [payByMethod, setPayByMethod] = useState("");
 
+  const [disable, setDisable] = useState(false);
+
   useEffect(() => {
     var currRole = AuthenticationService.getCurrentUserRole();
 
@@ -41,6 +43,9 @@ const Payment = ({ cart, action }) => {
   // this will be called by child : cc-payment & cash-payment component
   // to notify this master : payment component
   const updateCart_AfterSuccessful_Payment = (updatedCart) => {
+    // this will disable payment by cc/ payment by cash btns.
+    setDisable(true);
+
     // up further this payment component, notify app master component
     // to update cart[] after successful payment
     action(updatedCart);
@@ -54,6 +59,7 @@ const Payment = ({ cart, action }) => {
             <div className="row">
               <div className="col-sm-6">
                 <Button
+                  disabled={disable}
                   className="btn btn-info payByBtn"
                   type="button"
                   onClick={(e) => payByCC(e)}
@@ -64,6 +70,7 @@ const Payment = ({ cart, action }) => {
               </div>
               <div className="col-sm-6">
                 <Button
+                  disabled={disable}
                   className="btn btn-info payByBtn"
                   type="button"
                   onClick={(e) => payByCash(e)}

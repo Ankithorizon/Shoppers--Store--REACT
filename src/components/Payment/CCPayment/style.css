@@ -1,10 +1,40 @@
 .errorDisplay{
     color : rgb(196, 21, 21);
-    font-size: medium;
+    font-size: small;
     font-weight: bold;
     font-style: normal;
 }
 .cvvNumber {
     width: 100px;
+}
+
+.payHeader {
+    color: blue;
+    font-size: medium;
+}
+.payByCCBtn {
+    font-size: medium;
+    font-weight: bold;
+    font-style: italic;
+    color: blue;
+    background-color: lightgoldenrodyellow;
+}
+.successPayment{
+    color : green;
+    font-size: large;
+    font-weight: bold;
+    font-style: italic;
+    border: 2px solid green;
+    border-radius: 10px;
+    padding: 5px;
+}
+.failPayment {
+    color: red;
+    font-size: large;
+    font-weight: bold;
+    font-style: italic;
+    border: 2px solid red;
+    border-radius: 10px;
+    padding: 5px;
 }
 

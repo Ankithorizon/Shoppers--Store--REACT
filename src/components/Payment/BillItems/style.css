@@ -8,6 +8,11 @@
     font-style: italic;
 }
 
+.billSubContainer{
+    height: 215px;
+    overflow-y: scroll;
+}
+
 .cartContainer {
     border: 2px solid red;
     border-radius: 20px;

@@ -32,8 +32,14 @@ const CCPayment = ({ cart, action }) => {
   let cardType = "";
 
   const [amountToPay, setAmountToPay] = useState(0);
-
   const [bill, setBill] = useState(null);
+  const [disable, setDisable] = useState(false);
+  const [paymentResponse, setPaymentResponse] = useState("");
+
+  // dynamic class assignment to div
+  // successPayment
+  // failPayment
+  const [responseType, setResponseType] = useState("");
 
   const years_ = Array.from([2023, 2024, 2025], (e) => {
     return {
@@ -47,19 +53,6 @@ const CCPayment = ({ cart, action }) => {
       monthId: i + 1,
     };
   });
-
-  const successOptions = {
-    autoClose: 2000,
-    type: toast.TYPE.SUCCESS,
-    hideProgressBar: false,
-    position: toast.POSITION.TOP_RIGHT,
-  };
-  const errorOptions = {
-    autoClose: 2000,
-    type: toast.TYPE.ERROR,
-    hideProgressBar: false,
-    position: toast.POSITION.TOP_RIGHT,
-  };
 
   useEffect(() => {
     setMonths(months_);
@@ -191,14 +184,12 @@ const CCPayment = ({ cart, action }) => {
       // api call
       ProductSellService.billCreate(billDTO)
         .then((response) => {
-          // console.log(response);
-
           if (
             response.data.billRefCode === "" ||
             response.data.billRefCode === null
           ) {
-            console.log("Bill can not create...");
-            toast("Server Error - Payment : Fail !", errorOptions);
+            setResponseType("failPayment");
+            setPaymentResponse("Payment : Fail !");
           } else {
             // display bill when bill-create-success
             var billCustomerCopy = {
@@ -211,13 +202,12 @@ const CCPayment = ({ cart, action }) => {
 
             resetForm();
 
-            toast("Payment : Success !", successOptions);
+            setResponseType("successPayment");
+            setPaymentResponse("Payment : Success !");
 
             // reset cart[] after successful payment
             // notify master : payment component
             action([]);
-
-            navigate("/shopping");
           }
         })
         .catch((error) => {
@@ -232,6 +222,7 @@ const CCPayment = ({ cart, action }) => {
     setForm({});
     resetErrors();
     setAmountToPay(0);
+    setDisable(true);
   };
 
   const renderOptionsForMonth = () => {
@@ -280,11 +271,14 @@ const CCPayment = ({ cart, action }) => {
     <div>
       <div className="card">
         <div className="card-header">
-          <div className="cardHeader">
+          <div className="payHeader">
             <i className="bi bi-credit-card-2-front-fill"></i>
             &nbsp; Pay By CreditCard
             <br />
-            <span>$ {amountToPay}</span>
+            <span>${amountToPay}</span>
+            {paymentResponse && (
+              <div className={responseType}>{paymentResponse}</div>
+            )}
           </div>
         </div>
         <div className="card-body">
@@ -376,7 +370,8 @@ const CCPayment = ({ cart, action }) => {
                 <div>
                   <hr />
                   <Button
-                    className="btn btn-info payByBtn"
+                    disabled={disable}
+                    className="btn btn-info payByCCBtn"
                     type="button"
                     onClick={(e) => handleSubmit(e)}
                   >

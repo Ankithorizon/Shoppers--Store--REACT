@@ -83,7 +83,7 @@ const BillItems = ({ cart }) => {
           <p></p>
           <div className="cartContainer">
             {displayCartHeader()} <p></p>
-            <div> {displayCart}</div>
+            <div className="billSubContainer"> {displayCart}</div>
           </div>
         </div>
       </div>
