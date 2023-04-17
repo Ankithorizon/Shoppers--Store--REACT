@@ -16,15 +16,16 @@ const Payment = ({ cart, action }) => {
   const [payByMethod, setPayByMethod] = useState("");
 
   useEffect(() => {
-    console.log(cart);
     var currRole = AuthenticationService.getCurrentUserRole();
 
     if (currRole === null || (currRole !== null && currRole !== "Shopper"))
       navigate("/un-auth");
     else {
-      if (cart && cart.length > 0) {
-      } else {
-        navigate("/shopping");
+      if (!cart || !cart.length > 0) {
+        var myCart = JSON.parse(localStorage.getItem("my-cart") || "[]");
+        if (myCart === undefined || myCart === null || myCart.length < 1) {
+          navigate("/shopping");
+        }
       }
     }
   }, []);

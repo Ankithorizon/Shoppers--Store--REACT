@@ -25,7 +25,7 @@ const ProductDetails = ({ product, categories, action }) => {
     } else {
         var cart = {
             product: product,
-            qty : qty
+            qty : Number(qty)
         };
         action(cart);
     }

@@ -27,7 +27,9 @@ const CCPayment = ({ cart, action }) => {
 
   // 1=cash/2=cc
   const [paymentType, setPaymentType] = useState(2);
-  const [cardType, setCardType] = useState("");
+
+  // local .jsx file variable, to store cart-type
+  let cardType = "";
 
   const [amountToPay, setAmountToPay] = useState(0);
 
@@ -105,8 +107,7 @@ const CCPayment = ({ cart, action }) => {
         console.log(regex);
         if (regex.test(ccNumber)) {
           accepted = true;
-          console.log("your cc is : ", key);
-          setCardType(key);
+          cardType = key;
         }
       });
       if (!accepted) {
@@ -282,6 +283,8 @@ const CCPayment = ({ cart, action }) => {
           <div className="cardHeader">
             <i className="bi bi-credit-card-2-front-fill"></i>
             &nbsp; Pay By CreditCard
+            <br />
+            <span>$ {amountToPay}</span>
           </div>
         </div>
         <div className="card-body">
@@ -374,7 +377,7 @@ const CCPayment = ({ cart, action }) => {
                 <div>
                   <hr />
                   <Button
-                    className="btn btn-info"
+                    className="btn btn-info payByBtn"
                     type="button"
                     onClick={(e) => handleSubmit(e)}
                   >
