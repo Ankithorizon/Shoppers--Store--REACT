@@ -25,6 +25,9 @@ const CCPayment = ({ cart, action }) => {
   const [months, setMonths] = useState([]);
   const [years, setYears] = useState([]);
 
+  // model validation errors
+  const [modelErrors, setModelErrors] = useState([]);
+
   // 1=cash/2=cc
   const [paymentType, setPaymentType] = useState(2);
 
@@ -70,6 +73,20 @@ const CCPayment = ({ cart, action }) => {
     );
     setAmountToPay((Math.ceil(cartTotal_ * 20 - 0.5) / 20).toFixed(2));
   }, []);
+
+  // model validation errors
+  const handleModelState = (error) => {
+    var errors = [];
+    for (let prop in error.response.data) {
+      console.log(prop, error.response.data[prop]);
+      if (error.response.data[prop].length > 0) {
+        for (let error_ in error.response.data[prop]) {
+          errors.push(error.response.data[prop][error_]);
+        }
+      }
+    }
+    return errors;
+  };
 
   const setField = (field, value) => {
     setForm({
@@ -136,7 +153,6 @@ const CCPayment = ({ cart, action }) => {
     return newErrors;
   };
 
-  const resetErrors = () => {};
   const handleSubmit = (e) => {
     resetErrors();
 
@@ -164,6 +180,7 @@ const CCPayment = ({ cart, action }) => {
         paymentType: Number(paymentType), // 1=cash/2=cc
         amountPaid: Number(amountToPay),
         cardNumber: form.ccNumber,
+        // cardNumber: null,
         cardType: cardType,
         cardCVV: Number(form.cvvNumber),
         validMonth: Number(form.mm),
@@ -211,11 +228,24 @@ const CCPayment = ({ cart, action }) => {
           }
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
+          // 500
+          if (error.response.status === 500) {
+            setResponseType("failPayment");
+            setPaymentResponse(error.response.data);
+          }
+          // 400
+          if (error.response.status === 400) {
+            var modelErrors = handleModelState(error);
+            setModelErrors(modelErrors);
+          }
         });
     }
   };
 
+  const resetErrors = () => {
+    setModelErrors([]);
+  };
   const resetForm = (e) => {
     formRef.current.reset();
     setErrors({});
@@ -224,6 +254,17 @@ const CCPayment = ({ cart, action }) => {
     setAmountToPay(0);
     setDisable(true);
   };
+
+  // render model validation errors
+  let modelErrorList =
+    modelErrors.length > 0 &&
+    modelErrors.map((item, i) => {
+      return (
+        <ul key={i} value={item}>
+          <li style={{ marginTop: -20 }}>{item}</li>
+        </ul>
+      );
+    }, this);
 
   const renderOptionsForMonth = () => {
     return months.map((dt, i) => {
@@ -278,6 +319,11 @@ const CCPayment = ({ cart, action }) => {
             <span>${amountToPay}</span>
             {paymentResponse && (
               <div className={responseType}>{paymentResponse}</div>
+            )}
+            {modelErrors.length > 0 ? (
+              <div className="modelError">{modelErrorList}</div>
+            ) : (
+              <span></span>
             )}
           </div>
         </div>
