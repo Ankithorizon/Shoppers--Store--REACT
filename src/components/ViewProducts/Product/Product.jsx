@@ -15,7 +15,7 @@ const Product = ({ product, action }) => {
     <div className="row">
       <div className="col-sm-1">{product.productId}</div>
       <div className="col-sm-3">{product.productName}</div>
-      <div className="col-sm-3">
+      <div className="col-sm-4">
         ${product.price}
         {product.price !== product.currentPrice ? (
           <span className="displayCurrentPriceInTable">
@@ -26,7 +26,7 @@ const Product = ({ product, action }) => {
           <span></span>
         )}
       </div>
-      <div className="col-sm-3">
+      <div className="col-sm-2">
         {product.productImage ? (
           <span>
             <img

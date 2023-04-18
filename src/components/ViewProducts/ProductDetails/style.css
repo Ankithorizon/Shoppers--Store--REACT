@@ -14,11 +14,12 @@
     background-color: white;
     font-weight: bold;
 }
-.nowPrice{
+.currentPrice{
     color: red;
     background-color: bisque;
-    font-size: medium;
-    padding: 5px;
+    font-size: small;
+    padding: 2px;
+    font-weight: bold;
 }
 
 .discountSuccess {

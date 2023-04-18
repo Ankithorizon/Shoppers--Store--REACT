@@ -3,6 +3,9 @@
     background-color: lightgoldenrodyellow;
     color: palevioletred;
     text-align: left;
+    overflow-y: scroll;
+    height: 375px;
+    margin-bottom: 50px;
 }
 
 .productBtn {
@@ -17,10 +20,12 @@
     border: 2px solid rgb(180, 131, 131);
 }
 
-.nowPrice{
+.currentPrice{
     color: red;
     font-weight: bold;
-    margin-top: 5px;
+    margin-top: 2px;
+    font-size: medium;
+    font-style: italic;
 }
 
 .selectedProduct {

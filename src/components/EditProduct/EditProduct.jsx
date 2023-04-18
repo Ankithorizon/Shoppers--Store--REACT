@@ -239,7 +239,7 @@ const EditProduct = () => {
     setProgress(0);
     setCurrentFile(currentFile);
 
-    if (currentFile === null) return;
+    if (currentFile === null || currentFile === undefined) return;
 
     let formData = new FormData();
     formData.append("myFile", currentFile, currentFile.name);

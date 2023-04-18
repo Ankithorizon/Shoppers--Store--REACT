@@ -35,16 +35,16 @@ const ProductDetails = ({ product, categories, action }) => {
       <div className="card-header">
         <div className="cardHeader">
           <h5>
-            [# {product.productId}] [
-            {ProductService.getCategoryName(categories, product.categoryId)}]
+            {/* [# {product.productId}] */}
+            {ProductService.getCategoryName(categories, product.categoryId)}
           </h5>
         </div>
       </div>
 
       <div className="card-body">
-        <h5>Name : {product.productName}</h5>
-        <h5>Description : {product.productDesc}</h5>
-        <h5>
+        <h6>Name : {product.productName}</h6>
+        <h6>Description : {product.productDesc}</h6>
+        <h6>
           Price : <span className="price">${product.price}&nbsp;&nbsp;</span>
           {product.currentDiscountPercentage > 0 && (
             <span className="nowPrice">
@@ -52,7 +52,7 @@ const ProductDetails = ({ product, categories, action }) => {
               &nbsp;&nbsp;&nbsp;[Discount {product.currentDiscountPercentage}%]
             </span>
           )}
-        </h5>
+        </h6>
         <div className="row">
           <div className="col-sm-6">
             {product.productImage ? (
