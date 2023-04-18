@@ -119,7 +119,7 @@ const Home = () => {
                 <div className="detail">
                   <ul>
                     <li>User can view Product</li>
-                    <li>User can set Discount on Product </li>
+                    <li>User can [SET/RESET] Discount on Product </li>
                     <li>User can View Text Report on</li>
                   </ul>
                 </div>
@@ -173,7 +173,7 @@ const Home = () => {
                       User can shop Product by adding Products and
                       Product-Quantity to Shopping-Cart
                     </li>
-                    <li>User can edit Shopping-Cart</li>
+                    <li>User can [EDIT/REMOVE] Shopping-Cart</li>
                     <li>User can do Payment by either Cash or Credit-Card</li>
                     <li>
                       User can View Payment-Receipt after successful Payment
