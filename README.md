@@ -1,6 +1,6 @@
-# Shoppers-Store    (Work-In-Progress)
-
-Technology
+# Shoppers-Store 
+(Work In Progress)
+### Technology
 ----------
 - Web API Core - 3.1, EF Core [Code First - EF Transaction]
 
