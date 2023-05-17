@@ -1,0 +1,7 @@
+cash-payment 
+    - Cash-Amount is Short! for 5 or any whole number 
+    without [.] decimal [5.00]
+cc-cash-payment 
+    - display ref-code after successful payment
+
+

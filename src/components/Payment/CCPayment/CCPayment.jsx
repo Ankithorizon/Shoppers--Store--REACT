@@ -220,7 +220,7 @@ const CCPayment = ({ cart, action }) => {
             resetForm();
 
             setResponseType("successPayment");
-            setPaymentResponse("Payment : Success !");
+            setPaymentResponse("CreditCard-Payment : Success !");
 
             // reset cart[] after successful payment
             // notify master : payment component

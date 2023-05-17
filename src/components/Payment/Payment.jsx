@@ -88,7 +88,10 @@ const Payment = ({ cart, action }) => {
           <div className="col-sm-6">
             {payByMethod === "CASH" && (
               <div className="payMethodContainer">
-                <CashPayment></CashPayment>
+                <CashPayment
+                  cart={cart}
+                  action={updateCart_AfterSuccessful_Payment}
+                ></CashPayment>
               </div>
             )}
             {payByMethod === "CC" && (
