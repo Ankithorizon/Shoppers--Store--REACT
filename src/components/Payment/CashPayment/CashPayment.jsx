@@ -75,7 +75,7 @@ const CashPayment = ({ cart, action }) => {
       if (!containsOnlyNumbersAndDecimal(cashAmount)) {
         newErrors.cashAmount = "Invalid Cash-Amount !";
       } else {
-        if (cashAmount < amountToPay) {
+        if (Number(cashAmount) < Number(amountToPay)) {
           newErrors.cashAmount = "Cash-Amount is Short!";
         }
       }
@@ -89,6 +89,7 @@ const CashPayment = ({ cart, action }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setBill(null);
 
     const newErrors = findFormErrors();
 
@@ -146,7 +147,7 @@ const CashPayment = ({ cart, action }) => {
               billAmount: response.data.payment.amountPaid,
               paymentType: response.data.payment.paymentType,
               cart: response.data.cart.products,
-            };
+            };          
             setBill(billCustomerCopy);
 
             resetForm();
@@ -193,7 +194,11 @@ const CashPayment = ({ cart, action }) => {
             <br />
             <span>${amountToPay}</span>
             {paymentResponse && (
-              <div className={responseType}>{paymentResponse}</div>
+              <div className={responseType}>
+                {paymentResponse}
+                <br />
+                {bill && <span>REF # {bill.billRefCode}</span>}
+              </div>
             )}
           </div>
         </div>

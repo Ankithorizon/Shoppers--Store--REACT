@@ -157,6 +157,7 @@ const CCPayment = ({ cart, action }) => {
     resetErrors();
 
     e.preventDefault();
+    setBill(null);
 
     const newErrors = findFormErrors();
 
@@ -318,7 +319,11 @@ const CCPayment = ({ cart, action }) => {
             <br />
             <span>${amountToPay}</span>
             {paymentResponse && (
-              <div className={responseType}>{paymentResponse}</div>
+              <div className={responseType}>
+                {paymentResponse}
+                <br />
+                {bill && <span>REF # {bill.billRefCode}</span>}
+              </div>
             )}
             {modelErrors.length > 0 ? (
               <div className="modelError">{modelErrorList}</div>

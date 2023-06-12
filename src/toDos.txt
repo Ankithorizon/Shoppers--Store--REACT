@@ -1,7 +1,8 @@
+TO-DOS #1.1#    
 cash-payment 
-    - Cash-Amount is Short! for 5 or any whole number 
+    [OK]- Cash-Amount is Short! for 5 or any whole number 
     without [.] decimal [5.00]
 cc-cash-payment 
-    - display ref-code after successful payment
+    [OK]- display ref-code after successful payment
 
 
