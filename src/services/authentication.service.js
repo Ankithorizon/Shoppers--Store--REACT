@@ -33,9 +33,9 @@ class AuthenticationService {
     return await http.post(`/register/${myRole}`, data);
   };
 
-    getRoles = async () => {
+  getRoles = async () => {
     return await http.get("/getRoles");
-  }
+  };
 }
 
 export default new AuthenticationService();

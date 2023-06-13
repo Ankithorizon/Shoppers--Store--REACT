@@ -6,3 +6,7 @@ cc-cash-payment
     [OK]- display ref-code after successful payment
 
 
+TO-DOS #1.2#    
+text report
+
+chart report
