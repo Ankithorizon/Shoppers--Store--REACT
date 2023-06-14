@@ -5,15 +5,27 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 import AuthenticationService from "../../../services/authentication.service";
+import ReportDataService from "../../../services/report.service";
 
 import { useNavigate } from "react-router";
+
+// drop down  select list with image+text
+// npm install react-select@^5.1.0
+import Select from "react-select";
 
 const TextReports = () => {
   let navigate = useNavigate();
 
-  const [reportOption, setReportOption] = useState("YearlyProductWise");
+  const productImageUploadURL = {
+    url: "https://localhost:44379/Files",
+  };
+
+  const [reportOption, setReportOption] = useState("MonthlyProductWise");
   const [months, setMonths] = useState([]);
   const [years, setYears] = useState([2021, 2022, 2023, 2024]);
+  const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [productError, setProductError] = useState("");
 
   const [reportData, setReportData] = useState([]);
 
@@ -30,7 +42,45 @@ const TextReports = () => {
 
     if (currRole === null || (currRole !== null && currRole !== "Manager"))
       navigate("/un-auth");
+    else {
+      getProductsWithImage();
+    }
   }, []);
+
+  const getProductsWithImage = () => {
+    ReportDataService.getProductsWithImage()
+      .then((response) => {
+        // console.log(response.data);
+
+        // x-fer
+        var options1_ = [];
+        response.data.map((item, i) => {
+          console.log(item.productName);
+          var option = {
+            value: item.productId + "-" + item.productName,
+            label: (
+              <div>
+                <img
+                  width="35"
+                  height="35"
+                  src={`${productImageUploadURL.url}/${item.productImage}`}
+                  alt="N/A"
+                />
+                <span> - </span>
+                <span>{item.productName}</span>
+                <span> - </span>
+                <span>[ $ {item.currentPrice} ]</span>
+              </div>
+            ),
+          };
+          options1_.push(option);
+        });
+        setProducts(options1_);
+      })
+      .catch((e) => {
+        this.unAuthHandler401(e);
+      });
+  };
 
   const months_ = Array.from({ length: 12 }, (e, i) => {
     return {
@@ -54,14 +104,28 @@ const TextReports = () => {
       });
   };
 
+  const selectedProductChanged = (selectedOption) => {
+    var productId = selectedOption.value.substring(
+      0,
+      selectedOption.value.indexOf("-")
+    );
+    var productName = selectedOption.value.substring(
+      selectedOption.value.indexOf("-") + 1
+    );
+
+    setSelectedProduct({ ...selectedOption, productId: productId });
+    setProductError("");
+  };
   const findFormErrors = () => {
-    const { productId, month, year } = form;
+    const { month, year } = form;
     const newErrors = {};
 
-    /*
-    if (!productId || productId === "")
-      newErrors.productId = "Product is Required!";
-    */
+    if (
+      (selectedProduct === null || selectedProduct === undefined) &&
+      reportOption !== "MonthlyStoreWise"
+    )
+      setProductError("Product is Required!");
+    else setProductError("");
 
     if (reportOption === "MonthlyTotalProductWise") {
       if (!month || month === "") newErrors.month = "Month is Required!";
@@ -96,11 +160,31 @@ const TextReports = () => {
 
     const newErrors = findFormErrors();
 
-    if (Object.keys(newErrors).length > 0) {
+    if (Object.keys(newErrors).length > 0 || productError) {
       setErrors(newErrors);
     } else {
       setErrors([]);
-      console.log(reportOption, form.month, form.year);
+      console.log(reportOption, form.month, form.year, selectedProduct);
+
+      // MonthlyStoreWise
+      // i/p: year
+      if (reportOption === "MonthlyStoreWise") {
+        var data = prepareDataForMonthlyStoreWiseReport();
+        console.log(data);
+
+        // api call to get report data for this option
+        apiCall_MonthlyStoreWiseReport(data);
+      }
+
+      // MonthlyProductWise
+      // i/p: year, product
+      if (reportOption === "MonthlyProductWise" && selectedProduct !== null) {
+        var data = prepareDataForMonthlyProductWiseReport();
+        console.log(data);
+
+        // api call to get report data for this option
+        apiCall_MonthlyProductWiseReport(data);
+      }
     }
   };
 
@@ -123,6 +207,60 @@ const TextReports = () => {
       );
     });
   };
+
+  // MonthlyStoreWise
+  // i/p: year
+  const prepareDataForMonthlyStoreWiseReport = () => {
+    var data = {
+      selectedYear: form.year, // ip
+    };
+    return data;
+  };
+  // MonthlyStoreWise
+  // i/p: year
+  const apiCall_MonthlyStoreWiseReport = (data) => {
+    ReportDataService.monthlyStoreWise(data)
+      .then((response) => {
+        console.log(response);
+        if (response.data.length > 0) console.log(response.data);
+        else console.log("Monthly-Store wise Sales Data Not Found !");
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          console.log("Bad Request !");
+        } else {
+          console.log("Server Error !");
+        }
+      });
+  };
+
+  // MonthlyProductWise
+  // i/p: year, product
+  const prepareDataForMonthlyProductWiseReport = () => {
+    var data = {
+      selectedYear: form.year, // ip
+      selectedProductId: Number(selectedProduct.productId), // ip
+    };
+    return data;
+  };
+  // MonthlyProductWise
+  // i/p: year, product
+  const apiCall_MonthlyProductWiseReport = (data) => {
+    ReportDataService.monthlyProductWise(data)
+      .then((response) => {
+        console.log(response);
+        if (response.data.length > 0) console.log(response.data);
+        else console.log("Monthly-Product wise Sales Data Not Found !");
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          console.log("Bad Request !");
+        } else {
+          console.log("Server Error !");
+        }
+      });
+  };
+
   return (
     <div className="mainContainer">
       <div className="container">
@@ -143,8 +281,8 @@ const TextReports = () => {
                         <label>
                           <input
                             type="radio"
-                            value="YearlyProductWise"
-                            checked={reportOption === "YearlyProductWise"}
+                            value="MonthlyProductWise"
+                            checked={reportOption === "MonthlyProductWise"}
                             onChange={reportOptionChange}
                           />
                           &nbsp;&nbsp;&nbsp;[Monthly]-Product-Wise
@@ -154,8 +292,8 @@ const TextReports = () => {
                         <label>
                           <input
                             type="radio"
-                            value="MonthlyTotalStoreWise"
-                            checked={reportOption === "MonthlyTotalStoreWise"}
+                            value="MonthlyStoreWise"
+                            checked={reportOption === "MonthlyStoreWise"}
                             onChange={reportOptionChange}
                           />
                           &nbsp;&nbsp;&nbsp;[Monthly]-Store-Wise
@@ -165,11 +303,11 @@ const TextReports = () => {
                         <label>
                           <input
                             type="radio"
-                            value="MonthlyTotalProductWise"
-                            checked={reportOption === "MonthlyTotalProductWise"}
+                            value="SelectedProductWise"
+                            checked={reportOption === "SelectedProductWise"}
                             onChange={reportOptionChange}
                           />
-                          &nbsp;&nbsp;&nbsp;Selected Product-Month-Wise
+                          &nbsp;&nbsp;&nbsp;Selected Product-Wise
                         </label>
                       </div>
                     </div>
@@ -216,6 +354,22 @@ const TextReports = () => {
                           {errors.year}
                         </Form.Control.Feedback>
                       </Form.Group>
+                    </div>
+                  </div>
+                  <p></p>
+                  <div className="row">
+                    <div>
+                      <Select
+                        placeholder="---Product---"
+                        isInvalid={selectedProduct === null}
+                        value={selectedProduct}
+                        onChange={selectedProductChanged}
+                        options={products}
+                        hideSelectedOptions={false}
+                      />
+                      {productError && (
+                        <div className="errorDisplay">{productError}</div>
+                      )}
                     </div>
                   </div>
                   <div>
