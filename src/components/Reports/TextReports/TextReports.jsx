@@ -116,27 +116,44 @@ const TextReports = () => {
     setSelectedProduct({ ...selectedOption, productId: productId });
     setProductError("");
   };
+
+  const checkForSelectedProductError = (selectedProduct, reportOption) => {
+    if (
+      reportOption !== "MonthlyStoreWise" &&
+      (selectedProduct === null || selectedProduct === undefined)
+    ) {
+      return true;
+    } else return false;
+  };
+
+  const checkForMonthError = (reportOption, month) => {
+    if (reportOption === "SelectedProductWise" && (!month || month === ""))
+      return true;
+    else return false;
+  };
+
+  const checkForYearError = (year) => {
+    if (!year || year === "") return true;
+    else return false;
+  };
+
   const findFormErrors = () => {
     const { month, year } = form;
     const newErrors = {};
 
-    if (
-      (selectedProduct === null || selectedProduct === undefined) &&
-      reportOption !== "MonthlyStoreWise"
-    )
+    if (checkForSelectedProductError(selectedProduct, reportOption))
       setProductError("Product is Required!");
     else setProductError("");
 
-    if (reportOption === "MonthlyTotalProductWise") {
-      if (!month || month === "") newErrors.month = "Month is Required!";
-    } else {
+    if (checkForMonthError(reportOption, month))
+      newErrors.month = "Month is Required!";
+    else {
       var key = "month";
       delete newErrors[key];
     }
 
-    if (reportOption !== "MonthlyTotalProductWise") {
-      if (!year || year === "") newErrors.year = "Year is Required!";
-    } else {
+    if (checkForYearError(year)) newErrors.year = "Year is Required!";
+    else {
       var key = "year";
       delete newErrors[key];
     }
@@ -184,6 +201,16 @@ const TextReports = () => {
 
         // api call to get report data for this option
         apiCall_MonthlyProductWiseReport(data);
+      }
+
+      // SelectedProductWise
+      // i/p: year, month, product
+      if (reportOption === "SelectedProductWise" && selectedProduct !== null) {
+        var data = prepareDataForSelectedProductWiseReport();
+        console.log(data);
+
+        // api call to get report data for this option
+        apiCall_SelectedProductWiseReport(data);
       }
     }
   };
@@ -251,6 +278,35 @@ const TextReports = () => {
         console.log(response);
         if (response.data.length > 0) console.log(response.data);
         else console.log("Monthly-Product wise Sales Data Not Found !");
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          console.log("Bad Request !");
+        } else {
+          console.log("Server Error !");
+        }
+      });
+  };
+
+  // SelectedProductWise
+  // i/p: year, month, product
+  const prepareDataForSelectedProductWiseReport = () => {
+    var data = {
+      selectedYear: Number(form.year), // ip
+      selectedMonth: Number(form.month), // ip
+      selectedProductId: Number(selectedProduct.productId), // ip
+    };
+    console.log(data);
+    return data;
+  };
+  // SelectedProductWise
+  // i/p: year, month, product
+  const apiCall_SelectedProductWiseReport = (data) => {
+    ReportDataService.selectedProductWise(data)
+      .then((response) => {
+        console.log(response);
+        if (response.data.length > 0) console.log(response.data);
+        else console.log("Selected-Product wise Sales Data Not Found !");
       })
       .catch((error) => {
         if (error.response.status === 400) {

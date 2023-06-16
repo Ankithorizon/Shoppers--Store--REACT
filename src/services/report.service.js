@@ -14,6 +14,12 @@ class ReportDataService {
     });
   };
 
+  selectedProductWise = (data) => {
+    return reportHttp.post("/selectedProductWise", data, {
+      headers: authenticationHeader(),
+    });
+  };
+
   getProductsWithImage = () => {
     return reportHttp.get("/productsWithImage", {
       headers: authenticationHeader(),
