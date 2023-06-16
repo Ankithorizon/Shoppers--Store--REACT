@@ -13,6 +13,7 @@ import { useNavigate } from "react-router";
 // npm install react-select@^5.1.0
 import Select from "react-select";
 import MonthlyProductWiseReport from "./MonthlyProductWiseReport/MonthlyProductWiseReport";
+import MonthlyStoreWiseReport from "./MonthlyStoreWiseReport/MonthlyStoreWiseReport";
 
 const TextReports = () => {
   let navigate = useNavigate();
@@ -486,9 +487,18 @@ const TextReports = () => {
                 {reportTitle === "Monthly-Product-Wise Report" && (
                   <MonthlyProductWiseReport
                     title={reportTitle}
+                    year={form.year}
                     productName={selectedProduct.productName}
                     reportData={reportData}
                   ></MonthlyProductWiseReport>
+                )}
+
+                {reportTitle === "Monthly-Store-Wise Report" && (
+                  <MonthlyStoreWiseReport
+                    title={reportTitle}
+                    year={form.year}
+                    reportData={reportData}
+                  ></MonthlyStoreWiseReport>
                 )}
               </div>
             )}

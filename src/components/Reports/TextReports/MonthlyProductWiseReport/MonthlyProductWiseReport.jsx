@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import "./style.css";
 
-const MonthlyProductWiseReport = ({ title, productName, reportData }) => {
+const MonthlyProductWiseReport = ({ title, productName, year, reportData }) => {
   const listItems =
     reportData.length > 0 &&
     reportData.map((d) => (
@@ -41,10 +41,12 @@ const MonthlyProductWiseReport = ({ title, productName, reportData }) => {
   return (
     <div className="mainContainer">
       <div className="container">
-        <div className="monthlyStoreWiseTextHeader">
+        <div className="textReportHeader">
           <h2>Sales Report</h2>
           {title}
-          <h4># {productName} #</h4>
+          <div className="productInfo">
+            {productName.toUpperCase()} Sales in [{year}]
+          </div>
         </div>
         <p></p>
         {listItems}
