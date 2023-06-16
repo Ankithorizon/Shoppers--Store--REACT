@@ -1,0 +1,13 @@
+.monthlyStoreWiseTextHeader {
+    border: 3;
+    border-color: greenyellow;
+    border-style: dotted;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: coral;
+    font-size: larger;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    
+}

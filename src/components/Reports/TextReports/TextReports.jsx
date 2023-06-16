@@ -12,6 +12,7 @@ import { useNavigate } from "react-router";
 // drop down  select list with image+text
 // npm install react-select@^5.1.0
 import Select from "react-select";
+import MonthlyProductWiseReport from "./MonthlyProductWiseReport/MonthlyProductWiseReport";
 
 const TextReports = () => {
   let navigate = useNavigate();
@@ -28,6 +29,7 @@ const TextReports = () => {
   const [productError, setProductError] = useState("");
 
   const [reportData, setReportData] = useState([]);
+  const [reportTitle, setReportTitle] = useState("");
 
   // form
   const [form, setForm] = useState({});
@@ -113,7 +115,11 @@ const TextReports = () => {
       selectedOption.value.indexOf("-") + 1
     );
 
-    setSelectedProduct({ ...selectedOption, productId: productId });
+    setSelectedProduct({
+      ...selectedOption,
+      productId: productId,
+      productName: productName,
+    });
     setProductError("");
   };
 
@@ -174,6 +180,9 @@ const TextReports = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    setReportData([]);
+    setReportTitle("");
 
     const newErrors = findFormErrors();
 
@@ -249,8 +258,15 @@ const TextReports = () => {
     ReportDataService.monthlyStoreWise(data)
       .then((response) => {
         console.log(response);
-        if (response.data.length > 0) console.log(response.data);
-        else console.log("Monthly-Store wise Sales Data Not Found !");
+        if (response.data.length > 0) {
+          console.log(response.data);
+          setReportData([...response.data]);
+          setReportTitle("Monthly-Store-Wise Report");
+        } else {
+          setReportData([]);
+          setReportTitle("Monthly-Store-Wise Report");
+          console.log("Monthly-Store wise Sales Data Not Found !");
+        }
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -276,8 +292,16 @@ const TextReports = () => {
     ReportDataService.monthlyProductWise(data)
       .then((response) => {
         console.log(response);
-        if (response.data.length > 0) console.log(response.data);
-        else console.log("Monthly-Product wise Sales Data Not Found !");
+
+        if (response.data.length > 0) {
+          console.log(response.data);
+          setReportData([...response.data]);
+          setReportTitle("Monthly-Product-Wise Report");
+        } else {
+          setReportData([]);
+          setReportTitle("Monthly-Product-Wise Report");
+          console.log("Monthly-Product wise Sales Data Not Found !");
+        }
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -305,8 +329,16 @@ const TextReports = () => {
     ReportDataService.selectedProductWise(data)
       .then((response) => {
         console.log(response);
-        if (response.data.length > 0) console.log(response.data);
-        else console.log("Selected-Product wise Sales Data Not Found !");
+
+        if (response.data.length > 0) {
+          console.log(response.data);
+          setReportData([...response.data]);
+          setReportTitle("Selected-Product-Wise Report");
+        } else {
+          setReportData([]);
+          setReportTitle("Selected-Product-Wise Report");
+          console.log("Selected-Product wise Sales Data Not Found !");
+        }
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -448,7 +480,19 @@ const TextReports = () => {
               </div>
             </div>
           </div>
-          <div className="col-md-8 mx-auto"></div>
+          <div className="col-md-8 mx-auto">
+            {reportData && reportData.length > 0 && (
+              <div>
+                {reportTitle === "Monthly-Product-Wise Report" && (
+                  <MonthlyProductWiseReport
+                    title={reportTitle}
+                    productName={selectedProduct.productName}
+                    reportData={reportData}
+                  ></MonthlyProductWiseReport>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
