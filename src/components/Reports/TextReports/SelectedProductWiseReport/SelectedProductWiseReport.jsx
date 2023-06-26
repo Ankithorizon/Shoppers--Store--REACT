@@ -10,15 +10,6 @@ const SelectedProductWiseReport = ({
   productName,
   reportData,
 }) => {
-  const [monthName, setMonthName] = useState("");
-
-  useEffect(() => {
-    console.log(title, year, month, productName);
-    if (reportData && reportData.length > 0) {
-      setMonthName(reportData[0].selectedMonthName);
-    }
-  }, []);
-
   const listItems =
     reportData.length > 0 &&
     reportData.map((d) => (
@@ -39,14 +30,14 @@ const SelectedProductWiseReport = ({
         <div>
           {d.totalSales > 0 ? (
             <div>
-              <h5>{monthName}</h5>
+              <h5>{month}</h5>
               <div>
                 <h4>${d.totalSales}</h4>
               </div>
             </div>
           ) : (
             <div>
-              {monthName}
+              {month}
               <br />${d.totalSales}
             </div>
           )}
@@ -61,7 +52,7 @@ const SelectedProductWiseReport = ({
           <h2>Sales Report</h2>
           {title}
           <div className="productInfo">
-            {productName.toUpperCase()} Sales in [{monthName}, {year}]
+            {productName.toUpperCase()} Sales in [{month}, {year}]
           </div>
         </div>
         <p></p>

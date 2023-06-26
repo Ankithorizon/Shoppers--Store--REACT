@@ -96,6 +96,8 @@ const TextReports = () => {
   });
 
   const setField = (field, value) => {
+    setReportTitle("");
+
     setForm({
       ...form,
       [field]: value,
@@ -109,6 +111,8 @@ const TextReports = () => {
   };
 
   const selectedProductChanged = (selectedOption) => {
+    setReportTitle("");
+
     var productId = selectedOption.value.substring(
       0,
       selectedOption.value.indexOf("-")
@@ -339,6 +343,7 @@ const TextReports = () => {
         } else {
           console.log("Selected-Product wise Sales Data Not Found !");
         }
+        console.log(reportData);
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -504,13 +509,32 @@ const TextReports = () => {
                   <SelectedProductWiseReport
                     title={reportTitle}
                     year={form.year}
-                    month={form.month}
+                    month={ReportDataService.getMonthNameFromMonthNumber(
+                      form.month
+                    )}
                     productName={selectedProduct.productName}
                     reportData={reportData}
                   ></SelectedProductWiseReport>
                 )}
               </div>
             )}
+            {reportData &&
+              reportData.length === 0 &&
+              reportTitle === "Selected-Product-Wise Report" && (
+                <div>
+                  {reportTitle === "Selected-Product-Wise Report" && (
+                    <SelectedProductWiseReport
+                      title={reportTitle}
+                      year={form.year}
+                      month={ReportDataService.getMonthNameFromMonthNumber(
+                        form.month
+                      )}
+                      productName={selectedProduct.productName}
+                      reportData={reportData}
+                    ></SelectedProductWiseReport>
+                  )}
+                </div>
+              )}
           </div>
         </div>
       </div>
