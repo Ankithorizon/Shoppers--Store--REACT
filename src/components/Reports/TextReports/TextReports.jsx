@@ -14,6 +14,7 @@ import { useNavigate } from "react-router";
 import Select from "react-select";
 import MonthlyProductWiseReport from "./MonthlyProductWiseReport/MonthlyProductWiseReport";
 import MonthlyStoreWiseReport from "./MonthlyStoreWiseReport/MonthlyStoreWiseReport";
+import SelectedProductWiseReport from "./SelectedProductWiseReport/SelectedProductWiseReport";
 
 const TextReports = () => {
   let navigate = useNavigate();
@@ -331,13 +332,11 @@ const TextReports = () => {
       .then((response) => {
         console.log(response);
 
+        setReportData([...response.data]);
+        setReportTitle("Selected-Product-Wise Report");
         if (response.data.length > 0) {
           console.log(response.data);
-          setReportData([...response.data]);
-          setReportTitle("Selected-Product-Wise Report");
         } else {
-          setReportData([]);
-          setReportTitle("Selected-Product-Wise Report");
           console.log("Selected-Product wise Sales Data Not Found !");
         }
       })
@@ -499,6 +498,16 @@ const TextReports = () => {
                     year={form.year}
                     reportData={reportData}
                   ></MonthlyStoreWiseReport>
+                )}
+
+                {reportTitle === "Selected-Product-Wise Report" && (
+                  <SelectedProductWiseReport
+                    title={reportTitle}
+                    year={form.year}
+                    month={form.month}
+                    productName={selectedProduct.productName}
+                    reportData={reportData}
+                  ></SelectedProductWiseReport>
                 )}
               </div>
             )}
