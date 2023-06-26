@@ -21,3 +21,23 @@
     font-weight: bold;
     padding-top: 10px;
 }
+
+.sales {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: green;
+    font-size: larger;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.no-sales {  
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: red;
+    font-size: larger;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+}

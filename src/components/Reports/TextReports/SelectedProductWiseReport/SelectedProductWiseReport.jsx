@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import "./style.css";
 import { useState } from "react";
 
@@ -11,39 +11,39 @@ const SelectedProductWiseReport = ({
   reportData,
 }) => {
   const listItems =
-    reportData.length > 0 &&
-    reportData.map((d) => (
-      <Button
-        variant="success"
-        style={{
-          marginBottom: 15,
-          marginRight: 5,
-          width: 340,
-          height: 200,
-          borderColor: "black",
-          borderWidth: 2,
-          color: "black",
-          backgroundColor: "lightblue",
-        }}
-        key={d.selectedMonth}
-      >
-        <div>
-          {d.totalSales > 0 ? (
-            <div>
-              <h5>{month}</h5>
-              <div>
-                <h4>${d.totalSales}</h4>
-              </div>
+    reportData.length > 0 ? (
+      reportData.map((d) => (
+        <Card key={d.selectedMonth}>
+          <Card.Body>
+            <div className="sales">
+              {d.totalSales > 0 && (
+                <div>
+                  <h5>
+                    [{month}, {year}]
+                  </h5>
+                  <div>
+                    <h4>${d.totalSales}</h4>
+                  </div>
+                </div>
+              )}
             </div>
-          ) : (
+          </Card.Body>
+        </Card>
+      ))
+    ) : (
+      <Card>
+        <Card.Body>
+          <div className="no-sales">
+            <h5>
+              [{month}, {year}]
+            </h5>
             <div>
-              {month}
-              <br />${d.totalSales}
+              <h4>$ 0.00</h4>
             </div>
-          )}
-        </div>
-      </Button>
-    ));
+          </div>
+        </Card.Body>
+      </Card>
+    );
 
   return (
     <div className="mainContainer">
@@ -51,9 +51,7 @@ const SelectedProductWiseReport = ({
         <div className="textReportHeader">
           <h2>Sales Report</h2>
           {title}
-          <div className="productInfo">
-            {productName.toUpperCase()} Sales in [{month}, {year}]
-          </div>
+          <div className="productInfo">{productName.toUpperCase()}</div>
         </div>
         <p></p>
         {listItems}
