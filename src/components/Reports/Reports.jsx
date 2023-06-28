@@ -30,6 +30,7 @@ const TextReports = () => {
   const [checkedState, setCheckedState] = useState(
     new Array(ReportTypes.length).fill(false)
   );
+  // checkbox
   const handleOnChange = (position) => {
     const updatedCheckedState = checkedState.map((item, index) =>
       index === position ? !item : item
@@ -38,7 +39,10 @@ const TextReports = () => {
     setCheckedState(updatedCheckedState);
   };
 
+  // checkbox
+  const [reportTypes, setReportTypes] = useState([]);
   const [reportTypeError, setReportTypeError] = useState("");
+
   const [reportOption, setReportOption] = useState("MonthlyProductWise");
   const [months, setMonths] = useState([]);
   const [years, setYears] = useState([2021, 2022, 2023, 2024]);
@@ -203,11 +207,13 @@ const TextReports = () => {
     setReportData([]);
   };
 
+  // checkbox
   // text / chart
   const checkForReportTypes = () => {
     if (checkedState.includes(true)) return true;
     else return false;
   };
+  // checkbox
   // text / chart
   const settingReportTypes = () => {
     var reportTypesObjCollection = [];
@@ -232,9 +238,9 @@ const TextReports = () => {
       setErrors(newErrors);
     } else {
       setErrors([]);
-      var reportTypesObjectCollection = settingReportTypes();
+      setReportTypes(settingReportTypes());
       console.log(
-        reportTypesObjectCollection,
+        reportTypes,
         reportOption,
         form.month,
         form.year,
@@ -558,7 +564,7 @@ const TextReports = () => {
             </div>
           </div>
           <div className="col-md-8 mx-auto">
-            {reportData && reportData.length > 0 && (
+            {reportData && (
               <div>
                 {reportTitle === "Monthly-Product-Wise Report" && (
                   <MonthlyProductWiseReport
@@ -566,6 +572,7 @@ const TextReports = () => {
                     year={form.year}
                     productName={selectedProduct.productName}
                     reportData={reportData}
+                    reportTypes={reportTypes}
                   ></MonthlyProductWiseReport>
                 )}
 
@@ -574,6 +581,7 @@ const TextReports = () => {
                     title={reportTitle}
                     year={form.year}
                     reportData={reportData}
+                    reportTypes={reportTypes}
                   ></MonthlyStoreWiseReport>
                 )}
 
@@ -590,23 +598,6 @@ const TextReports = () => {
                 )}
               </div>
             )}
-            {reportData &&
-              reportData.length === 0 &&
-              reportTitle === "Selected-Product-Wise Report" && (
-                <div>
-                  {reportTitle === "Selected-Product-Wise Report" && (
-                    <SelectedProductWiseReport
-                      title={reportTitle}
-                      year={form.year}
-                      month={ReportDataService.getMonthNameFromMonthNumber(
-                        form.month
-                      )}
-                      productName={selectedProduct.productName}
-                      reportData={reportData}
-                    ></SelectedProductWiseReport>
-                  )}
-                </div>
-              )}
           </div>
         </div>
       </div>

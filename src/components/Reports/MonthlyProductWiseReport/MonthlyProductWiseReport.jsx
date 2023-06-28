@@ -2,7 +2,13 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import "./style.css";
 
-const MonthlyProductWiseReport = ({ title, productName, year, reportData }) => {
+const MonthlyProductWiseReport = ({
+  title,
+  productName,
+  year,
+  reportData,
+  reportTypes,
+}) => {
   const listItems =
     reportData.length > 0 &&
     reportData.map((d) => (
