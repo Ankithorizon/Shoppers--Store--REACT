@@ -4,8 +4,8 @@ import "./style.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-import AuthenticationService from "../../../services/authentication.service";
-import ReportDataService from "../../../services/report.service";
+import AuthenticationService from "../../services/authentication.service";
+import ReportDataService from "../../services/report.service";
 
 import { useNavigate } from "react-router";
 
@@ -16,6 +16,9 @@ import MonthlyProductWiseReport from "./MonthlyProductWiseReport/MonthlyProductW
 import MonthlyStoreWiseReport from "./MonthlyStoreWiseReport/MonthlyStoreWiseReport";
 import SelectedProductWiseReport from "./SelectedProductWiseReport/SelectedProductWiseReport";
 
+// import report types options from .js file
+import { ReportTypes } from "./ReportTypes";
+
 const TextReports = () => {
   let navigate = useNavigate();
 
@@ -23,6 +26,19 @@ const TextReports = () => {
     url: "https://localhost:44379/Files",
   };
 
+  // checkbox
+  const [checkedState, setCheckedState] = useState(
+    new Array(ReportTypes.length).fill(false)
+  );
+  const handleOnChange = (position) => {
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === position ? !item : item
+    );
+
+    setCheckedState(updatedCheckedState);
+  };
+
+  const [reportTypeError, setReportTypeError] = useState("");
   const [reportOption, setReportOption] = useState("MonthlyProductWise");
   const [months, setMonths] = useState([]);
   const [years, setYears] = useState([2021, 2022, 2023, 2024]);
@@ -153,6 +169,9 @@ const TextReports = () => {
     const { month, year } = form;
     const newErrors = {};
 
+    if (!checkForReportTypes()) setReportTypeError("Report-Type is Required!");
+    else setReportTypeError("");
+
     if (checkForSelectedProductError(selectedProduct, reportOption))
       setProductError("Product is Required!");
     else setProductError("");
@@ -184,6 +203,23 @@ const TextReports = () => {
     setReportData([]);
   };
 
+  // text / chart
+  const checkForReportTypes = () => {
+    if (checkedState.includes(true)) return true;
+    else return false;
+  };
+  // text / chart
+  const settingReportTypes = () => {
+    var reportTypesObjCollection = [];
+    checkedState.map((item, index) => {
+      var reportTypeObject = {
+        reportTypeName: ReportTypes[index].name,
+        reportTypeSelection: item,
+      };
+      reportTypesObjCollection.push(reportTypeObject);
+    });
+    return reportTypesObjCollection;
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -192,11 +228,18 @@ const TextReports = () => {
 
     const newErrors = findFormErrors();
 
-    if (Object.keys(newErrors).length > 0 || productError) {
+    if (Object.keys(newErrors).length > 0 || productError || reportTypeError) {
       setErrors(newErrors);
     } else {
       setErrors([]);
-      console.log(reportOption, form.month, form.year, selectedProduct);
+      var reportTypesObjectCollection = settingReportTypes();
+      console.log(
+        reportTypesObjectCollection,
+        reportOption,
+        form.month,
+        form.year,
+        selectedProduct
+      );
 
       // MonthlyStoreWise
       // i/p: year
@@ -363,10 +406,39 @@ const TextReports = () => {
               <div className="card-header">
                 <div className="cardHeader">
                   <i className="bi bi-body-text"></i>
-                  &nbsp; Text Report Options!
+                  &nbsp; Report Options!
                 </div>
               </div>
               <div className="card-body">
+                <div className="reportsContainer">
+                  <ul className="reports-list">
+                    {ReportTypes.map(({ name, id }, index) => {
+                      return (
+                        <li key={index}>
+                          <div className="reports-list-item">
+                            <div className="left-section">
+                              <input
+                                type="checkbox"
+                                id={`custom-checkbox-${index}`}
+                                name={name}
+                                value={name}
+                                checked={checkedState[index]}
+                                onChange={() => handleOnChange(index)}
+                              />
+                              <label htmlFor={`custom-checkbox-${index}`}>
+                                {name}
+                              </label>
+                            </div>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  {reportTypeError && (
+                    <div className="errorDisplay">{reportTypeError}</div>
+                  )}
+                </div>
+                <p></p>
                 <Form ref={formRef}>
                   <div className="row">
                     <div className="col-sm-11">

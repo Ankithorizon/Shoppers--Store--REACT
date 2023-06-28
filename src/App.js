@@ -12,8 +12,7 @@ import AddProduct from "./components/AddProduct/AddProduct";
 import ViewProducts from "./components/ViewProducts/ViewProducts";
 import EditProduct from "./components/EditProduct/EditProduct";
 import SetDiscount from "./components/SetDiscount/SetDiscount";
-import TextReports from "./components/Reports/TextReports/TextReports";
-import ChartReports from "./components/Reports/ChartReports/ChartReports";
+import Reports from "./components/Reports/Reports";
 import Shopping from "./components/Shopping/Shopping";
 import CheckMyCart from "./components/Shopping/CheckMyCart/CheckMyCart";
 import Payment from "./components/Payment/Payment";
@@ -80,8 +79,7 @@ function App() {
               <Route path="/view-products" element={<ViewProducts />} />
               <Route path="/edit-product" element={<EditProduct />} />
               <Route path="/set-discount" element={<SetDiscount />} />
-              <Route path="/text-reports" element={<TextReports />} />
-              <Route path="/chart-reports" element={<ChartReports />} />
+              <Route path="/reports" element={<Reports />} />
               <Route
                 path="/shopping"
                 element={<Shopping action={updateCartCount_WhenCartUpdated} />}

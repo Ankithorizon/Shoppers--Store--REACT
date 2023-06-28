@@ -71,11 +71,9 @@ const Header = ({ cart }) => {
                 <i className="bi bi-binoculars-fill"></i>[VIEW -
                 DISCOUNT]Products
               </Link>
-              <Link to={"/text-reports"} className="nav-link">
-                <i className="bi bi-body-text"></i>Text-Reports
-              </Link>
-              <Link to={"/chart-reports"} className="nav-link">
-                <i className="bi bi-bar-chart"></i>Chart-Reports
+              <Link to={"/reports"} className="nav-link">
+                <i className="bi bi-body-text"></i>
+                <i className="bi bi-bar-chart"></i>Reports[Text-Chart]
               </Link>
             </Nav>
           )}
