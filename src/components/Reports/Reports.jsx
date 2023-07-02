@@ -204,7 +204,11 @@ const TextReports = () => {
 
     const newErrors = findFormErrors();
 
-    if (Object.keys(newErrors).length > 0 || productError || reportTypeError) {
+    if (
+      Object.keys(newErrors).length > 0 ||
+      productError ||
+      (!isTextReport && !isChartReport)
+    ) {
       console.log("error!");
       setErrors(newErrors);
     } else {
@@ -537,7 +541,7 @@ const TextReports = () => {
             </div>
           </div>
           <div className="col-md-8 mx-auto">
-            {reportData && (
+            {reportData && (isTextReport || isChartReport) && (
               <div>
                 {reportTitle === "Monthly-Product-Wise Report" && (
                   <MonthlyProductWiseReport
