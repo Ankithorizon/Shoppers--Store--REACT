@@ -9,6 +9,7 @@ const SelectedProductWiseReport = ({
   month,
   productName,
   reportData,
+  displayTextReport,
 }) => {
   const listItems =
     reportData.length > 0 ? (
@@ -48,13 +49,19 @@ const SelectedProductWiseReport = ({
   return (
     <div className="mainContainer">
       <div className="container">
-        <div className="textReportHeader">
-          <h2>Sales Report</h2>
-          {title}
-          <div className="productInfo">{productName.toUpperCase()}</div>
-        </div>
-        <p></p>
-        {listItems}
+        {displayTextReport ? (
+          <div>
+            <div className="textReportHeader">
+              <h2>Sales Report</h2>
+              {title}
+              <div className="productInfo">{productName.toUpperCase()}</div>
+            </div>
+            <p></p>
+            <div>{listItems}</div>
+          </div>
+        ) : (
+          <div>Please select Text Report Type!</div>
+        )}
       </div>
     </div>
   );
