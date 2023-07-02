@@ -1,23 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import "./style.css";
 
-const MonthlyStoreWiseReport = ({ title, year, reportData, reportTypes }) => {
-  const [displayTextReport, setDisplayTextReport] = useState(false);
-  const [displayChartReport, setDisplayChartReport] = useState(false);
-  const checkForReportTypes = () => {
-    let textObj = reportTypes.find(
-      (o) => o.reportTypeName === "TEXT" && o.reportTypeSelection === true
-    );
-    if (textObj !== null) setDisplayTextReport(true);
-    else setDisplayTextReport(false);
+const MonthlyStoreWiseReport = ({
+  title,
+  year,
+  reportData,
+  displayTextReport,
+  displayChartReport,
+}) => {
+ 
+  useEffect(() => {
+  }, []);
 
-    let chartObj = reportTypes.find(
-      (o) => o.reportTypeName === "CHART" && o.reportTypeSelection === true
-    );
-    if (chartObj !== null) setDisplayChartReport(true);
-    else setDisplayChartReport(false);
-  };
 
   const listItems =
     reportData.length > 0 &&
@@ -63,7 +58,9 @@ const MonthlyStoreWiseReport = ({ title, year, reportData, reportTypes }) => {
           <div className="productInfo">Store Sales in [{year}]</div>
         </div>
         <p></p>
-        {listItems}
+        {displayTextReport && <div>{listItems}</div>}
+        <p></p>
+        {displayChartReport && <div>display chart report!</div>}
       </div>
     </div>
   );

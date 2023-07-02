@@ -46,23 +46,6 @@
     font-weight: bold;
     font-style: italic;
 }
-.reports-list {
-    list-style: none;
-    padding: 0;
-    width: 30%;
-    margin: 0 auto;
-}
-
-.reports-list li {
-    margin-bottom: 0.5rem;
-}
-
-.reports-list-item {
-    display: flex;
-     justify-content: space-between;
-     text-align: left;
-}
-.reports-list-item label {
-    vertical-align: text-bottom;
-    margin-left: 0.2rem;
+.reportsDiv{
+    padding : 5px;
 }

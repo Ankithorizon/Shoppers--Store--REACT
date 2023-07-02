@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import "./style.css";
 
@@ -7,8 +7,11 @@ const MonthlyProductWiseReport = ({
   productName,
   year,
   reportData,
-  reportTypes,
+  displayTextReport,
+  displayChartReport,
 }) => {
+  useEffect(() => {}, []);
+
   const listItems =
     reportData.length > 0 &&
     reportData.map((d) => (
@@ -55,7 +58,9 @@ const MonthlyProductWiseReport = ({
           </div>
         </div>
         <p></p>
-        {listItems}
+        {displayTextReport && <div>{listItems}</div>}
+        <p></p>
+        {displayChartReport && <div>display chart report!</div>}
       </div>
     </div>
   );

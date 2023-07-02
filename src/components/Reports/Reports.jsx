@@ -16,9 +16,6 @@ import MonthlyProductWiseReport from "./MonthlyProductWiseReport/MonthlyProductW
 import MonthlyStoreWiseReport from "./MonthlyStoreWiseReport/MonthlyStoreWiseReport";
 import SelectedProductWiseReport from "./SelectedProductWiseReport/SelectedProductWiseReport";
 
-// import report types options from .js file
-import { ReportTypes } from "./ReportTypes";
-
 const TextReports = () => {
   let navigate = useNavigate();
 
@@ -27,21 +24,9 @@ const TextReports = () => {
   };
 
   // checkbox
-  const [checkedState, setCheckedState] = useState(
-    new Array(ReportTypes.length).fill(false)
-  );
-  // checkbox
-  const handleOnChange = (position) => {
-    const updatedCheckedState = checkedState.map((item, index) =>
-      index === position ? !item : item
-    );
-
-    setCheckedState(updatedCheckedState);
-  };
-
-  // checkbox
-  const [reportTypes, setReportTypes] = useState([]);
   const [reportTypeError, setReportTypeError] = useState("");
+  const [isTextReport, setIsTextReport] = useState(false);
+  const [isChartReport, setIsChartReport] = useState(false);
 
   const [reportOption, setReportOption] = useState("MonthlyProductWise");
   const [months, setMonths] = useState([]);
@@ -169,6 +154,10 @@ const TextReports = () => {
     else return false;
   };
 
+  const checkForReportTypes = () => {
+    if (!isTextReport && !isChartReport) return false;
+    else return true;
+  };
   const findFormErrors = () => {
     const { month, year } = form;
     const newErrors = {};
@@ -207,25 +196,6 @@ const TextReports = () => {
     setReportData([]);
   };
 
-  // checkbox
-  // text / chart
-  const checkForReportTypes = () => {
-    if (checkedState.includes(true)) return true;
-    else return false;
-  };
-  // checkbox
-  // text / chart
-  const settingReportTypes = () => {
-    var reportTypesObjCollection = [];
-    checkedState.map((item, index) => {
-      var reportTypeObject = {
-        reportTypeName: ReportTypes[index].name,
-        reportTypeSelection: item,
-      };
-      reportTypesObjCollection.push(reportTypeObject);
-    });
-    return reportTypesObjCollection;
-  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -235,12 +205,14 @@ const TextReports = () => {
     const newErrors = findFormErrors();
 
     if (Object.keys(newErrors).length > 0 || productError || reportTypeError) {
+      console.log("error!");
       setErrors(newErrors);
     } else {
       setErrors([]);
-      setReportTypes(settingReportTypes());
+
       console.log(
-        reportTypes,
+        isTextReport,
+        isChartReport,
         reportOption,
         form.month,
         form.year,
@@ -403,6 +375,13 @@ const TextReports = () => {
       });
   };
 
+  const textReportHandler = () => {
+    setIsTextReport(!isTextReport);
+  };
+  const chartReportHandler = () => {
+    setIsChartReport(!isChartReport);
+  };
+
   return (
     <div className="mainContainer">
       <div className="container">
@@ -417,29 +396,23 @@ const TextReports = () => {
               </div>
               <div className="card-body">
                 <div className="reportsContainer">
-                  <ul className="reports-list">
-                    {ReportTypes.map(({ name, id }, index) => {
-                      return (
-                        <li key={index}>
-                          <div className="reports-list-item">
-                            <div className="left-section">
-                              <input
-                                type="checkbox"
-                                id={`custom-checkbox-${index}`}
-                                name={name}
-                                value={name}
-                                checked={checkedState[index]}
-                                onChange={() => handleOnChange(index)}
-                              />
-                              <label htmlFor={`custom-checkbox-${index}`}>
-                                {name}
-                              </label>
-                            </div>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                  <div className="reportsDiv">
+                    <input
+                      type="checkbox"
+                      id="checkboxText"
+                      checked={isTextReport}
+                      onChange={textReportHandler}
+                    />
+                    &nbsp;<label htmlFor="checkboxText">TEXT Report</label>
+                    <br />
+                    <input
+                      type="checkbox"
+                      id="checkboxChart"
+                      checked={isChartReport}
+                      onChange={chartReportHandler}
+                    />
+                    &nbsp;<label htmlFor="checkboxChart">CHART Report</label>
+                  </div>
                   {reportTypeError && (
                     <div className="errorDisplay">{reportTypeError}</div>
                   )}
@@ -572,7 +545,8 @@ const TextReports = () => {
                     year={form.year}
                     productName={selectedProduct.productName}
                     reportData={reportData}
-                    reportTypes={reportTypes}
+                    displayTextReport={isTextReport}
+                    displayChartReport={isChartReport}
                   ></MonthlyProductWiseReport>
                 )}
 
@@ -581,7 +555,8 @@ const TextReports = () => {
                     title={reportTitle}
                     year={form.year}
                     reportData={reportData}
-                    reportTypes={reportTypes}
+                    displayTextReport={isTextReport}
+                    displayChartReport={isChartReport}
                   ></MonthlyStoreWiseReport>
                 )}
 
