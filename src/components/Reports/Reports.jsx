@@ -56,6 +56,16 @@ const TextReports = () => {
     }
   }, []);
 
+  // check for 401
+  const unAuthHandler401 = (error) => {
+    if (error.response.status === 401 || error.response.status === 403) {
+      navigate("/un-auth");
+      AuthenticationService.logout();
+    } else {
+      console.log("Error!");
+    }
+  };
+
   const getProductsWithImage = () => {
     ReportDataService.getProductsWithImage()
       .then((response) => {
@@ -87,7 +97,7 @@ const TextReports = () => {
         setProducts(options1_);
       })
       .catch((e) => {
-        this.unAuthHandler401(e);
+        unAuthHandler401(e);
       });
   };
 

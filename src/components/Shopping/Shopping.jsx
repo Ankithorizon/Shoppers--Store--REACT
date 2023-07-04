@@ -68,6 +68,7 @@ const Shopping = ({ action }) => {
   const unAuthHandler401 = (error) => {
     if (error.response.status === 401 || error.response.status === 403) {
       navigate("/un-auth");
+      AuthenticationService.logout();
     } else {
       console.log("Error!");
     }
@@ -122,7 +123,6 @@ const Shopping = ({ action }) => {
       );
       setCart([...newCart]);
 
-     
       // master : app component
       // child : shopping component
       // when app component get notified with updated cart,,,
@@ -136,7 +136,6 @@ const Shopping = ({ action }) => {
       currentCart.push(productInCart);
       setCart([...currentCart]);
 
-    
       // master : app component
       // child : shopping component
       // when app component get notified with updated cart,,,

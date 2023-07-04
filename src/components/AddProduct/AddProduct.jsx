@@ -228,6 +228,7 @@ const AddProduct = () => {
   const unAuthHandler401 = (error) => {
     if (error.response.status === 401 || error.response.status === 403) {
       navigate("/un-auth");
+      AuthenticationService.logout();
       // window.location.reload();
     } else {
       console.log("Error!");
