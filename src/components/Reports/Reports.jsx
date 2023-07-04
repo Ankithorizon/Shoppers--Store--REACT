@@ -15,6 +15,7 @@ import Select from "react-select";
 import MonthlyProductWiseReport from "./MonthlyProductWiseReport/MonthlyProductWiseReport";
 import MonthlyStoreWiseReport from "./MonthlyStoreWiseReport/MonthlyStoreWiseReport";
 import SelectedProductWiseReport from "./SelectedProductWiseReport/SelectedProductWiseReport";
+import DiscountWiseReport from "./DiscountWiseReport/DiscountWiseReport";
 
 const TextReports = () => {
   let navigate = useNavigate();
@@ -234,6 +235,16 @@ const TextReports = () => {
         selectedProduct
       );
 
+      // DiscountWise
+      // i/p: year, product
+      if (reportOption === "DiscountWise" && selectedProduct !== null) {
+        var data = prepareDataForDiscountWiseReport();
+        console.log(data);
+
+        // api call to get report data for this option
+        apiCall_DiscountWiseReport(data);
+      }
+
       // MonthlyStoreWise
       // i/p: year
       if (reportOption === "MonthlyStoreWise") {
@@ -284,6 +295,41 @@ const TextReports = () => {
         </option>
       );
     });
+  };
+
+  // DiscountWise
+  // i/p: year, product
+  const prepareDataForDiscountWiseReport = () => {
+    var data = {
+      selectedYear: form.year, // ip
+      selectedProductId: Number(selectedProduct.productId), // ip
+    };
+    return data;
+  };
+  // DiscountWise
+  // i/p: year, product
+  const apiCall_DiscountWiseReport = (data) => {
+    ReportDataService.discountWise(data)
+      .then((response) => {
+        console.log(response);
+
+        if (response.data.length > 0) {
+          console.log(response.data);
+          setReportData([...response.data]);
+          setReportTitle("Product-Discount-Wise Report");
+        } else {
+          setReportData([]);
+          setReportTitle("Product-Discount-Wise Report");
+          console.log("Product-Discount wise Sales Data Not Found !");
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          console.log("Bad Request !");
+        } else {
+          console.log("Server Error !");
+        }
+      });
   };
 
   // MonthlyStoreWise
@@ -469,6 +515,17 @@ const TextReports = () => {
                           &nbsp;&nbsp;&nbsp;Selected Product-Wise
                         </label>
                       </div>
+                      <div className="radio">
+                        <label>
+                          <input
+                            type="radio"
+                            value="DiscountWise"
+                            checked={reportOption === "DiscountWise"}
+                            onChange={reportOptionChange}
+                          />
+                          &nbsp;&nbsp;&nbsp;Product-Discount-Wise
+                        </label>
+                      </div>
                     </div>
                     <div className="col-sm-1"></div>
                   </div>
@@ -552,33 +609,42 @@ const TextReports = () => {
             </div>
           </div>
           <div className="col-md-8 mx-auto">
-            {reportData &&
-              ((reportTitle !== "Selected-Product-Wise Report" &&
-                isTextReport) ||
-                isChartReport) && (
-                <div>
-                  {reportTitle === "Monthly-Product-Wise Report" && (
-                    <MonthlyProductWiseReport
-                      title={reportTitle}
-                      year={form.year}
-                      productName={selectedProduct.productName}
-                      reportData={reportData}
-                      displayTextReport={isTextReport}
-                      displayChartReport={isChartReport}
-                    ></MonthlyProductWiseReport>
-                  )}
+            {reportData && (isTextReport || isChartReport) && (
+              <div>
+                {reportTitle === "Product-Discount-Wise Report" && (
+                  <DiscountWiseReport
+                    title={reportTitle}
+                    year={form.year}
+                    productName={selectedProduct.productName}
+                    reportData={reportData}
+                    displayTextReport={isTextReport}
+                    displayChartReport={isChartReport}
+                  ></DiscountWiseReport>
+                )}
 
-                  {reportTitle === "Monthly-Store-Wise Report" && (
-                    <MonthlyStoreWiseReport
-                      title={reportTitle}
-                      year={form.year}
-                      reportData={reportData}
-                      displayTextReport={isTextReport}
-                      displayChartReport={isChartReport}
-                    ></MonthlyStoreWiseReport>
-                  )}
+                {reportTitle === "Monthly-Product-Wise Report" && (
+                  <MonthlyProductWiseReport
+                    title={reportTitle}
+                    year={form.year}
+                    productName={selectedProduct.productName}
+                    reportData={reportData}
+                    displayTextReport={isTextReport}
+                    displayChartReport={isChartReport}
+                  ></MonthlyProductWiseReport>
+                )}
 
-                  {reportTitle === "Selected-Product-Wise Report" && (
+                {reportTitle === "Monthly-Store-Wise Report" && (
+                  <MonthlyStoreWiseReport
+                    title={reportTitle}
+                    year={form.year}
+                    reportData={reportData}
+                    displayTextReport={isTextReport}
+                    displayChartReport={isChartReport}
+                  ></MonthlyStoreWiseReport>
+                )}
+
+                {reportTitle === "Selected-Product-Wise Report" && (
+                  <div>
                     <SelectedProductWiseReport
                       title={reportTitle}
                       year={form.year}
@@ -587,27 +653,12 @@ const TextReports = () => {
                       )}
                       productName={selectedProduct.productName}
                       reportData={reportData}
+                      displayTextReport={isTextReport}
                     ></SelectedProductWiseReport>
-                  )}
-                </div>
-              )}
-
-            {reportData &&
-              reportTitle === "Selected-Product-Wise Report" &&
-              isTextReport && (
-                <div>
-                  <SelectedProductWiseReport
-                    title={reportTitle}
-                    year={form.year}
-                    month={ReportDataService.getMonthNameFromMonthNumber(
-                      form.month
-                    )}
-                    productName={selectedProduct.productName}
-                    reportData={reportData}
-                    displayTextReport={isTextReport}
-                  ></SelectedProductWiseReport>
-                </div>
-              )}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -31,6 +31,12 @@ class ReportDataService {
     date.setMonth(monthNumber - 1);
     return date.toLocaleString("en-US", { month: "long" });
   };
+
+  discountWise = (data) => {
+    return reportHttp.post("/discountWise", data, {
+      headers: authenticationHeader(),
+    });
+  };
 }
 
 export default new ReportDataService();

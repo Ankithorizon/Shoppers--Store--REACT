@@ -60,7 +60,7 @@ const SelectedProductWiseReport = ({
             <div>{listItems}</div>
           </div>
         ) : (
-          <div>Please select Text Report Type!</div>
+          <div className="wrongReportType">Please select Text Report Type!</div>
         )}
       </div>
     </div>
