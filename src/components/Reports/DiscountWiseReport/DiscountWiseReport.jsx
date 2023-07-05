@@ -12,15 +12,16 @@ const DiscountWiseReport = ({
   displayChartReport,
 }) => {
   const [chartData, setChartData] = useState([]);
+  const [salesProgressData, setSalesProgressData] = useState([]);
 
   useEffect(() => {
-    // renderChartData();
-    prepareChartData();
+    renderChartData();
+    processSales();
   }, []);
 
   const initChartData = () => {
     var chartDatas = [];
-    var firstItem = ["Month", "Sales $"];
+    var firstItem = ["DiscountPercentage", "Sales $"];
     chartDatas.push(firstItem);
     return chartDatas;
   };
@@ -28,12 +29,12 @@ const DiscountWiseReport = ({
     var chartDatas_ = initChartData();
 
     reportData.map((item, i) => {
-      chartDatas_.push([item.monthName, item.totalSales]);
+      chartDatas_.push([item.discountPercentage + "%", item.totalSales]);
     });
     setChartData(chartDatas_);
   };
 
-  const prepareChartData = (year, data = [...reportData]) => {
+  const processSales = (year, data = [...reportData]) => {
     var salesInfo = {
       discountPercentage: 0,
       totalSales: 0,
@@ -77,6 +78,7 @@ const DiscountWiseReport = ({
       }
     });
     console.log(discount);
+    setSalesProgressData([...discount]);
   };
 
   let displayChart = () => {
@@ -92,11 +94,11 @@ const DiscountWiseReport = ({
             title: title,
             chartArea: { width: "70%" },
             hAxis: {
-              title: "Month",
+              title: "% Discount",
               minValue: 0,
             },
             vAxis: {
-              title: "Sales",
+              title: "Sales $",
             },
           }}
           legendToggle
@@ -118,7 +120,7 @@ const DiscountWiseReport = ({
               </div>
             </div>
             <p></p>
-            <div>Discount Wise Report!</div>
+            {displayChartReport && <div>{displayChart()}</div>}
           </div>
         ) : (
           <div className="wrongReportType">

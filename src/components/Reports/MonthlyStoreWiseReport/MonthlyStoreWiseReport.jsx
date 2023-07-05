@@ -84,7 +84,7 @@ const MonthlyStoreWiseReport = ({
               minValue: 0,
             },
             vAxis: {
-              title: "Sales",
+              title: "Sales $",
             },
           }}
           legendToggle
