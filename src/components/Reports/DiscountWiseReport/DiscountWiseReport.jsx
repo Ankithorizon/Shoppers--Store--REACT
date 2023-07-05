@@ -14,7 +14,8 @@ const DiscountWiseReport = ({
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    renderChartData();
+    // renderChartData();
+    prepareChartData();
   }, []);
 
   const initChartData = () => {
@@ -30,6 +31,52 @@ const DiscountWiseReport = ({
       chartDatas_.push([item.monthName, item.totalSales]);
     });
     setChartData(chartDatas_);
+  };
+
+  const prepareChartData = (year, data = [...reportData]) => {
+    var salesInfo = {
+      discountPercentage: 0,
+      totalSales: 0,
+      salesEffect: "",
+      effectInPercentage: 0.0,
+    };
+    var discount = [];
+    data.map((item, i) => {
+      if (i === 0) {
+        salesInfo = {
+          discountPercentage: item.discountPercentage,
+          totalSales: item.totalSales,
+          salesEffect: "-",
+          effectInPercentage: 0,
+        };
+        discount.push(salesInfo);
+      } else {
+        let lastSalesInfo = data[0];
+        var diff = item.totalSales - lastSalesInfo.totalSales;
+        if (diff >= 0) {
+          // UP
+          var diffPercentage_ = Number((100 * diff) / lastSalesInfo.totalSales);
+          salesInfo = {
+            discountPercentage: item.discountPercentage,
+            totalSales: item.totalSales,
+            salesEffect: "UP",
+            effectInPercentage: Math.round(diffPercentage_),
+          };
+          discount.push(salesInfo);
+        } else {
+          // DOWN
+          var diffPercentage_ = Number((100 * diff) / lastSalesInfo.totalSales);
+          salesInfo = {
+            discountPercentage: item.discountPercentage,
+            totalSales: item.totalSales,
+            salesEffect: "DOWN",
+            effectInPercentage: Math.round(diffPercentage_),
+          };
+          discount.push(salesInfo);
+        }
+      }
+    });
+    console.log(discount);
   };
 
   let displayChart = () => {

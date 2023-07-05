@@ -54,7 +54,7 @@ const MonthlyStoreWiseReport = ({
             <div>
               <h5>{d.monthName}</h5>
               <div>
-                <h4>${d.totalSales}</h4>
+                <h4>${(Math.round(d.totalSales * 100) / 100).toFixed(2)}</h4>
               </div>
             </div>
           ) : (
