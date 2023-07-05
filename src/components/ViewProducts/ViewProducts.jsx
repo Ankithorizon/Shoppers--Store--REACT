@@ -13,6 +13,8 @@ import ProductDetails from "./ProductDetails/ProductDetails";
 const ViewProducts = () => {
   let navigate = useNavigate();
 
+  const [displayAllData, setDisplayAllData] = useState(false);
+
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -36,6 +38,11 @@ const ViewProducts = () => {
       getCategories();
     }
   }, []);
+
+  // toggle diaplayAllData
+  const toggleDisplayAllData = () => {
+    setDisplayAllData(!displayAllData);
+  };
 
   // categories
   // filter
@@ -263,6 +270,7 @@ const ViewProducts = () => {
                   <i className="bi bi-binoculars-fill"></i>
                   &nbsp; View - Products
                 </div>
+                {/* filter data controls */}
                 <div className="filter row filterControls">
                   <div className="col-sm-4">
                     <Card.Text>
@@ -317,37 +325,63 @@ const ViewProducts = () => {
               </div>
               {products ? (
                 <div className="card-body">
-                  <div className="row">
-                    <div className="col-sm-4">
-                      <Button
-                        disabled={totalPages === "?"}
-                        className="btn btn-info navBtn"
-                        type="button"
-                        onClick={(e) => previousPage(e)}
-                      >
-                        <i className="bi bi-caret-left-square-fill"></i>
-                        &nbsp;Previous&nbsp;
-                        <i className="bi bi-caret-left-square-fill"></i>
-                      </Button>
-                    </div>
-                    <div className="col-sm-4">
-                      <h6>
-                        Page : {currentPage} of {totalPages}
-                      </h6>
-                    </div>
-                    <div className="col-sm-4">
-                      <Button
-                        disabled={totalPages === "?"}
-                        className="btn btn-info navBtn"
-                        type="button"
-                        onClick={(e) => nextPage(e)}
-                      >
-                        <i className="bi bi-caret-right-square-fill"></i>
-                        &nbsp;Next&nbsp;
-                        <i className="bi bi-caret-right-square-fill"></i>
-                      </Button>
-                    </div>
+                  <div className="toggleBtn">
+                    <Button
+                      className="btn btn-info"
+                      type="button"
+                      onClick={(e) => toggleDisplayAllData(e)}
+                    >
+                      {displayAllData ? (
+                        <span>
+                          <i class="bi bi-toggle-off"></i>&nbsp;&nbsp;Few
+                          Products !
+                        </span>
+                      ) : (
+                        <span>
+                          <i class="bi bi-toggle-on"></i>&nbsp;&nbsp;All
+                          Products !
+                        </span>
+                      )}
+                    </Button>
                   </div>
+
+                  {/* paged data controls */}
+                  {!displayAllData ? (
+                    <div className="row">
+                      <div className="col-sm-4">
+                        <Button
+                          disabled={totalPages === "?"}
+                          className="btn btn-info navBtn"
+                          type="button"
+                          onClick={(e) => previousPage(e)}
+                        >
+                          <i className="bi bi-caret-left-square-fill"></i>
+                          &nbsp;Previous&nbsp;
+                          <i className="bi bi-caret-left-square-fill"></i>
+                        </Button>
+                      </div>
+                      <div className="col-sm-4">
+                        <h6>
+                          Page : {currentPage} of {totalPages}
+                        </h6>
+                      </div>
+                      <div className="col-sm-4">
+                        <Button
+                          disabled={totalPages === "?"}
+                          className="btn btn-info navBtn"
+                          type="button"
+                          onClick={(e) => nextPage(e)}
+                        >
+                          <i className="bi bi-caret-right-square-fill"></i>
+                          &nbsp;Next&nbsp;
+                          <i className="bi bi-caret-right-square-fill"></i>
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <span></span>
+                  )}
+
                   <hr />
                   {products && (
                     <div>
@@ -358,8 +392,12 @@ const ViewProducts = () => {
                         <div className="col-sm-2">Image</div>
                         <div className="col-sm-2"></div>
                       </div>
-                      {/* {displayData()} */}
-                      {displayPageData()}
+
+                      {!displayAllData ? (
+                        <div> {displayPageData()}</div>
+                      ) : (
+                        <div> {displayData()}</div>
+                      )}
                     </div>
                   )}
                 </div>
