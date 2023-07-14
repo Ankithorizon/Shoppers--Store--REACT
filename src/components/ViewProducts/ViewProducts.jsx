@@ -333,12 +333,12 @@ const ViewProducts = () => {
                     >
                       {displayAllData ? (
                         <span>
-                          <i class="bi bi-toggle-off"></i>&nbsp;&nbsp;Few
+                          <i className="bi bi-toggle-off"></i>&nbsp;&nbsp;Few
                           Products !
                         </span>
                       ) : (
                         <span>
-                          <i class="bi bi-toggle-on"></i>&nbsp;&nbsp;All
+                          <i className="bi bi-toggle-on"></i>&nbsp;&nbsp;All
                           Products !
                         </span>
                       )}

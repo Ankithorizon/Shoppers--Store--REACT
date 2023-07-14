@@ -44,10 +44,22 @@ const MonthlyProductWiseReport = ({
             title: title,
             chartArea: { width: "80%" },
             hAxis: {
+              textStyle: {
+                color: "darkmagenta",
+                fontName: "Arial Black",
+                fontSize: 15,
+                bold: true,
+              },
               title: "Month",
               minValue: 0,
             },
             vAxis: {
+              textStyle: {
+                color: "darkmagenta",
+                fontName: "Arial Black",
+                fontSize: 15,
+                bold: true,
+              },
               title: "Sales $",
             },
           }}

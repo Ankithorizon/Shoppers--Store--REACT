@@ -598,7 +598,7 @@ const TextReports = () => {
                           type="button"
                           onClick={(e) => handleSubmit(e)}
                         >
-                          Get Text Report!
+                          Get Report!
                         </Button>
                       </div>
                       <div className="col-sm-2"></div>

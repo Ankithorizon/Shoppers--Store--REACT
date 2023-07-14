@@ -210,7 +210,7 @@ const SetDiscount = () => {
 
             setTimeout(() => {
               setDiscountedPrice(0);
-              formRef.current.reset();
+              // formRef.current.reset();
               setForm({});
               navigate("/view-products");
             }, 3000);

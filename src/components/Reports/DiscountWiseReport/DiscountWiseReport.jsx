@@ -94,10 +94,23 @@ const DiscountWiseReport = ({
             title: title,
             chartArea: { width: "70%" },
             hAxis: {
+              textStyle: {
+                color: "darkmagenta",
+                fontName: "Arial Black",
+                fontSize: 15,
+                bold: true,
+              },
+              is3D: true,
               title: "% Discount",
               minValue: 0,
             },
             vAxis: {
+              textStyle: {
+                color: "darkmagenta",
+                fontName: "Arial Black",
+                fontSize: 15,
+                bold: true,
+              },
               title: "Sales $",
             },
           }}
