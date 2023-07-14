@@ -15,8 +15,10 @@ const DiscountWiseReport = ({
   const [salesProgressData, setSalesProgressData] = useState([]);
 
   useEffect(() => {
-    renderChartData();
-    processSales();
+    if (reportData && reportData.length > 0) {
+      renderChartData();
+      // processSales();
+    }
   }, []);
 
   const initChartData = () => {
@@ -77,7 +79,7 @@ const DiscountWiseReport = ({
         }
       }
     });
-    console.log(discount);
+    console.log("this is discount data,,,", discount);
     setSalesProgressData([...discount]);
   };
 
@@ -133,7 +135,13 @@ const DiscountWiseReport = ({
               </div>
             </div>
             <p></p>
-            {displayChartReport && <div>{displayChart()}</div>}
+            {reportData && reportData.length > 0 && displayChartReport ? (
+              <div>{displayChart()}</div>
+            ) : (
+              <div className="noData">
+                Product-Discount wise Sales Data Not Found !
+              </div>
+            )}
           </div>
         ) : (
           <div className="wrongReportType">

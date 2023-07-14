@@ -5,6 +5,9 @@
     font-size: x-large;
 }
 
-.chartTitle{
-    color : darkmagenta;
+.noData {
+    color: rgb(201, 18, 18);
+    font-style: italic;
+    font-weight: bold;
+    font-size: x-large;
 }
