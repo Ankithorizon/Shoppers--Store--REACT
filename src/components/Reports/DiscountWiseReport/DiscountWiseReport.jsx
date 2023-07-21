@@ -31,7 +31,8 @@ const DiscountWiseReport = ({
     var chartDatas_ = initChartData();
 
     reportData.map((item, i) => {
-      chartDatas_.push([item.discountPercentage + "%", item.totalSales]);
+      // chartDatas_.push([item.discountPercentage + "%", item.totalSales]);
+      chartDatas_.push([item.discountPercentage, item.totalSales]);
     });
     setChartData(chartDatas_);
   };

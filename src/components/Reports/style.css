@@ -49,3 +49,10 @@
 .reportsDiv{
     padding : 5px;
 }
+
+.displaySalesAmount{
+    background-color: green;
+    font-style: italic;
+    color: white;
+    padding: 5px;
+}

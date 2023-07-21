@@ -11,6 +11,14 @@ const SelectedProductWiseReport = ({
   reportData,
   displayTextReport,
 }) => {
+  const displaySalesValue = (salesValue) => {
+    let USDollar = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
+    return USDollar.format(salesValue);
+  };
+
   const listItems =
     reportData.length > 0 ? (
       reportData.map((d) => (
@@ -23,9 +31,12 @@ const SelectedProductWiseReport = ({
                     [{month}, {year}]
                   </h5>
                   <div>
+                    {/* 
                     <h4>
                       ${(Math.round(d.totalSales * 100) / 100).toFixed(2)}
                     </h4>
+                    */}
+                    <h4>{displaySalesValue(d.totalSales)}</h4>
                   </div>
                 </div>
               )}

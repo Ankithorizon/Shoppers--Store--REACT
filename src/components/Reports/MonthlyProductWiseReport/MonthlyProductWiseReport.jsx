@@ -31,6 +31,14 @@ const MonthlyProductWiseReport = ({
     setChartData(chartDatas_);
   };
 
+  const displaySalesValue = (salesValue) => {
+    let USDollar = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
+    return USDollar.format(salesValue);
+  };
+
   let displayChart = () => {
     return (
       <div style={{ display: "flex" }}>
@@ -91,7 +99,12 @@ const MonthlyProductWiseReport = ({
             <div>
               <h5>{d.monthName}</h5>
               <div>
-                <h4>${(Math.round(d.totalSales * 100) / 100).toFixed(2)}</h4>
+                {/*
+                <h6>${(Math.round(d.totalSales * 100) / 100).toFixed(2)}</h6>
+                */}
+                <h6 className="displaySalesAmount">
+                  {displaySalesValue(d.totalSales)}
+                </h6>
               </div>
             </div>
           ) : (
