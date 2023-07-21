@@ -110,7 +110,8 @@ const MonthlyProductWiseReport = ({
           ) : (
             <div>
               {d.monthName}
-              <br />${d.totalSales}
+              <br />
+              {displaySalesValue(d.totalSales)}
             </div>
           )}
         </div>
