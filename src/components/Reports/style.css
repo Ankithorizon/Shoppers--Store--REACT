@@ -56,3 +56,16 @@
     color: white;
     padding: 5px;
 }
+
+.salesProgressDataList_UP{
+    color : green;
+    font-weight: bold;
+}
+.salesProgressDataList_DOWN{
+    color: red;
+    font-weight: bold;
+}
+.salesProgressDataList_REF{
+    color: black;    
+    font-weight: bold;
+}

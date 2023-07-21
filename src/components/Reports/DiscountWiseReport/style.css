@@ -11,3 +11,14 @@
     font-weight: bold;
     font-size: x-large;
 }
+
+.salesProgressDataContainer{
+    text-align: center;
+    vertical-align: middle;
+    color: blue;
+    background-color: lightyellow;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border: 2px solid red;
+    border-radius: 20px;
+}

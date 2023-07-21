@@ -17,7 +17,7 @@ const DiscountWiseReport = ({
   useEffect(() => {
     if (reportData && reportData.length > 0) {
       renderChartData();
-      // processSales();
+      processSales();
     }
   }, []);
 
@@ -84,6 +84,49 @@ const DiscountWiseReport = ({
     setSalesProgressData([...discount]);
   };
 
+  const displaySalesValue = (salesValue) => {
+    let USDollar = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
+    return USDollar.format(salesValue);
+  };
+
+  let salesProgressDataList =
+    salesProgressData.length > 0 &&
+    salesProgressData.map((item, i) => {
+      return (
+        <div key={i} value={item.discountPercentage}>
+          {item.salesEffect === "UP" ? (
+            <span className="salesProgressDataList_UP">
+              {item.discountPercentage}% &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+              &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;[{item.salesEffect}] &nbsp;
+              {item.effectInPercentage}%&nbsp;&nbsp; [{" "}
+              {displaySalesValue(item.totalSales)}]
+            </span>
+          ) : (
+            <span>
+              {item.salesEffect === "DOWN" ? (
+                <span className="salesProgressDataList_DOWN">
+                  {item.discountPercentage}% &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;[
+                  {item.salesEffect}] &nbsp;
+                  {item.effectInPercentage}% &nbsp;&nbsp; [{" "}
+                  {displaySalesValue(item.totalSales)}]
+                </span>
+              ) : (
+                <span className="salesProgressDataList_REF">
+                  {item.discountPercentage}% Ref &nbsp; &nbsp;&nbsp;
+                  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;Ref Sales [{" "}
+                  {displaySalesValue(item.totalSales)}]
+                </span>
+              )}
+            </span>
+          )}
+        </div>
+      );
+    }, this);
+
   let displayChart = () => {
     return (
       <div style={{ display: "flex" }}>
@@ -137,7 +180,18 @@ const DiscountWiseReport = ({
             </div>
             <p></p>
             {reportData && reportData.length > 0 && displayChartReport ? (
-              <div>{displayChart()}</div>
+              <div>
+                <div className="row">
+                  <div className="col-sm-2"></div>
+                  <div className="col-sm-8">
+                    <div className="salesProgressDataContainer">
+                      {salesProgressDataList}
+                    </div>
+                  </div>
+                  <div className="col-sm-2"></div>
+                </div>
+                {displayChart()}
+              </div>
             ) : (
               <div className="noData">
                 Product-Discount wise Sales Data Not Found !
