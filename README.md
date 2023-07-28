@@ -106,3 +106,13 @@
 ![payment-3](https://user-images.githubusercontent.com/26190114/232886374-ba585ea1-7006-4315-b501-12ef50ed55de.PNG)
 ![payment-4](https://user-images.githubusercontent.com/26190114/232886387-9b3633f6-1567-46f7-b1b7-1f2f8b75a40b.PNG)
 ![payment-5](https://user-images.githubusercontent.com/26190114/232886399-adc4f7c5-18f8-41d2-9bb9-dd2fd79cffd2.PNG)
+
+### Shopper Payment[Cash]->
+
+![cash-payment-1](https://github.com/Ankithorizon/Shoppers--Store--REACT/assets/26190114/8d831871-ee44-4c24-8590-8925d29d5d4b)
+![cash-payment-2](https://github.com/Ankithorizon/Shoppers--Store--REACT/assets/26190114/4a63208b-0c3b-458d-b8d5-a60608e1285d)
+![cash-payment-3](https://github.com/Ankithorizon/Shoppers--Store--REACT/assets/26190114/9168d6d6-3083-49c2-a2e9-2978dea94bc1)
+![cash-payment-4](https://github.com/Ankithorizon/Shoppers--Store--REACT/assets/26190114/e479714d-b1be-4296-87ec-d1e81326994c)
+![cash-payment-5](https://github.com/Ankithorizon/Shoppers--Store--REACT/assets/26190114/470a356a-bd93-4562-82ef-28946bc89f21)
+
+
