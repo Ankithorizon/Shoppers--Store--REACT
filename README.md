@@ -82,6 +82,14 @@
 ![reset-discount-2](https://user-images.githubusercontent.com/26190114/232885680-48a82d64-f43d-4093-a9ea-3000b00e3801.PNG)
 ![reset-discount-3](https://user-images.githubusercontent.com/26190114/232885690-40f7cdf3-aac8-4607-b053-14f34c3823ba.PNG)
 
+### Manager Reports[Text/Chart]->
+
+![manager-report-1](https://github.com/Ankithorizon/Shoppers--Store--API/assets/26190114/b27c6616-21cd-4944-9b5d-50f9ed360b47)
+![manager-report-2](https://github.com/Ankithorizon/Shoppers--Store--API/assets/26190114/08053bad-de4d-4c03-a741-868a44158ab5)
+![manager-report-3](https://github.com/Ankithorizon/Shoppers--Store--API/assets/26190114/d87ed6fb-209f-49de-b334-3033854220f7)
+![manager-report-4](https://github.com/Ankithorizon/Shoppers--Store--API/assets/26190114/40f8fcf5-34cf-46e0-aff6-cb2243f40b57)
+![manager-report-5](https://github.com/Ankithorizon/Shoppers--Store--API/assets/26190114/3821037f-24ad-4c99-858c-be0018379350)
+
 ### Shopper Home->
 
 ![shopper-home](https://user-images.githubusercontent.com/26190114/232884224-5d4c881a-4ebb-4a57-bf9a-4c30ea21aa80.PNG)
@@ -114,5 +122,3 @@
 ![cash-payment-3](https://github.com/Ankithorizon/Shoppers--Store--REACT/assets/26190114/9168d6d6-3083-49c2-a2e9-2978dea94bc1)
 ![cash-payment-4](https://github.com/Ankithorizon/Shoppers--Store--REACT/assets/26190114/e479714d-b1be-4296-87ec-d1e81326994c)
 ![cash-payment-5](https://github.com/Ankithorizon/Shoppers--Store--REACT/assets/26190114/470a356a-bd93-4562-82ef-28946bc89f21)
-
-
