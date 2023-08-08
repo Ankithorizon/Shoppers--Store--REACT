@@ -2,14 +2,14 @@ import productHttp from "../axios/product-http-common";
 import authenticationHeader from "./authentication.header";
 
 class ProductDataService {
-  addProduct = (data) => {
-    return productHttp.post("/addProduct", data, {
+  addProduct = async (data) => {
+    return await productHttp.post("/addProduct", data, {
       headers: authenticationHeader(),
     });
   };
 
-  getCategories = () => {
-    return productHttp.get("/getCategories", {
+  getCategories = async () => {
+    return await productHttp.get("/getCategories", {
       headers: authenticationHeader(),
     });
   };
@@ -36,25 +36,25 @@ class ProductDataService {
   };
 
   getProduct = async (selectedProductId) => {
-    return productHttp.get(`/getProduct/${selectedProductId}`, {
+    return await productHttp.get(`/getProduct/${selectedProductId}`, {
       headers: authenticationHeader(),
     });
   };
 
   editProduct = async (editingProductId, data) => {
-    return productHttp.post(`/editProduct/${editingProductId}`, data, {
+    return await productHttp.post(`/editProduct/${editingProductId}`, data, {
       headers: authenticationHeader(),
     });
   };
 
   setProductDiscount = async (data) => {
-    return productHttp.post("/setProductDiscount", data, {
+    return await productHttp.post("/setProductDiscount", data, {
       headers: authenticationHeader(),
     });
   };  
 
   resetProductDiscount = async (selectedProductId) => {
-    return productHttp.get(`/resetProductDiscount/${selectedProductId}`, {
+    return await productHttp.get(`/resetProductDiscount/${selectedProductId}`, {
       headers: authenticationHeader(),
     });
   };
