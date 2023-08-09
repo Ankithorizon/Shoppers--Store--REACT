@@ -2,26 +2,26 @@ import reportHttp from "../axios/report-http-common";
 import authenticationHeader from "./authentication.header";
 
 class ReportDataService {
-  monthlyStoreWise = (data) => {
-    return reportHttp.post("/monthlyStoreWise", data, {
+  monthlyStoreWise = async (data) => {
+    return await reportHttp.post("/monthlyStoreWise", data, {
       headers: authenticationHeader(),
     });
   };
 
-  monthlyProductWise = (data) => {
-    return reportHttp.post("/monthlyProductWise", data, {
+  monthlyProductWise = async (data) => {
+    return await reportHttp.post("/monthlyProductWise", data, {
       headers: authenticationHeader(),
     });
   };
 
-  selectedProductWise = (data) => {
-    return reportHttp.post("/selectedProductWise", data, {
+  selectedProductWise = async (data) => {
+    return await reportHttp.post("/selectedProductWise", data, {
       headers: authenticationHeader(),
     });
   };
 
-  getProductsWithImage = () => {
-    return reportHttp.get("/productsWithImage", {
+  getProductsWithImage = async () => {
+    return await reportHttp.get("/productsWithImage", {
       headers: authenticationHeader(),
     });
   };
@@ -32,8 +32,8 @@ class ReportDataService {
     return date.toLocaleString("en-US", { month: "long" });
   };
 
-  discountWise = (data) => {
-    return reportHttp.post("/discountWise", data, {
+  discountWise = async (data) => {
+    return await reportHttp.post("/discountWise", data, {
       headers: authenticationHeader(),
     });
   };

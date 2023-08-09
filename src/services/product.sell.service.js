@@ -3,7 +3,7 @@ import authenticationHeader from "./authentication.header";
 
 class ProductSellService {
   billCreate = async (data) => {
-    return productSellHttp.post("/billCreate", data, {
+    return await productSellHttp.post("/billCreate", data, {
       headers: authenticationHeader(),
     });
   };
