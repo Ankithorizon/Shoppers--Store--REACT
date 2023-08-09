@@ -1,12 +1,5 @@
-TO-DOS #1.1#    
-cash-payment 
-    [OK]- Cash-Amount is Short! for 5 or any whole number 
-    without [.] decimal [5.00]
-cc-cash-payment 
-    [OK]- display ref-code after successful payment
+bug-1.0
+    after reset-discount,,, products(paged-products/all-products)
+    not displayed
 
-
-TO-DOS #1.2#    
-text report
-
-chart report
+    

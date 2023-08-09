@@ -127,27 +127,35 @@ const Login = () => {
           }
         })
         .catch((error) => {
-          if (error.response.status === 500) {
-            let loginResponse = {
-              responseCode: error.response.data.response.responseCode,
-              responseMessage: error.response.data.response.responseMessage,
-            };
-            setLoginResponse(loginResponse);
-          } else if (error.response.status === 400) {
-            if (error.response.data.errors) {
-              var modelErrors = handleModelState(error);
-              setModelErrors(modelErrors);
-            } else {
+          if (error.response) {
+            if (error.response.status === 500) {
               let loginResponse = {
                 responseCode: error.response.data.response.responseCode,
                 responseMessage: error.response.data.response.responseMessage,
+              };
+              setLoginResponse(loginResponse);
+            } else if (error.response.status === 400) {
+              if (error.response.data.errors) {
+                var modelErrors = handleModelState(error);
+                setModelErrors(modelErrors);
+              } else {
+                let loginResponse = {
+                  responseCode: error.response.data.response.responseCode,
+                  responseMessage: error.response.data.response.responseMessage,
+                };
+                setLoginResponse(loginResponse);
+              }
+            } else {
+              let loginResponse = {
+                responseCode: 400,
+                responseMessage: "Bad Request!",
               };
               setLoginResponse(loginResponse);
             }
           } else {
             let loginResponse = {
               responseCode: 400,
-              responseMessage: "Bad Request!",
+              responseMessage: "Connection Refused!",
             };
             setLoginResponse(loginResponse);
           }
