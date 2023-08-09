@@ -47,6 +47,9 @@ const TextReports = () => {
   // form reference
   const formRef = useRef(null);
 
+  // connection refused from api
+  const [connectionError, setConnectionError] = useState("");
+
   useEffect(() => {
     var currRole = AuthenticationService.getCurrentUserRole();
 
@@ -59,11 +62,17 @@ const TextReports = () => {
 
   // check for 401
   const unAuthHandler401 = (error) => {
-    if (error.response.status === 401 || error.response.status === 403) {
-      navigate("/un-auth");
-      AuthenticationService.logout();
+    if (error.response) {
+      setConnectionError("");
+      if (error.response.status === 401 || error.response.status === 403) {
+        navigate("/un-auth");
+        AuthenticationService.logout();
+      } else {
+        console.log("Error!");
+      }
     } else {
-      console.log("Error!");
+      console.log("Connection Refused!");
+      setConnectionError("Connection Refused!");
     }
   };
 
@@ -446,221 +455,229 @@ const TextReports = () => {
   return (
     <div className="mainContainer">
       <div className="container">
-        <div className="row">
-          <div className="col-md-4 mx-auto">
-            <div className="card">
-              <div className="card-header">
-                <div className="cardHeader">
-                  <i className="bi bi-body-text"></i>
-                  &nbsp; Report Options!
+        {connectionError && (
+          <div className="row connection_Error">
+            <div>{connectionError}</div>
+          </div>
+        )}
+
+        {!connectionError && (
+          <div className="row">
+            <div className="col-md-4 mx-auto">
+              <div className="card">
+                <div className="card-header">
+                  <div className="cardHeader">
+                    <i className="bi bi-body-text"></i>
+                    &nbsp; Report Options!
+                  </div>
                 </div>
-              </div>
-              <div className="card-body">
-                <div className="reportsContainer">
-                  <div className="reportsDiv">
-                    <input
-                      type="checkbox"
-                      id="checkboxText"
-                      checked={isTextReport}
-                      onChange={textReportHandler}
-                    />
-                    &nbsp;<label htmlFor="checkboxText">TEXT Report</label>
-                    <br />
-                    <input
-                      type="checkbox"
-                      id="checkboxChart"
-                      checked={isChartReport}
-                      onChange={chartReportHandler}
-                    />
-                    &nbsp;<label htmlFor="checkboxChart">CHART Report</label>
-                  </div>
-                  {reportTypeError && (
-                    <div className="errorDisplay">{reportTypeError}</div>
-                  )}
-                </div>
-                <p></p>
-                <Form ref={formRef}>
-                  <div className="row">
-                    <div className="col-sm-11">
-                      <div className="radio">
-                        <label>
-                          <input
-                            type="radio"
-                            value="MonthlyProductWise"
-                            checked={reportOption === "MonthlyProductWise"}
-                            onChange={reportOptionChange}
-                          />
-                          &nbsp;&nbsp;&nbsp;[Monthly]-Product-Wise
-                        </label>
-                      </div>
-                      <div className="radio">
-                        <label>
-                          <input
-                            type="radio"
-                            value="MonthlyStoreWise"
-                            checked={reportOption === "MonthlyStoreWise"}
-                            onChange={reportOptionChange}
-                          />
-                          &nbsp;&nbsp;&nbsp;[Monthly]-Store-Wise
-                        </label>
-                      </div>
-                      <div className="radio">
-                        <label>
-                          <input
-                            type="radio"
-                            value="SelectedProductWise"
-                            checked={reportOption === "SelectedProductWise"}
-                            onChange={reportOptionChange}
-                          />
-                          &nbsp;&nbsp;&nbsp;Selected Product-Wise
-                        </label>
-                      </div>
-                      <div className="radio">
-                        <label>
-                          <input
-                            type="radio"
-                            value="DiscountWise"
-                            checked={reportOption === "DiscountWise"}
-                            onChange={reportOptionChange}
-                          />
-                          &nbsp;&nbsp;&nbsp;Product-Discount-Wise
-                        </label>
-                      </div>
-                    </div>
-                    <div className="col-sm-1"></div>
-                  </div>
-                  <p></p>
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <Form.Group controlId="month">
-                        <Form.Control
-                          as="select"
-                          isInvalid={!!errors.month}
-                          onChange={(e) => {
-                            setField("month", e.target.value);
-                          }}
-                        >
-                          <option value="">Choose Month</option>
-                          {renderOptionsForMonths()}
-                        </Form.Control>
-                        <Form.Control.Feedback
-                          type="invalid"
-                          className="errorDisplay"
-                        >
-                          {errors.month}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                    </div>
-                    <div className="col-sm-6">
-                      <Form.Group controlId="year">
-                        <Form.Control
-                          as="select"
-                          isInvalid={!!errors.year}
-                          onChange={(e) => {
-                            setField("year", e.target.value);
-                          }}
-                        >
-                          <option value="">Choose Year</option>
-                          {renderOptionsForYears()}
-                        </Form.Control>
-                        <Form.Control.Feedback
-                          type="invalid"
-                          className="errorDisplay"
-                        >
-                          {errors.year}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                    </div>
-                  </div>
-                  <p></p>
-                  <div className="row">
-                    <div>
-                      <Select
-                        placeholder="---Product---"
-                        isInvalid={selectedProduct === null}
-                        value={selectedProduct}
-                        onChange={selectedProductChanged}
-                        options={products}
-                        hideSelectedOptions={false}
+                <div className="card-body">
+                  <div className="reportsContainer">
+                    <div className="reportsDiv">
+                      <input
+                        type="checkbox"
+                        id="checkboxText"
+                        checked={isTextReport}
+                        onChange={textReportHandler}
                       />
-                      {productError && (
-                        <div className="errorDisplay">{productError}</div>
-                      )}
+                      &nbsp;<label htmlFor="checkboxText">TEXT Report</label>
+                      <br />
+                      <input
+                        type="checkbox"
+                        id="checkboxChart"
+                        checked={isChartReport}
+                        onChange={chartReportHandler}
+                      />
+                      &nbsp;<label htmlFor="checkboxChart">CHART Report</label>
                     </div>
+                    {reportTypeError && (
+                      <div className="errorDisplay">{reportTypeError}</div>
+                    )}
                   </div>
-                  <div>
-                    <hr />
+                  <p></p>
+                  <Form ref={formRef}>
                     <div className="row">
-                      <div className="col-sm-2"></div>
-                      <div className="col-sm-8 textReportBtn">
-                        <Button
-                          className="btn btn-success"
-                          type="button"
-                          onClick={(e) => handleSubmit(e)}
-                        >
-                          Get Report!
-                        </Button>
+                      <div className="col-sm-11">
+                        <div className="radio">
+                          <label>
+                            <input
+                              type="radio"
+                              value="MonthlyProductWise"
+                              checked={reportOption === "MonthlyProductWise"}
+                              onChange={reportOptionChange}
+                            />
+                            &nbsp;&nbsp;&nbsp;[Monthly]-Product-Wise
+                          </label>
+                        </div>
+                        <div className="radio">
+                          <label>
+                            <input
+                              type="radio"
+                              value="MonthlyStoreWise"
+                              checked={reportOption === "MonthlyStoreWise"}
+                              onChange={reportOptionChange}
+                            />
+                            &nbsp;&nbsp;&nbsp;[Monthly]-Store-Wise
+                          </label>
+                        </div>
+                        <div className="radio">
+                          <label>
+                            <input
+                              type="radio"
+                              value="SelectedProductWise"
+                              checked={reportOption === "SelectedProductWise"}
+                              onChange={reportOptionChange}
+                            />
+                            &nbsp;&nbsp;&nbsp;Selected Product-Wise
+                          </label>
+                        </div>
+                        <div className="radio">
+                          <label>
+                            <input
+                              type="radio"
+                              value="DiscountWise"
+                              checked={reportOption === "DiscountWise"}
+                              onChange={reportOptionChange}
+                            />
+                            &nbsp;&nbsp;&nbsp;Product-Discount-Wise
+                          </label>
+                        </div>
                       </div>
-                      <div className="col-sm-2"></div>
+                      <div className="col-sm-1"></div>
                     </div>
-                  </div>
-                </Form>
+                    <p></p>
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <Form.Group controlId="month">
+                          <Form.Control
+                            as="select"
+                            isInvalid={!!errors.month}
+                            onChange={(e) => {
+                              setField("month", e.target.value);
+                            }}
+                          >
+                            <option value="">Choose Month</option>
+                            {renderOptionsForMonths()}
+                          </Form.Control>
+                          <Form.Control.Feedback
+                            type="invalid"
+                            className="errorDisplay"
+                          >
+                            {errors.month}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                      </div>
+                      <div className="col-sm-6">
+                        <Form.Group controlId="year">
+                          <Form.Control
+                            as="select"
+                            isInvalid={!!errors.year}
+                            onChange={(e) => {
+                              setField("year", e.target.value);
+                            }}
+                          >
+                            <option value="">Choose Year</option>
+                            {renderOptionsForYears()}
+                          </Form.Control>
+                          <Form.Control.Feedback
+                            type="invalid"
+                            className="errorDisplay"
+                          >
+                            {errors.year}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                      </div>
+                    </div>
+                    <p></p>
+                    <div className="row">
+                      <div>
+                        <Select
+                          placeholder="---Product---"
+                          isInvalid={selectedProduct === null}
+                          value={selectedProduct}
+                          onChange={selectedProductChanged}
+                          options={products}
+                          hideSelectedOptions={false}
+                        />
+                        {productError && (
+                          <div className="errorDisplay">{productError}</div>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <hr />
+                      <div className="row">
+                        <div className="col-sm-2"></div>
+                        <div className="col-sm-8 textReportBtn">
+                          <Button
+                            className="btn btn-success"
+                            type="button"
+                            onClick={(e) => handleSubmit(e)}
+                          >
+                            Get Report!
+                          </Button>
+                        </div>
+                        <div className="col-sm-2"></div>
+                      </div>
+                    </div>
+                  </Form>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="col-md-8 mx-auto">
-            {reportData && (isTextReport || isChartReport) && (
-              <div>
-                {reportTitle === "Product-Discount-Wise Report" && (
-                  <DiscountWiseReport
-                    title={reportTitle}
-                    year={form.year}
-                    productName={selectedProduct.productName}
-                    reportData={reportData}
-                    displayTextReport={isTextReport}
-                    displayChartReport={isChartReport}
-                  ></DiscountWiseReport>
-                )}
-
-                {reportTitle === "Monthly-Product-Wise Report" && (
-                  <MonthlyProductWiseReport
-                    title={reportTitle}
-                    year={form.year}
-                    productName={selectedProduct.productName}
-                    reportData={reportData}
-                    displayTextReport={isTextReport}
-                    displayChartReport={isChartReport}
-                  ></MonthlyProductWiseReport>
-                )}
-
-                {reportTitle === "Monthly-Store-Wise Report" && (
-                  <MonthlyStoreWiseReport
-                    title={reportTitle}
-                    year={form.year}
-                    reportData={reportData}
-                    displayTextReport={isTextReport}
-                    displayChartReport={isChartReport}
-                  ></MonthlyStoreWiseReport>
-                )}
-
-                {reportTitle === "Selected-Product-Wise Report" && (
-                  <div>
-                    <SelectedProductWiseReport
+            <div className="col-md-8 mx-auto">
+              {reportData && (isTextReport || isChartReport) && (
+                <div>
+                  {reportTitle === "Product-Discount-Wise Report" && (
+                    <DiscountWiseReport
                       title={reportTitle}
                       year={form.year}
-                      month={ReportDataService.getMonthNameFromMonthNumber(
-                        form.month
-                      )}
                       productName={selectedProduct.productName}
                       reportData={reportData}
                       displayTextReport={isTextReport}
-                    ></SelectedProductWiseReport>
-                  </div>
-                )}
-              </div>
-            )}
+                      displayChartReport={isChartReport}
+                    ></DiscountWiseReport>
+                  )}
+
+                  {reportTitle === "Monthly-Product-Wise Report" && (
+                    <MonthlyProductWiseReport
+                      title={reportTitle}
+                      year={form.year}
+                      productName={selectedProduct.productName}
+                      reportData={reportData}
+                      displayTextReport={isTextReport}
+                      displayChartReport={isChartReport}
+                    ></MonthlyProductWiseReport>
+                  )}
+
+                  {reportTitle === "Monthly-Store-Wise Report" && (
+                    <MonthlyStoreWiseReport
+                      title={reportTitle}
+                      year={form.year}
+                      reportData={reportData}
+                      displayTextReport={isTextReport}
+                      displayChartReport={isChartReport}
+                    ></MonthlyStoreWiseReport>
+                  )}
+
+                  {reportTitle === "Selected-Product-Wise Report" && (
+                    <div>
+                      <SelectedProductWiseReport
+                        title={reportTitle}
+                        year={form.year}
+                        month={ReportDataService.getMonthNameFromMonthNumber(
+                          form.month
+                        )}
+                        productName={selectedProduct.productName}
+                        reportData={reportData}
+                        displayTextReport={isTextReport}
+                      ></SelectedProductWiseReport>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
