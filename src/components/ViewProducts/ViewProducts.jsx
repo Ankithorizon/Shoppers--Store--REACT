@@ -168,14 +168,15 @@ const ViewProducts = () => {
     const currentProductIndex = products.findIndex(
       (p) => p.productId === selectedProductAfterResetDiscount.productId
     );
-    const newProducts = { ...products };
+    const newProducts = [...products];
     newProducts[currentProductIndex] = {
       ...selectedProduct,
       currentDiscountPercentage:
         selectedProductAfterResetDiscount.currentDiscountPercentage,
       currentPrice: selectedProductAfterResetDiscount.currentPrice,
     };
-    setProducts({ ...newProducts });
+    setDisplayAllData(false);
+    setProducts([...newProducts]);
     setTotalPages(Math.ceil(newProducts.length / recordsPerPage));
     getPageData(newProducts);
   };

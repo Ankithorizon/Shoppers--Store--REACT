@@ -1,4 +1,4 @@
-bug-1.0
+bug-1.0 [FIXED]
     after reset-discount,,, products(paged-products/all-products)
     not displayed
 
